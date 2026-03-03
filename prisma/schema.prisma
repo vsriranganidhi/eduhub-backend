@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role     @default(STUDENT)
+  
+  // Timestamps for audit trails
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation: A teacher can authored many notices
+  notices   Notice[] 
+}
+
+model Notice {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  subject   String    @default("General")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expiresAt DateTime? 
+  deletedAt DateTime? // NEW: If this has a date, it's in the "Recycle Bin"
+  
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+}

@@ -1,0 +1,43 @@
+Error1
+
+  port: 3000
+}
+
+Node.js v25.3.0
+ranga.nidhi@MB-M-RANGANI eduhub-backend % lsof -ti:3000 | xargs kill -9
+ranga.nidhi@MB-M-RANGANI eduhub-backend % npm run start dev            
+
+> eduhub-backend@0.0.1 start
+> nest start dev
+
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +5ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RoutesResolver] AppController {/}: +1ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post/:id, GET} route +1ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/feed, GET} route +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/filtered-posts/:searchString, GET} route +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post, POST} route +1ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/user, POST} route +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/publish/:id, PUT} route +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post/:id, DELETE} route +0ms
+[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [NestApplication] Nest application successfully started +0ms
+[Nest] 58755  - 02/18/2026, 11:34:07 PM   ERROR [ExceptionsHandler] Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string
+    at /Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async PrismaPgAdapter.performIO (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/adapter-pg/dist/index.js:652:22)
+    at async PrismaPgAdapter.queryRaw (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/adapter-pg/dist/index.js:602:30)
+    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:182:26)
+    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:209:41)
+    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:268:41)
+    at async e.run (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:93:23)
+    at async e.execute (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client/src/runtime/core/engines/client/LocalExecutor.ts:81:12)
+    at async qt.request (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client/src/runtime/core/engines/client/ClientEngine.ts:492:22) {
+  clientVersion: '7.4.0'
+}
+
+Error resolved when initially in prisma.service.ts 
+    const adapter = new PrismaPg({ url: process.env.DATABASE_URL });
+was used but changes it to 
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
