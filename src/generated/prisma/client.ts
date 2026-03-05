@@ -47,3 +47,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Notice = Prisma.NoticeModel
+/**
+ * Model LibraryResource
+ * 
+ */
+export type LibraryResource = Prisma.LibraryResourceModel

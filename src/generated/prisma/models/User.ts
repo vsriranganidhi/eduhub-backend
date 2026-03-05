@@ -207,6 +207,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   notices?: Prisma.NoticeListRelationFilter
+  resources?: Prisma.LibraryResourceListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -219,6 +220,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   notices?: Prisma.NoticeOrderByRelationAggregateInput
+  resources?: Prisma.LibraryResourceOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -234,6 +236,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   notices?: Prisma.NoticeListRelationFilter
+  resources?: Prisma.LibraryResourceListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -274,6 +277,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notices?: Prisma.NoticeCreateNestedManyWithoutAuthorInput
+  resources?: Prisma.LibraryResourceCreateNestedManyWithoutUploaderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -286,6 +290,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notices?: Prisma.NoticeUncheckedCreateNestedManyWithoutAuthorInput
+  resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutUploaderInput
 }
 
 export type UserUpdateInput = {
@@ -298,6 +303,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notices?: Prisma.NoticeUpdateManyWithoutAuthorNestedInput
+  resources?: Prisma.LibraryResourceUpdateManyWithoutUploaderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -310,6 +316,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notices?: Prisma.NoticeUncheckedUpdateManyWithoutAuthorNestedInput
+  resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutUploaderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -409,6 +416,20 @@ export type UserUpdateOneRequiredWithoutNoticesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNoticesInput, Prisma.UserUpdateWithoutNoticesInput>, Prisma.UserUncheckedUpdateWithoutNoticesInput>
 }
 
+export type UserCreateNestedOneWithoutResourcesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResourcesInput, Prisma.UserUncheckedCreateWithoutResourcesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResourcesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutResourcesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResourcesInput, Prisma.UserUncheckedCreateWithoutResourcesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResourcesInput
+  upsert?: Prisma.UserUpsertWithoutResourcesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResourcesInput, Prisma.UserUpdateWithoutResourcesInput>, Prisma.UserUncheckedUpdateWithoutResourcesInput>
+}
+
 export type UserCreateWithoutNoticesInput = {
   id?: string
   email: string
@@ -418,6 +439,7 @@ export type UserCreateWithoutNoticesInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  resources?: Prisma.LibraryResourceCreateNestedManyWithoutUploaderInput
 }
 
 export type UserUncheckedCreateWithoutNoticesInput = {
@@ -429,6 +451,7 @@ export type UserUncheckedCreateWithoutNoticesInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
+  resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutUploaderInput
 }
 
 export type UserCreateOrConnectWithoutNoticesInput = {
@@ -456,6 +479,7 @@ export type UserUpdateWithoutNoticesInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.LibraryResourceUpdateManyWithoutUploaderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoticesInput = {
@@ -467,6 +491,71 @@ export type UserUncheckedUpdateWithoutNoticesInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutUploaderNestedInput
+}
+
+export type UserCreateWithoutResourcesInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notices?: Prisma.NoticeCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutResourcesInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notices?: Prisma.NoticeUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutResourcesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutResourcesInput, Prisma.UserUncheckedCreateWithoutResourcesInput>
+}
+
+export type UserUpsertWithoutResourcesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutResourcesInput, Prisma.UserUncheckedUpdateWithoutResourcesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutResourcesInput, Prisma.UserUncheckedCreateWithoutResourcesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutResourcesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutResourcesInput, Prisma.UserUncheckedUpdateWithoutResourcesInput>
+}
+
+export type UserUpdateWithoutResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notices?: Prisma.NoticeUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notices?: Prisma.NoticeUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 
@@ -476,10 +565,12 @@ export type UserUncheckedUpdateWithoutNoticesInput = {
 
 export type UserCountOutputType = {
   notices: number
+  resources: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notices?: boolean | UserCountOutputTypeCountNoticesArgs
+  resources?: boolean | UserCountOutputTypeCountResourcesArgs
 }
 
 /**
@@ -499,6 +590,13 @@ export type UserCountOutputTypeCountNoticesArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.NoticeWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LibraryResourceWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -510,6 +608,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   notices?: boolean | Prisma.User$noticesArgs<ExtArgs>
+  resources?: boolean | Prisma.User$resourcesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -549,6 +648,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "firstName" | "lastName" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notices?: boolean | Prisma.User$noticesArgs<ExtArgs>
+  resources?: boolean | Prisma.User$resourcesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -558,6 +658,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     notices: Prisma.$NoticePayload<ExtArgs>[]
+    resources: Prisma.$LibraryResourcePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -963,6 +1064,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   notices<T extends Prisma.User$noticesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$noticesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NoticePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  resources<T extends Prisma.User$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LibraryResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1409,6 +1511,30 @@ export type User$noticesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.NoticeScalarFieldEnum | Prisma.NoticeScalarFieldEnum[]
+}
+
+/**
+ * User.resources
+ */
+export type User$resourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LibraryResource
+   */
+  select?: Prisma.LibraryResourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LibraryResource
+   */
+  omit?: Prisma.LibraryResourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LibraryResourceInclude<ExtArgs> | null
+  where?: Prisma.LibraryResourceWhereInput
+  orderBy?: Prisma.LibraryResourceOrderByWithRelationInput | Prisma.LibraryResourceOrderByWithRelationInput[]
+  cursor?: Prisma.LibraryResourceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LibraryResourceScalarFieldEnum | Prisma.LibraryResourceScalarFieldEnum[]
 }
 
 /**

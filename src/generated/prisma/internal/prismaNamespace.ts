@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.4.0
- * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
+ * Prisma Client JS version: 7.4.1
+ * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.4.0",
-  engine: "ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+  client: "7.4.1",
+  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
 }
 
 /**
@@ -385,7 +385,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Notice: 'Notice'
+  Notice: 'Notice',
+  LibraryResource: 'LibraryResource'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "notice"
+    modelProps: "user" | "notice" | "libraryResource"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LibraryResource: {
+      payload: Prisma.$LibraryResourcePayload<ExtArgs>
+      fields: Prisma.LibraryResourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LibraryResourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LibraryResourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        findFirst: {
+          args: Prisma.LibraryResourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LibraryResourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        findMany: {
+          args: Prisma.LibraryResourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>[]
+        }
+        create: {
+          args: Prisma.LibraryResourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        createMany: {
+          args: Prisma.LibraryResourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LibraryResourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>[]
+        }
+        delete: {
+          args: Prisma.LibraryResourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        update: {
+          args: Prisma.LibraryResourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.LibraryResourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LibraryResourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LibraryResourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.LibraryResourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibraryResourcePayload>
+        }
+        aggregate: {
+          args: Prisma.LibraryResourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLibraryResource>
+        }
+        groupBy: {
+          args: Prisma.LibraryResourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LibraryResourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LibraryResourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LibraryResourceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -619,6 +694,22 @@ export const NoticeScalarFieldEnum = {
 } as const
 
 export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
+
+
+export const LibraryResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  fileUrl: 'fileUrl',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  subject: 'subject',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  uploaderId: 'uploaderId'
+} as const
+
+export type LibraryResourceScalarFieldEnum = (typeof LibraryResourceScalarFieldEnum)[keyof typeof LibraryResourceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -704,6 +795,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -803,6 +908,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   notice?: Prisma.NoticeOmit
+  libraryResource?: Prisma.LibraryResourceOmit
 }
 
 /* Types for Logging */

@@ -34,6 +34,7 @@ model User {
 
   // Relation: A teacher can authored many notices
   notices   Notice[] 
+  resources LibraryResource[]
 }
 
 model Notice {
@@ -48,4 +49,19 @@ model Notice {
   
   authorId  String
   author    User      @relation(fields: [authorId], references: [id])
+}
+
+model LibraryResource {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  fileUrl      String   // Path to the file
+  fileType     String   // e.g., "pdf", "docx", "image"
+  fileSize     Int      // In bytes
+  subject      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  uploaderId   String
+  uploader     User     @relation(fields: [uploaderId], references: [id])
 }

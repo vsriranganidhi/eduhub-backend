@@ -102,8 +102,6 @@ export class NoticeService {
   }
 
   async findArchived(userId: string, userRole: string) {
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     return this.prisma.notice.findMany({
       where: {

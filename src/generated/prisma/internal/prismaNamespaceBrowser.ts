@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Notice: 'Notice'
+  Notice: 'Notice',
+  LibraryResource: 'LibraryResource'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -98,6 +99,22 @@ export const NoticeScalarFieldEnum = {
 } as const
 
 export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
+
+
+export const LibraryResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  fileUrl: 'fileUrl',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  subject: 'subject',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  uploaderId: 'uploaderId'
+} as const
+
+export type LibraryResourceScalarFieldEnum = (typeof LibraryResourceScalarFieldEnum)[keyof typeof LibraryResourceScalarFieldEnum]
 
 
 export const SortOrder = {
