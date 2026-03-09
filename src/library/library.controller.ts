@@ -13,6 +13,10 @@ import { Role } from '../generated/prisma/client';
 import { LibraryService } from './library.service';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { Param } from '@nestjs/common';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Delete } from '@nestjs/common';
+import { Patch } from '@nestjs/common';
 
 // Custom file type validator
 const customFileTypeValidator = (file: Express.Multer.File): boolean => {
@@ -86,5 +90,40 @@ export class LibraryController {
     @Req() req: any
   ) {
     return this.libraryService.toggleUpvote(resourceId, req.user.sub);
+  }
+
+  @Post(':id/comments')
+  @UseGuards(AuthGuard)
+  async addComment(
+    @Param('id') resourceId: string,
+    @Body() dto: CreateCommentDto,
+    @Req() req: any,
+  ) {
+    return this.libraryService.addComment(resourceId, req.user.sub, dto);
+  }
+
+  @Get(':id/comments')
+  @UseGuards(AuthGuard)
+  async getComments(@Param('id') resourceId: string) {
+    return this.libraryService.getComments(resourceId);
+  }
+
+  @Patch('comments/:commentId')
+  @UseGuards(AuthGuard)
+  async updateComment(
+    @Param('commentId') commentId: string,
+    @Body() dto: UpdateCommentDto,
+    @Req() req: any,
+  ) {
+    return this.libraryService.updateComment(commentId, req.user.sub, dto);
+  }
+
+  @Delete('comments/:commentId')
+  @UseGuards(AuthGuard)
+  async deleteComment(
+    @Param('commentId') commentId: string,
+    @Req() req: any,
+  ) {
+    return this.libraryService.deleteComment(commentId, req.user.sub, req.user.role);
   }
 }

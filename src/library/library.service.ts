@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateResourceDto } from './dto/create-resource.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { ForbiddenException } from "@nestjs/common";
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
 export class LibraryService {
@@ -92,6 +95,7 @@ export class LibraryService {
         uploader: { select: { firstName: true, lastName: true } },
         subject: { select: { name: true, category: true } },
         upvotes: true,
+        comments: true,
       },
       orderBy: {
         upvotes: {
@@ -108,6 +112,7 @@ export class LibraryService {
       // We map 'uploads/' to our static route '/static/'
       fileUrl: `${baseUrl}/static/${res.fileUrl.replace('uploads/', '')}`,
       upvoteCount: res.upvotes.length,
+      commentCount: res.comments.length,
     }));
   }
 
@@ -147,5 +152,69 @@ export class LibraryService {
       });
       return { message: 'Upvote added', upvoted: true };
     }
+  }
+
+  async addComment(resourceId: string, userId: string, dto: CreateCommentDto) {
+    // 1. Verify resource exists
+    const resource = await this.prisma.libraryResource.findUnique({
+      where: { id: resourceId },
+    });
+
+    if (!resource) throw new NotFoundException('Resource not found');
+
+    // 2. Create the comment
+    return this.prisma.comment.create({
+      data: {
+        content: dto.content,
+        resourceId: resourceId,
+        authorId: userId,
+      },
+      include: {
+        author: {
+          select: { firstName: true, lastName: true },
+        },
+      },
+    });
+  }
+
+  async getComments(resourceId: string) {
+    return this.prisma.comment.findMany({
+      where: { resourceId },
+      include: {
+        author: {
+          select: { firstName: true, lastName: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' }, // Newest comments first
+    });
+  }
+
+  async updateComment(commentId: string, userId: string, dto: UpdateCommentDto) {
+    const comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
+
+    if (!comment) throw new NotFoundException('Comment not found');
+
+    // Security: Only the author can edit
+    if (comment.authorId !== userId) {
+      throw new ForbiddenException('You can only edit your own comments');
+    }
+
+    return this.prisma.comment.update({
+      where: { id: commentId },
+      data: { content: dto.content },
+    });
+  }
+
+  async deleteComment(commentId: string, userId: string, userRole: string) {
+    const comment = await this.prisma.comment.findUnique({ where: { id: commentId } });
+
+    if (!comment) throw new NotFoundException('Comment not found');
+
+    // Security: Author can delete, OR an Admin can delete (for moderation)
+    if (comment.authorId !== userId && userRole !== 'ADMIN') {
+      throw new ForbiddenException('You do not have permission to delete this comment');
+    }
+
+    return this.prisma.comment.delete({ where: { id: commentId } });
   }
 }
