@@ -9,18 +9,19 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { LibraryModule } from './library/library.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SubjectModule } from './subject/subject.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'), // Points to your physical 'uploads' folder
-      serveRoot: '/uploads', // The URL prefix (e.g., localhost:3000/uploads/...)
+      rootPath: join(process.cwd(), 'uploads'), // Points to your physical 'uploads' folder
+      serveRoot: '/static', // The URL prefix (e.g., localhost:3000/uploads/...)
     }),ConfigModule.forRoot({ isGlobal: true }), 
     PrismaModule, 
     AuthModule, 
     NoticeModule, 
     ScheduleModule.forRoot(), 
-    LibraryModule
+    LibraryModule, SubjectModule
   ],
   controllers: [AppController],
 })

@@ -10,5 +10,8 @@
  */
 export type * from './models/User.js'
 export type * from './models/Notice.js'
+export type * from './models/Subject.js'
 export type * from './models/LibraryResource.js'
+export type * from './models/Comment.js'
+export type * from './models/Upvote.js'
 export type * from './commonInputTypes.js'

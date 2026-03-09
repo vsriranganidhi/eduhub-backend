@@ -16,3 +16,11 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const LibraryCategory = {
+  TEACHER_RESOURCE: 'TEACHER_RESOURCE',
+  STUDENT_RESOURCE: 'STUDENT_RESOURCE'
+} as const
+
+export type LibraryCategory = (typeof LibraryCategory)[keyof typeof LibraryCategory]

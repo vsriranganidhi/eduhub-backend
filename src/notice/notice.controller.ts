@@ -40,6 +40,12 @@ export class NoticeController {
     return this.noticeService.update(id, req.user.sub, dto);
   }
 
+  @Get('archived')
+  @UseGuards(AuthGuard)
+  findArchived() {
+    return this.noticeService.findArchived();
+  }
+
   @Delete(':id')
   @Roles(Role.TEACHER, Role.ADMIN) // Both can hit this route
   @UseGuards(AuthGuard, RolesGuard)

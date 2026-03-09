@@ -53,7 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Notice: 'Notice',
-  LibraryResource: 'LibraryResource'
+  Subject: 'Subject',
+  LibraryResource: 'LibraryResource',
+  Comment: 'Comment',
+  Upvote: 'Upvote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -90,15 +93,25 @@ export const NoticeScalarFieldEnum = {
   id: 'id',
   title: 'title',
   content: 'content',
-  subject: 'subject',
+  authorId: 'authorId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  subject: 'subject',
   expiresAt: 'expiresAt',
-  deletedAt: 'deletedAt',
-  authorId: 'authorId'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
+
+
+export const SubjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  category: 'category',
+  createdAt: 'createdAt'
+} as const
+
+export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
 
 
 export const LibraryResourceScalarFieldEnum = {
@@ -108,13 +121,33 @@ export const LibraryResourceScalarFieldEnum = {
   fileUrl: 'fileUrl',
   fileType: 'fileType',
   fileSize: 'fileSize',
-  subject: 'subject',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  uploaderId: 'uploaderId'
+  uploaderId: 'uploaderId',
+  subjectId: 'subjectId'
 } as const
 
 export type LibraryResourceScalarFieldEnum = (typeof LibraryResourceScalarFieldEnum)[keyof typeof LibraryResourceScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  resourceId: 'resourceId',
+  authorId: 'authorId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const UpvoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  resourceId: 'resourceId'
+} as const
+
+export type UpvoteScalarFieldEnum = (typeof UpvoteScalarFieldEnum)[keyof typeof UpvoteScalarFieldEnum]
 
 
 export const SortOrder = {

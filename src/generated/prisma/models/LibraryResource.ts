@@ -41,10 +41,10 @@ export type LibraryResourceMinAggregateOutputType = {
   fileUrl: string | null
   fileType: string | null
   fileSize: number | null
-  subject: string | null
   createdAt: Date | null
   updatedAt: Date | null
   uploaderId: string | null
+  subjectId: string | null
 }
 
 export type LibraryResourceMaxAggregateOutputType = {
@@ -54,10 +54,10 @@ export type LibraryResourceMaxAggregateOutputType = {
   fileUrl: string | null
   fileType: string | null
   fileSize: number | null
-  subject: string | null
   createdAt: Date | null
   updatedAt: Date | null
   uploaderId: string | null
+  subjectId: string | null
 }
 
 export type LibraryResourceCountAggregateOutputType = {
@@ -67,10 +67,10 @@ export type LibraryResourceCountAggregateOutputType = {
   fileUrl: number
   fileType: number
   fileSize: number
-  subject: number
   createdAt: number
   updatedAt: number
   uploaderId: number
+  subjectId: number
   _all: number
 }
 
@@ -90,10 +90,10 @@ export type LibraryResourceMinAggregateInputType = {
   fileUrl?: true
   fileType?: true
   fileSize?: true
-  subject?: true
   createdAt?: true
   updatedAt?: true
   uploaderId?: true
+  subjectId?: true
 }
 
 export type LibraryResourceMaxAggregateInputType = {
@@ -103,10 +103,10 @@ export type LibraryResourceMaxAggregateInputType = {
   fileUrl?: true
   fileType?: true
   fileSize?: true
-  subject?: true
   createdAt?: true
   updatedAt?: true
   uploaderId?: true
+  subjectId?: true
 }
 
 export type LibraryResourceCountAggregateInputType = {
@@ -116,10 +116,10 @@ export type LibraryResourceCountAggregateInputType = {
   fileUrl?: true
   fileType?: true
   fileSize?: true
-  subject?: true
   createdAt?: true
   updatedAt?: true
   uploaderId?: true
+  subjectId?: true
   _all?: true
 }
 
@@ -216,10 +216,10 @@ export type LibraryResourceGroupByOutputType = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt: Date
   updatedAt: Date
   uploaderId: string
+  subjectId: string
   _count: LibraryResourceCountAggregateOutputType | null
   _avg: LibraryResourceAvgAggregateOutputType | null
   _sum: LibraryResourceSumAggregateOutputType | null
@@ -252,11 +252,14 @@ export type LibraryResourceWhereInput = {
   fileUrl?: Prisma.StringFilter<"LibraryResource"> | string
   fileType?: Prisma.StringFilter<"LibraryResource"> | string
   fileSize?: Prisma.IntFilter<"LibraryResource"> | number
-  subject?: Prisma.StringFilter<"LibraryResource"> | string
   createdAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   uploaderId?: Prisma.StringFilter<"LibraryResource"> | string
+  subjectId?: Prisma.StringFilter<"LibraryResource"> | string
   uploader?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
+  comments?: Prisma.CommentListRelationFilter
+  upvotes?: Prisma.UpvoteListRelationFilter
 }
 
 export type LibraryResourceOrderByWithRelationInput = {
@@ -266,11 +269,14 @@ export type LibraryResourceOrderByWithRelationInput = {
   fileUrl?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   uploaderId?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
   uploader?: Prisma.UserOrderByWithRelationInput
+  subject?: Prisma.SubjectOrderByWithRelationInput
+  comments?: Prisma.CommentOrderByRelationAggregateInput
+  upvotes?: Prisma.UpvoteOrderByRelationAggregateInput
 }
 
 export type LibraryResourceWhereUniqueInput = Prisma.AtLeast<{
@@ -283,11 +289,14 @@ export type LibraryResourceWhereUniqueInput = Prisma.AtLeast<{
   fileUrl?: Prisma.StringFilter<"LibraryResource"> | string
   fileType?: Prisma.StringFilter<"LibraryResource"> | string
   fileSize?: Prisma.IntFilter<"LibraryResource"> | number
-  subject?: Prisma.StringFilter<"LibraryResource"> | string
   createdAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   uploaderId?: Prisma.StringFilter<"LibraryResource"> | string
+  subjectId?: Prisma.StringFilter<"LibraryResource"> | string
   uploader?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
+  comments?: Prisma.CommentListRelationFilter
+  upvotes?: Prisma.UpvoteListRelationFilter
 }, "id">
 
 export type LibraryResourceOrderByWithAggregationInput = {
@@ -297,10 +306,10 @@ export type LibraryResourceOrderByWithAggregationInput = {
   fileUrl?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   uploaderId?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
   _count?: Prisma.LibraryResourceCountOrderByAggregateInput
   _avg?: Prisma.LibraryResourceAvgOrderByAggregateInput
   _max?: Prisma.LibraryResourceMaxOrderByAggregateInput
@@ -318,10 +327,10 @@ export type LibraryResourceScalarWhereWithAggregatesInput = {
   fileUrl?: Prisma.StringWithAggregatesFilter<"LibraryResource"> | string
   fileType?: Prisma.StringWithAggregatesFilter<"LibraryResource"> | string
   fileSize?: Prisma.IntWithAggregatesFilter<"LibraryResource"> | number
-  subject?: Prisma.StringWithAggregatesFilter<"LibraryResource"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LibraryResource"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LibraryResource"> | Date | string
   uploaderId?: Prisma.StringWithAggregatesFilter<"LibraryResource"> | string
+  subjectId?: Prisma.StringWithAggregatesFilter<"LibraryResource"> | string
 }
 
 export type LibraryResourceCreateInput = {
@@ -331,10 +340,12 @@ export type LibraryResourceCreateInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
   uploader: Prisma.UserCreateNestedOneWithoutResourcesInput
+  subject: Prisma.SubjectCreateNestedOneWithoutResourcesInput
+  comments?: Prisma.CommentCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutResourceInput
 }
 
 export type LibraryResourceUncheckedCreateInput = {
@@ -344,10 +355,12 @@ export type LibraryResourceUncheckedCreateInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
   uploaderId: string
+  subjectId: string
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutResourceInput
 }
 
 export type LibraryResourceUpdateInput = {
@@ -357,10 +370,12 @@ export type LibraryResourceUpdateInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploader?: Prisma.UserUpdateOneRequiredWithoutResourcesNestedInput
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutResourcesNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutResourceNestedInput
 }
 
 export type LibraryResourceUncheckedUpdateInput = {
@@ -370,10 +385,12 @@ export type LibraryResourceUncheckedUpdateInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutResourceNestedInput
 }
 
 export type LibraryResourceCreateManyInput = {
@@ -383,10 +400,10 @@ export type LibraryResourceCreateManyInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
   uploaderId: string
+  subjectId: string
 }
 
 export type LibraryResourceUpdateManyMutationInput = {
@@ -396,7 +413,6 @@ export type LibraryResourceUpdateManyMutationInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -408,10 +424,10 @@ export type LibraryResourceUncheckedUpdateManyInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LibraryResourceListRelationFilter = {
@@ -431,10 +447,10 @@ export type LibraryResourceCountOrderByAggregateInput = {
   fileUrl?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   uploaderId?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
 export type LibraryResourceAvgOrderByAggregateInput = {
@@ -448,10 +464,10 @@ export type LibraryResourceMaxOrderByAggregateInput = {
   fileUrl?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   uploaderId?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
 export type LibraryResourceMinOrderByAggregateInput = {
@@ -461,14 +477,19 @@ export type LibraryResourceMinOrderByAggregateInput = {
   fileUrl?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   uploaderId?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
 export type LibraryResourceSumOrderByAggregateInput = {
   fileSize?: Prisma.SortOrder
+}
+
+export type LibraryResourceScalarRelationFilter = {
+  is?: Prisma.LibraryResourceWhereInput
+  isNot?: Prisma.LibraryResourceWhereInput
 }
 
 export type LibraryResourceCreateNestedManyWithoutUploaderInput = {
@@ -513,6 +534,48 @@ export type LibraryResourceUncheckedUpdateManyWithoutUploaderNestedInput = {
   deleteMany?: Prisma.LibraryResourceScalarWhereInput | Prisma.LibraryResourceScalarWhereInput[]
 }
 
+export type LibraryResourceCreateNestedManyWithoutSubjectInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput> | Prisma.LibraryResourceCreateWithoutSubjectInput[] | Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput | Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput[]
+  createMany?: Prisma.LibraryResourceCreateManySubjectInputEnvelope
+  connect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+}
+
+export type LibraryResourceUncheckedCreateNestedManyWithoutSubjectInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput> | Prisma.LibraryResourceCreateWithoutSubjectInput[] | Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput | Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput[]
+  createMany?: Prisma.LibraryResourceCreateManySubjectInputEnvelope
+  connect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+}
+
+export type LibraryResourceUpdateManyWithoutSubjectNestedInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput> | Prisma.LibraryResourceCreateWithoutSubjectInput[] | Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput | Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput[]
+  upsert?: Prisma.LibraryResourceUpsertWithWhereUniqueWithoutSubjectInput | Prisma.LibraryResourceUpsertWithWhereUniqueWithoutSubjectInput[]
+  createMany?: Prisma.LibraryResourceCreateManySubjectInputEnvelope
+  set?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  disconnect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  delete?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  connect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  update?: Prisma.LibraryResourceUpdateWithWhereUniqueWithoutSubjectInput | Prisma.LibraryResourceUpdateWithWhereUniqueWithoutSubjectInput[]
+  updateMany?: Prisma.LibraryResourceUpdateManyWithWhereWithoutSubjectInput | Prisma.LibraryResourceUpdateManyWithWhereWithoutSubjectInput[]
+  deleteMany?: Prisma.LibraryResourceScalarWhereInput | Prisma.LibraryResourceScalarWhereInput[]
+}
+
+export type LibraryResourceUncheckedUpdateManyWithoutSubjectNestedInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput> | Prisma.LibraryResourceCreateWithoutSubjectInput[] | Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput | Prisma.LibraryResourceCreateOrConnectWithoutSubjectInput[]
+  upsert?: Prisma.LibraryResourceUpsertWithWhereUniqueWithoutSubjectInput | Prisma.LibraryResourceUpsertWithWhereUniqueWithoutSubjectInput[]
+  createMany?: Prisma.LibraryResourceCreateManySubjectInputEnvelope
+  set?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  disconnect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  delete?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  connect?: Prisma.LibraryResourceWhereUniqueInput | Prisma.LibraryResourceWhereUniqueInput[]
+  update?: Prisma.LibraryResourceUpdateWithWhereUniqueWithoutSubjectInput | Prisma.LibraryResourceUpdateWithWhereUniqueWithoutSubjectInput[]
+  updateMany?: Prisma.LibraryResourceUpdateManyWithWhereWithoutSubjectInput | Prisma.LibraryResourceUpdateManyWithWhereWithoutSubjectInput[]
+  deleteMany?: Prisma.LibraryResourceScalarWhereInput | Prisma.LibraryResourceScalarWhereInput[]
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -525,6 +588,34 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type LibraryResourceCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutCommentsInput, Prisma.LibraryResourceUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.LibraryResourceWhereUniqueInput
+}
+
+export type LibraryResourceUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutCommentsInput, Prisma.LibraryResourceUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.LibraryResourceUpsertWithoutCommentsInput
+  connect?: Prisma.LibraryResourceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LibraryResourceUpdateToOneWithWhereWithoutCommentsInput, Prisma.LibraryResourceUpdateWithoutCommentsInput>, Prisma.LibraryResourceUncheckedUpdateWithoutCommentsInput>
+}
+
+export type LibraryResourceCreateNestedOneWithoutUpvotesInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedCreateWithoutUpvotesInput>
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutUpvotesInput
+  connect?: Prisma.LibraryResourceWhereUniqueInput
+}
+
+export type LibraryResourceUpdateOneRequiredWithoutUpvotesNestedInput = {
+  create?: Prisma.XOR<Prisma.LibraryResourceCreateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedCreateWithoutUpvotesInput>
+  connectOrCreate?: Prisma.LibraryResourceCreateOrConnectWithoutUpvotesInput
+  upsert?: Prisma.LibraryResourceUpsertWithoutUpvotesInput
+  connect?: Prisma.LibraryResourceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LibraryResourceUpdateToOneWithWhereWithoutUpvotesInput, Prisma.LibraryResourceUpdateWithoutUpvotesInput>, Prisma.LibraryResourceUncheckedUpdateWithoutUpvotesInput>
+}
+
 export type LibraryResourceCreateWithoutUploaderInput = {
   id?: string
   title: string
@@ -532,9 +623,11 @@ export type LibraryResourceCreateWithoutUploaderInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  subject: Prisma.SubjectCreateNestedOneWithoutResourcesInput
+  comments?: Prisma.CommentCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutResourceInput
 }
 
 export type LibraryResourceUncheckedCreateWithoutUploaderInput = {
@@ -544,9 +637,11 @@ export type LibraryResourceUncheckedCreateWithoutUploaderInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  subjectId: string
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutResourceInput
 }
 
 export type LibraryResourceCreateOrConnectWithoutUploaderInput = {
@@ -585,10 +680,208 @@ export type LibraryResourceScalarWhereInput = {
   fileUrl?: Prisma.StringFilter<"LibraryResource"> | string
   fileType?: Prisma.StringFilter<"LibraryResource"> | string
   fileSize?: Prisma.IntFilter<"LibraryResource"> | number
-  subject?: Prisma.StringFilter<"LibraryResource"> | string
   createdAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LibraryResource"> | Date | string
   uploaderId?: Prisma.StringFilter<"LibraryResource"> | string
+  subjectId?: Prisma.StringFilter<"LibraryResource"> | string
+}
+
+export type LibraryResourceCreateWithoutSubjectInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploader: Prisma.UserCreateNestedOneWithoutResourcesInput
+  comments?: Prisma.CommentCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceUncheckedCreateWithoutSubjectInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploaderId: string
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutResourceInput
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceCreateOrConnectWithoutSubjectInput = {
+  where: Prisma.LibraryResourceWhereUniqueInput
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput>
+}
+
+export type LibraryResourceCreateManySubjectInputEnvelope = {
+  data: Prisma.LibraryResourceCreateManySubjectInput | Prisma.LibraryResourceCreateManySubjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type LibraryResourceUpsertWithWhereUniqueWithoutSubjectInput = {
+  where: Prisma.LibraryResourceWhereUniqueInput
+  update: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutSubjectInput, Prisma.LibraryResourceUncheckedUpdateWithoutSubjectInput>
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutSubjectInput, Prisma.LibraryResourceUncheckedCreateWithoutSubjectInput>
+}
+
+export type LibraryResourceUpdateWithWhereUniqueWithoutSubjectInput = {
+  where: Prisma.LibraryResourceWhereUniqueInput
+  data: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutSubjectInput, Prisma.LibraryResourceUncheckedUpdateWithoutSubjectInput>
+}
+
+export type LibraryResourceUpdateManyWithWhereWithoutSubjectInput = {
+  where: Prisma.LibraryResourceScalarWhereInput
+  data: Prisma.XOR<Prisma.LibraryResourceUpdateManyMutationInput, Prisma.LibraryResourceUncheckedUpdateManyWithoutSubjectInput>
+}
+
+export type LibraryResourceCreateWithoutCommentsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploader: Prisma.UserCreateNestedOneWithoutResourcesInput
+  subject: Prisma.SubjectCreateNestedOneWithoutResourcesInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceUncheckedCreateWithoutCommentsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploaderId: string
+  subjectId: string
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.LibraryResourceWhereUniqueInput
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutCommentsInput, Prisma.LibraryResourceUncheckedCreateWithoutCommentsInput>
+}
+
+export type LibraryResourceUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutCommentsInput, Prisma.LibraryResourceUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutCommentsInput, Prisma.LibraryResourceUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.LibraryResourceWhereInput
+}
+
+export type LibraryResourceUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.LibraryResourceWhereInput
+  data: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutCommentsInput, Prisma.LibraryResourceUncheckedUpdateWithoutCommentsInput>
+}
+
+export type LibraryResourceUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploader?: Prisma.UserUpdateOneRequiredWithoutResourcesNestedInput
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutResourcesNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutResourceNestedInput
+}
+
+export type LibraryResourceUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutResourceNestedInput
+}
+
+export type LibraryResourceCreateWithoutUpvotesInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploader: Prisma.UserCreateNestedOneWithoutResourcesInput
+  subject: Prisma.SubjectCreateNestedOneWithoutResourcesInput
+  comments?: Prisma.CommentCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceUncheckedCreateWithoutUpvotesInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploaderId: string
+  subjectId: string
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutResourceInput
+}
+
+export type LibraryResourceCreateOrConnectWithoutUpvotesInput = {
+  where: Prisma.LibraryResourceWhereUniqueInput
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedCreateWithoutUpvotesInput>
+}
+
+export type LibraryResourceUpsertWithoutUpvotesInput = {
+  update: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedUpdateWithoutUpvotesInput>
+  create: Prisma.XOR<Prisma.LibraryResourceCreateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedCreateWithoutUpvotesInput>
+  where?: Prisma.LibraryResourceWhereInput
+}
+
+export type LibraryResourceUpdateToOneWithWhereWithoutUpvotesInput = {
+  where?: Prisma.LibraryResourceWhereInput
+  data: Prisma.XOR<Prisma.LibraryResourceUpdateWithoutUpvotesInput, Prisma.LibraryResourceUncheckedUpdateWithoutUpvotesInput>
+}
+
+export type LibraryResourceUpdateWithoutUpvotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploader?: Prisma.UserUpdateOneRequiredWithoutResourcesNestedInput
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutResourcesNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutResourceNestedInput
+}
+
+export type LibraryResourceUncheckedUpdateWithoutUpvotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutResourceNestedInput
 }
 
 export type LibraryResourceCreateManyUploaderInput = {
@@ -598,9 +891,9 @@ export type LibraryResourceCreateManyUploaderInput = {
   fileUrl: string
   fileType: string
   fileSize: number
-  subject: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  subjectId: string
 }
 
 export type LibraryResourceUpdateWithoutUploaderInput = {
@@ -610,9 +903,11 @@ export type LibraryResourceUpdateWithoutUploaderInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutResourcesNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutResourceNestedInput
 }
 
 export type LibraryResourceUncheckedUpdateWithoutUploaderInput = {
@@ -622,9 +917,11 @@ export type LibraryResourceUncheckedUpdateWithoutUploaderInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutResourceNestedInput
 }
 
 export type LibraryResourceUncheckedUpdateManyWithoutUploaderInput = {
@@ -634,11 +931,101 @@ export type LibraryResourceUncheckedUpdateManyWithoutUploaderInput = {
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type LibraryResourceCreateManySubjectInput = {
+  id?: string
+  title: string
+  description?: string | null
+  fileUrl: string
+  fileType: string
+  fileSize: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploaderId: string
+}
+
+export type LibraryResourceUpdateWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploader?: Prisma.UserUpdateOneRequiredWithoutResourcesNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutResourceNestedInput
+}
+
+export type LibraryResourceUncheckedUpdateWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutResourceNestedInput
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutResourceNestedInput
+}
+
+export type LibraryResourceUncheckedUpdateManyWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+
+/**
+ * Count Type LibraryResourceCountOutputType
+ */
+
+export type LibraryResourceCountOutputType = {
+  comments: number
+  upvotes: number
+}
+
+export type LibraryResourceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  comments?: boolean | LibraryResourceCountOutputTypeCountCommentsArgs
+  upvotes?: boolean | LibraryResourceCountOutputTypeCountUpvotesArgs
+}
+
+/**
+ * LibraryResourceCountOutputType without action
+ */
+export type LibraryResourceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LibraryResourceCountOutputType
+   */
+  select?: Prisma.LibraryResourceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LibraryResourceCountOutputType without action
+ */
+export type LibraryResourceCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
+}
+
+/**
+ * LibraryResourceCountOutputType without action
+ */
+export type LibraryResourceCountOutputTypeCountUpvotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UpvoteWhereInput
+}
 
 
 export type LibraryResourceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -648,11 +1035,15 @@ export type LibraryResourceSelect<ExtArgs extends runtime.Types.Extensions.Inter
   fileUrl?: boolean
   fileType?: boolean
   fileSize?: boolean
-  subject?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   uploaderId?: boolean
+  subjectId?: boolean
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  comments?: boolean | Prisma.LibraryResource$commentsArgs<ExtArgs>
+  upvotes?: boolean | Prisma.LibraryResource$upvotesArgs<ExtArgs>
+  _count?: boolean | Prisma.LibraryResourceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["libraryResource"]>
 
 export type LibraryResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -662,11 +1053,12 @@ export type LibraryResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   fileUrl?: boolean
   fileType?: boolean
   fileSize?: boolean
-  subject?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   uploaderId?: boolean
+  subjectId?: boolean
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["libraryResource"]>
 
 export type LibraryResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -676,11 +1068,12 @@ export type LibraryResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   fileUrl?: boolean
   fileType?: boolean
   fileSize?: boolean
-  subject?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   uploaderId?: boolean
+  subjectId?: boolean
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["libraryResource"]>
 
 export type LibraryResourceSelectScalar = {
@@ -690,27 +1083,36 @@ export type LibraryResourceSelectScalar = {
   fileUrl?: boolean
   fileType?: boolean
   fileSize?: boolean
-  subject?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   uploaderId?: boolean
+  subjectId?: boolean
 }
 
-export type LibraryResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fileUrl" | "fileType" | "fileSize" | "subject" | "createdAt" | "updatedAt" | "uploaderId", ExtArgs["result"]["libraryResource"]>
+export type LibraryResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fileUrl" | "fileType" | "fileSize" | "createdAt" | "updatedAt" | "uploaderId" | "subjectId", ExtArgs["result"]["libraryResource"]>
 export type LibraryResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  comments?: boolean | Prisma.LibraryResource$commentsArgs<ExtArgs>
+  upvotes?: boolean | Prisma.LibraryResource$upvotesArgs<ExtArgs>
+  _count?: boolean | Prisma.LibraryResourceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LibraryResourceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }
 export type LibraryResourceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploader?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }
 
 export type $LibraryResourcePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LibraryResource"
   objects: {
     uploader: Prisma.$UserPayload<ExtArgs>
+    subject: Prisma.$SubjectPayload<ExtArgs>
+    comments: Prisma.$CommentPayload<ExtArgs>[]
+    upvotes: Prisma.$UpvotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -719,10 +1121,10 @@ export type $LibraryResourcePayload<ExtArgs extends runtime.Types.Extensions.Int
     fileUrl: string
     fileType: string
     fileSize: number
-    subject: string
     createdAt: Date
     updatedAt: Date
     uploaderId: string
+    subjectId: string
   }, ExtArgs["result"]["libraryResource"]>
   composites: {}
 }
@@ -1118,6 +1520,9 @@ readonly fields: LibraryResourceFieldRefs;
 export interface Prisma__LibraryResourceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   uploader<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  subject<T extends Prisma.SubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  comments<T extends Prisma.LibraryResource$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LibraryResource$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  upvotes<T extends Prisma.LibraryResource$upvotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LibraryResource$upvotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UpvotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1153,10 +1558,10 @@ export interface LibraryResourceFieldRefs {
   readonly fileUrl: Prisma.FieldRef<"LibraryResource", 'String'>
   readonly fileType: Prisma.FieldRef<"LibraryResource", 'String'>
   readonly fileSize: Prisma.FieldRef<"LibraryResource", 'Int'>
-  readonly subject: Prisma.FieldRef<"LibraryResource", 'String'>
   readonly createdAt: Prisma.FieldRef<"LibraryResource", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LibraryResource", 'DateTime'>
   readonly uploaderId: Prisma.FieldRef<"LibraryResource", 'String'>
+  readonly subjectId: Prisma.FieldRef<"LibraryResource", 'String'>
 }
     
 
@@ -1550,6 +1955,54 @@ export type LibraryResourceDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many LibraryResources to delete.
    */
   limit?: number
+}
+
+/**
+ * LibraryResource.comments
+ */
+export type LibraryResource$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * LibraryResource.upvotes
+ */
+export type LibraryResource$upvotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Upvote
+   */
+  select?: Prisma.UpvoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Upvote
+   */
+  omit?: Prisma.UpvoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UpvoteInclude<ExtArgs> | null
+  where?: Prisma.UpvoteWhereInput
+  orderBy?: Prisma.UpvoteOrderByWithRelationInput | Prisma.UpvoteOrderByWithRelationInput[]
+  cursor?: Prisma.UpvoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UpvoteScalarFieldEnum | Prisma.UpvoteScalarFieldEnum[]
 }
 
 /**

@@ -28,36 +28,36 @@ export type NoticeMinAggregateOutputType = {
   id: string | null
   title: string | null
   content: string | null
-  subject: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
-  expiresAt: Date | null
-  deletedAt: Date | null
   authorId: string | null
+  createdAt: Date | null
+  subject: string | null
+  expiresAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type NoticeMaxAggregateOutputType = {
   id: string | null
   title: string | null
   content: string | null
-  subject: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
-  expiresAt: Date | null
-  deletedAt: Date | null
   authorId: string | null
+  createdAt: Date | null
+  subject: string | null
+  expiresAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type NoticeCountAggregateOutputType = {
   id: number
   title: number
   content: number
-  subject: number
-  createdAt: number
-  updatedAt: number
-  expiresAt: number
-  deletedAt: number
   authorId: number
+  createdAt: number
+  subject: number
+  expiresAt: number
+  updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -66,36 +66,36 @@ export type NoticeMinAggregateInputType = {
   id?: true
   title?: true
   content?: true
-  subject?: true
-  createdAt?: true
-  updatedAt?: true
-  expiresAt?: true
-  deletedAt?: true
   authorId?: true
+  createdAt?: true
+  subject?: true
+  expiresAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type NoticeMaxAggregateInputType = {
   id?: true
   title?: true
   content?: true
-  subject?: true
-  createdAt?: true
-  updatedAt?: true
-  expiresAt?: true
-  deletedAt?: true
   authorId?: true
+  createdAt?: true
+  subject?: true
+  expiresAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type NoticeCountAggregateInputType = {
   id?: true
   title?: true
   content?: true
-  subject?: true
-  createdAt?: true
-  updatedAt?: true
-  expiresAt?: true
-  deletedAt?: true
   authorId?: true
+  createdAt?: true
+  subject?: true
+  expiresAt?: true
+  updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -175,12 +175,12 @@ export type NoticeGroupByOutputType = {
   id: string
   title: string
   content: string
-  subject: string
-  createdAt: Date
-  updatedAt: Date
-  expiresAt: Date | null
-  deletedAt: Date | null
   authorId: string
+  createdAt: Date
+  subject: string
+  expiresAt: Date | null
+  updatedAt: Date
+  deletedAt: Date | null
   _count: NoticeCountAggregateOutputType | null
   _min: NoticeMinAggregateOutputType | null
   _max: NoticeMaxAggregateOutputType | null
@@ -208,12 +208,12 @@ export type NoticeWhereInput = {
   id?: Prisma.StringFilter<"Notice"> | string
   title?: Prisma.StringFilter<"Notice"> | string
   content?: Prisma.StringFilter<"Notice"> | string
-  subject?: Prisma.StringFilter<"Notice"> | string
-  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
-  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   authorId?: Prisma.StringFilter<"Notice"> | string
+  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  subject?: Prisma.StringFilter<"Notice"> | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -221,12 +221,12 @@ export type NoticeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -237,12 +237,12 @@ export type NoticeWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.NoticeWhereInput | Prisma.NoticeWhereInput[]
   title?: Prisma.StringFilter<"Notice"> | string
   content?: Prisma.StringFilter<"Notice"> | string
-  subject?: Prisma.StringFilter<"Notice"> | string
-  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
-  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   authorId?: Prisma.StringFilter<"Notice"> | string
+  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  subject?: Prisma.StringFilter<"Notice"> | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -250,12 +250,12 @@ export type NoticeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.NoticeCountOrderByAggregateInput
   _max?: Prisma.NoticeMaxOrderByAggregateInput
   _min?: Prisma.NoticeMinOrderByAggregateInput
@@ -268,22 +268,22 @@ export type NoticeScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Notice"> | string
   title?: Prisma.StringWithAggregatesFilter<"Notice"> | string
   content?: Prisma.StringWithAggregatesFilter<"Notice"> | string
-  subject?: Prisma.StringWithAggregatesFilter<"Notice"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
-  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
   authorId?: Prisma.StringWithAggregatesFilter<"Notice"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
+  subject?: Prisma.StringWithAggregatesFilter<"Notice"> | string
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
 }
 
 export type NoticeCreateInput = {
   id?: string
   title: string
   content: string
-  subject?: string
   createdAt?: Date | string
-  updatedAt?: Date | string
+  subject?: string
   expiresAt?: Date | string | null
+  updatedAt?: Date | string
   deletedAt?: Date | string | null
   author: Prisma.UserCreateNestedOneWithoutNoticesInput
 }
@@ -292,22 +292,22 @@ export type NoticeUncheckedCreateInput = {
   id?: string
   title: string
   content: string
-  subject?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  expiresAt?: Date | string | null
-  deletedAt?: Date | string | null
   authorId: string
+  createdAt?: Date | string
+  subject?: string
+  expiresAt?: Date | string | null
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type NoticeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   author?: Prisma.UserUpdateOneRequiredWithoutNoticesNestedInput
 }
@@ -316,34 +316,34 @@ export type NoticeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type NoticeCreateManyInput = {
   id?: string
   title: string
   content: string
-  subject?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  expiresAt?: Date | string | null
-  deletedAt?: Date | string | null
   authorId: string
+  createdAt?: Date | string
+  subject?: string
+  expiresAt?: Date | string | null
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type NoticeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -351,12 +351,12 @@ export type NoticeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type NoticeListRelationFilter = {
@@ -373,36 +373,36 @@ export type NoticeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  deletedAt?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type NoticeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  deletedAt?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type NoticeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  subject?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  deletedAt?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type NoticeCreateNestedManyWithoutAuthorInput = {
@@ -455,10 +455,10 @@ export type NoticeCreateWithoutAuthorInput = {
   id?: string
   title: string
   content: string
-  subject?: string
   createdAt?: Date | string
-  updatedAt?: Date | string
+  subject?: string
   expiresAt?: Date | string | null
+  updatedAt?: Date | string
   deletedAt?: Date | string | null
 }
 
@@ -466,10 +466,10 @@ export type NoticeUncheckedCreateWithoutAuthorInput = {
   id?: string
   title: string
   content: string
-  subject?: string
   createdAt?: Date | string
-  updatedAt?: Date | string
+  subject?: string
   expiresAt?: Date | string | null
+  updatedAt?: Date | string
   deletedAt?: Date | string | null
 }
 
@@ -506,22 +506,22 @@ export type NoticeScalarWhereInput = {
   id?: Prisma.StringFilter<"Notice"> | string
   title?: Prisma.StringFilter<"Notice"> | string
   content?: Prisma.StringFilter<"Notice"> | string
-  subject?: Prisma.StringFilter<"Notice"> | string
-  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
-  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   authorId?: Prisma.StringFilter<"Notice"> | string
+  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  subject?: Prisma.StringFilter<"Notice"> | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
 }
 
 export type NoticeCreateManyAuthorInput = {
   id?: string
   title: string
   content: string
-  subject?: string
   createdAt?: Date | string
-  updatedAt?: Date | string
+  subject?: string
   expiresAt?: Date | string | null
+  updatedAt?: Date | string
   deletedAt?: Date | string | null
 }
 
@@ -529,10 +529,10 @@ export type NoticeUpdateWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -540,10 +540,10 @@ export type NoticeUncheckedUpdateWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -551,10 +551,10 @@ export type NoticeUncheckedUpdateManyWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  subject?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -564,12 +564,12 @@ export type NoticeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   title?: boolean
   content?: boolean
-  subject?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  expiresAt?: boolean
-  deletedAt?: boolean
   authorId?: boolean
+  createdAt?: boolean
+  subject?: boolean
+  expiresAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
@@ -577,12 +577,12 @@ export type NoticeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   title?: boolean
   content?: boolean
-  subject?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  expiresAt?: boolean
-  deletedAt?: boolean
   authorId?: boolean
+  createdAt?: boolean
+  subject?: boolean
+  expiresAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
@@ -590,12 +590,12 @@ export type NoticeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   title?: boolean
   content?: boolean
-  subject?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  expiresAt?: boolean
-  deletedAt?: boolean
   authorId?: boolean
+  createdAt?: boolean
+  subject?: boolean
+  expiresAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
@@ -603,15 +603,15 @@ export type NoticeSelectScalar = {
   id?: boolean
   title?: boolean
   content?: boolean
-  subject?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  expiresAt?: boolean
-  deletedAt?: boolean
   authorId?: boolean
+  createdAt?: boolean
+  subject?: boolean
+  expiresAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type NoticeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "subject" | "createdAt" | "updatedAt" | "expiresAt" | "deletedAt" | "authorId", ExtArgs["result"]["notice"]>
+export type NoticeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "authorId" | "createdAt" | "subject" | "expiresAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["notice"]>
 export type NoticeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -631,12 +631,12 @@ export type $NoticePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     title: string
     content: string
-    subject: string
-    createdAt: Date
-    updatedAt: Date
-    expiresAt: Date | null
-    deletedAt: Date | null
     authorId: string
+    createdAt: Date
+    subject: string
+    expiresAt: Date | null
+    updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["notice"]>
   composites: {}
 }
@@ -1064,12 +1064,12 @@ export interface NoticeFieldRefs {
   readonly id: Prisma.FieldRef<"Notice", 'String'>
   readonly title: Prisma.FieldRef<"Notice", 'String'>
   readonly content: Prisma.FieldRef<"Notice", 'String'>
-  readonly subject: Prisma.FieldRef<"Notice", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Notice", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Notice", 'DateTime'>
-  readonly expiresAt: Prisma.FieldRef<"Notice", 'DateTime'>
-  readonly deletedAt: Prisma.FieldRef<"Notice", 'DateTime'>
   readonly authorId: Prisma.FieldRef<"Notice", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Notice", 'DateTime'>
+  readonly subject: Prisma.FieldRef<"Notice", 'String'>
+  readonly expiresAt: Prisma.FieldRef<"Notice", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Notice", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Notice", 'DateTime'>
 }
     
 

@@ -24,6 +24,8 @@ export class NoticeService {
     return this.prisma.notice.findMany({
       where: {
         AND: [
+          // Only fetch active notices (not deleted)
+          { deletedAt: null },
           // 1. Search in Title or Content
           search ? {
             OR: [
@@ -101,18 +103,20 @@ export class NoticeService {
     });
   }
 
-  async findArchived(userId: string, userRole: string) {
-
+  async findArchived() {
     return this.prisma.notice.findMany({
       where: {
         OR: [
           { deletedAt: { not: null } }, // Manually deleted
           { expiresAt: { lt: new Date() } } // Naturally expired
         ],
-        // Security: Teachers only see their own archives, Admins see all
-        ...(userRole !== 'ADMIN' ? { authorId: userId } : {})
       },
-      orderBy: { updatedAt: 'desc' }
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        author: {
+          select: { firstName: true, lastName: true },
+        },
+      },
     });
   }
 

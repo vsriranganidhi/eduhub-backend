@@ -1,17 +1,101 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id        String            @id @default(uuid())
+  email     String            @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role              @default(STUDENT)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  notices   Notice[]
+  resources LibraryResource[]
+  comments  Comment[]
+  upvotes   Upvote[]
+}
+
+model Notice {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  authorId  String
+  createdAt DateTime  @default(now())
+  subject   String    @default("General")
+  expiresAt DateTime?
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  author    User      @relation(fields: [authorId], references: [id])
+}
+
+model Subject {
+  id        String            @id @default(uuid())
+  name      String            @unique // e.g., "Operating Systems"
+  category  LibraryCategory // this determines if it's a teacher or student resource
+  resources LibraryResource[]
+  createdAt DateTime          @default(now())
+
+  // Ensure a name is unique per category (so you can have "Math" in both)
+  @@unique([name, category])
+}
+
+model LibraryResource {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  fileUrl     String
+  fileType    String
+  fileSize    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  uploaderId  String
+  uploader    User     @relation(fields: [uploaderId], references: [id])
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  comments    Comment[]
+  upvotes     Upvote[]        // Only used/displayed for STUDENT_RESOURCE in frontend
+}
+
+model Comment {
+  id         String          @id @default(uuid())
+  content    String
+  
+  // Relations
+  resourceId String
+  resource   LibraryResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  
+  authorId   String
+  author     User            @relation(fields: [authorId], references: [id])
+
+  // --- Threaded Replies Logic ---
+  //parentId   String?         // If null, it's a top-level comment
+  //parent     Comment?        @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  //replies    Comment[]       @relation("CommentReplies")
+  // ------------------------------
+
+  createdAt  DateTime        @default(now())
+}
+
+model Upvote {
+  id         String          @id @default(uuid())
+  
+  // Relations
+  userId     String
+  user       User            @relation(fields: [userId], references: [id])
+  
+  resourceId String
+  resource   LibraryResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  // Ensure a user can only upvote a specific resource ONCE
+  @@unique([userId, resourceId]) 
 }
 
 enum Role {
@@ -20,48 +104,7 @@ enum Role {
   ADMIN
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
-  role      Role     @default(STUDENT)
-  
-  // Timestamps for audit trails
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relation: A teacher can authored many notices
-  notices   Notice[] 
-  resources LibraryResource[]
-}
-
-model Notice {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  subject   String    @default("General")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  expiresAt DateTime? 
-  deletedAt DateTime? // NEW: If this has a date, it's in the "Recycle Bin"
-  
-  authorId  String
-  author    User      @relation(fields: [authorId], references: [id])
-}
-
-model LibraryResource {
-  id           String   @id @default(uuid())
-  title        String
-  description  String?
-  fileUrl      String   // Path to the file
-  fileType     String   // e.g., "pdf", "docx", "image"
-  fileSize     Int      // In bytes
-  subject      String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  uploaderId   String
-  uploader     User     @relation(fields: [uploaderId], references: [id])
+enum LibraryCategory {
+  TEACHER_RESOURCE
+  STUDENT_RESOURCE
 }
