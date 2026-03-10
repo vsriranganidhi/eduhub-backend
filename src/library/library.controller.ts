@@ -126,4 +126,10 @@ export class LibraryController {
   ) {
     return this.libraryService.deleteComment(commentId, req.user.sub, req.user.role);
   }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  async remove(@Param('id') id: string, @Req() req: any) {
+    return this.libraryService.removeResource(id, req.user.sub, req.user.role);
+  }
 }

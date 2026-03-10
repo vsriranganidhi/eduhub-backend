@@ -4,6 +4,8 @@ import { CreateResourceDto } from './dto/create-resource.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { ForbiddenException } from "@nestjs/common";
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import * as fs from 'fs'; // Node.js File System
+import { join } from 'path';
 
 @Injectable()
 export class LibraryService {
@@ -216,5 +218,31 @@ export class LibraryService {
     }
 
     return this.prisma.comment.delete({ where: { id: commentId } });
+  }
+
+  async removeResource(id: string, userId: string, userRole: string) {
+    const resource = await this.prisma.libraryResource.findUnique({
+      where: { id },
+    });
+
+    if (!resource) throw new NotFoundException('Resource not found');
+
+    // Security: Only the uploader or an Admin can delete the file
+    if (resource.uploaderId !== userId && userRole !== 'ADMIN') {
+      throw new ForbiddenException('You do not have permission to delete this file');
+    }
+
+    // 1. Delete the Physical File from the 'uploads' folder
+    try {
+      const filePath = join(process.cwd(), resource.fileUrl);
+      await fs.promises.unlink(filePath);
+    } catch (err) {
+      console.error('File deletion failed:', err);
+      throw new BadRequestException('Failed to delete file. Operation aborted.');
+    }
+
+    // 2. Delete the Database Row
+    // (Prisma will automatically delete comments/upvotes if you set up 'onDelete: Cascade' in schema)
+    return this.prisma.libraryResource.delete({ where: { id } });
   }
 }
