@@ -233,7 +233,7 @@ export class LibraryService {
     }
 
     // 1. Delete the Physical File from the 'uploads' folder
-    try {
+    try { 
       const filePath = join(process.cwd(), resource.fileUrl);
       await fs.promises.unlink(filePath);
     } catch (err) {

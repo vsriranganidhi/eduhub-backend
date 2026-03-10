@@ -12,7 +12,7 @@ import { Query } from '@nestjs/common';
 @Controller('subjects')
 @UseGuards(AuthGuard, RolesGuard)
 export class SubjectController {
-  constructor(private readonly subjectService: SubjectService) {}
+  constructor(private readonly subjectService: SubjectService) { }
 
   @Post()
   @Roles(Role.TEACHER, Role.ADMIN, Role.STUDENT)
@@ -20,7 +20,7 @@ export class SubjectController {
   create(@Body() createSubjectDto: CreateSubjectDto, @Req() req: any) {
     return this.subjectService.create(createSubjectDto, req.user);
   }
-  
+
   @Get() // Everyone can see the list of subjects
   @UseGuards(AuthGuard)
   findAll(@Query('category') category?: LibraryCategory) {
@@ -36,8 +36,8 @@ export class SubjectController {
 
   @Delete(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  // We removed @Roles here because the logic is now handled in the Service
+  // We allow all roles here; the Service will check if the Role matches the Subject Category
   remove(@Param('id') id: string, @Req() req: any) {
-    return this.subjectService.remove(id, req.user);
+    return this.subjectService.remove(id, req.user.role);
   }
 }

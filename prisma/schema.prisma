@@ -59,7 +59,7 @@ model LibraryResource {
   uploaderId  String
   uploader    User     @relation(fields: [uploaderId], references: [id])
   subjectId   String
-  subject     Subject  @relation(fields: [subjectId], references: [id])
+  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   comments    Comment[]
   upvotes     Upvote[]        // Only used/displayed for STUDENT_RESOURCE in frontend
 }

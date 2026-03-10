@@ -4,17 +4,19 @@ import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { LibraryCategory } from '../generated/prisma/client';
+import * as fs from 'fs'; // Node.js File System
+import { join } from 'path';
 
 @Injectable()
 export class SubjectService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(dto: CreateSubjectDto, user: { id: string, role: string }) {
     // Role-based validation for subject creation
     if (user.role === 'TEACHER' && dto.category !== 'TEACHER_RESOURCE') {
       throw new ForbiddenException('Teachers can only create Teacher Resource subjects');
     }
-    
+
     if (user.role === 'STUDENT' && dto.category !== 'STUDENT_RESOURCE') {
       throw new ForbiddenException('Students can only create Student Resource subjects');
     }
@@ -48,36 +50,6 @@ export class SubjectService {
     });
   }
 
-  async remove(id: string, user: { id: string, role: string }) {
-    const subject = await this.prisma.subject.findUnique({ 
-      where: { id },
-      include: { resources: true } 
-    });
-
-    if (!subject) throw new NotFoundException('Subject not found');
-
-    // 1. Admin Rule (God Mode)
-    if (user.role === 'ADMIN') {
-      return this.prisma.subject.delete({ where: { id } });
-    }
-
-    // 2. Cross-Category Rule
-    if (user.role === 'TEACHER' && subject.category !== 'TEACHER_RESOURCE') {
-      throw new ForbiddenException('Teachers can only manage Teacher Library subjects');
-    }
-
-    if (user.role === 'STUDENT' && subject.category !== 'STUDENT_RESOURCE') {
-      throw new ForbiddenException('Students can only manage Student Library subjects');
-    }
-
-    // 3. Prevent deletion if files exist (Safety Rule)
-    if (subject.resources.length > 0) {
-      throw new BadRequestException('Cannot delete subject that still contains files!');
-    }
-
-    return this.prisma.subject.delete({ where: { id } });
-  }
-
   async update(id: string, dto: UpdateSubjectDto, user: { id: string, role: string }) {
     const subject = await this.prisma.subject.findUnique({ where: { id } });
 
@@ -88,7 +60,7 @@ export class SubjectService {
       // Check if new name already exists (excluding current subject)
       if (dto.name) {
         const existing = await this.prisma.subject.findFirst({
-          where: { 
+          where: {
             name: { equals: dto.name, mode: 'insensitive' },
             id: { not: id } // Exclude current subject
           },
@@ -117,7 +89,7 @@ export class SubjectService {
     // 3. Check if new name already exists (excluding current subject)
     if (dto.name) {
       const existing = await this.prisma.subject.findFirst({
-        where: { 
+        where: {
           name: { equals: dto.name, mode: 'insensitive' },
           id: { not: id } // Exclude current subject
         },
@@ -131,6 +103,46 @@ export class SubjectService {
     return this.prisma.subject.update({
       where: { id },
       data: dto,
+    });
+  }
+
+  async remove(id: string, userRole: string) {
+    // 1. Fetch the subject and its resources
+    const subject = await this.prisma.subject.findUnique({
+      where: { id },
+      include: { resources: true },
+    });
+
+    if (!subject) throw new NotFoundException('Subject not found');
+
+    // 2. The "Role vs. Category" Rule
+    // Admins can delete anything. Others must match their world.
+    if (userRole !== 'ADMIN') {
+      if (userRole === 'STUDENT' && subject.category !== LibraryCategory.STUDENT_RESOURCE) {
+        throw new ForbiddenException('Students can only delete subjects in the Student Library');
+      }
+      if (userRole === 'TEACHER' && subject.category !== LibraryCategory.TEACHER_RESOURCE) {
+        throw new ForbiddenException('Teachers can only delete subjects in the Teacher Library');
+      }
+    }
+
+    // 3. Physical File Cleanup (Mass Delete)
+    // We must delete the files from the disk before the DB rows disappear
+    for (const resource of subject.resources) {
+      try {
+        const filePath = join(process.cwd(), resource.fileUrl);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (err) {
+        console.error(`Cleanup failed for: ${resource.fileUrl}`, err);
+      }
+    }
+
+    // 4. Database Deletion
+    // Cascade delete in Prisma handles the Resources, Comments, and Upvotes
+    return this.prisma.subject.delete({
+      where: { id },
     });
   }
 }
