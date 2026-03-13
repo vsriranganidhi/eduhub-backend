@@ -5,7 +5,7 @@ import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { AuthGuard } from '../auth/auth.gaurd';
 import { RolesGuard } from '../auth/roles.gaurd';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { Role, LibraryCategory } from '../generated/prisma/client';
+import { Role, SubjectCategory } from '../generated/prisma/client';
 import { Req } from '@nestjs/common';
 import { Query } from '@nestjs/common';
 
@@ -23,7 +23,7 @@ export class SubjectController {
 
   @Get() // Everyone can see the list of subjects
   @UseGuards(AuthGuard)
-  findAll(@Query('category') category?: LibraryCategory) {
+  findAll(@Query('category') category?: SubjectCategory) {
     return this.subjectService.findAll(category);
   }
 

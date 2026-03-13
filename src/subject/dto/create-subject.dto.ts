@@ -6,7 +6,7 @@ export class CreateSubjectDto {
   @MinLength(2)
   name: string; // e.g., "Data Structures"
   
-  @IsEnum(['TEACHER_RESOURCE', 'STUDENT_RESOURCE'])
+  @IsEnum(['TEACHER_RESOURCE', 'STUDENT_RESOURCE', 'ASSIGNMENT'])
   @IsNotEmpty()
-  category: 'TEACHER_RESOURCE' | 'STUDENT_RESOURCE'; // e.g., "TEACHER_RESOURCE"
+  category: 'TEACHER_RESOURCE' | 'STUDENT_RESOURCE' | 'ASSIGNMENT'; // e.g., "TEACHER_RESOURCE"
 }

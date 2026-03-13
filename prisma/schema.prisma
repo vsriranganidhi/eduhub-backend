@@ -39,7 +39,7 @@ model Notice {
 model Subject {
   id        String            @id @default(uuid())
   name      String            @unique // e.g., "Operating Systems"
-  category  LibraryCategory // this determines if it's a teacher or student resource
+  category  SubjectCategory // this determines if it's a teacher or student resource
   resources LibraryResource[]
   createdAt DateTime          @default(now())
 
@@ -104,7 +104,8 @@ enum Role {
   ADMIN
 }
 
-enum LibraryCategory {
-  TEACHER_RESOURCE
-  STUDENT_RESOURCE
+enum SubjectCategory {
+  TEACHER_RESOURCE // For Library
+  STUDENT_RESOURCE // For Library
+  ASSIGNMENT       // For the Assignments Module
 }

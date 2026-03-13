@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
-import { LibraryCategory } from '../generated/prisma/client';
+import { SubjectCategory } from '../generated/prisma/client';
 import * as fs from 'fs'; // Node.js File System
 import { join } from 'path';
 
@@ -13,21 +13,24 @@ export class SubjectService {
 
   async create(dto: CreateSubjectDto, user: { id: string, role: string }) {
     // Role-based validation for subject creation
-    if (user.role === 'TEACHER' && dto.category !== 'TEACHER_RESOURCE') {
-      throw new ForbiddenException('Teachers can only create Teacher Resource subjects');
+    if (user.role === 'TEACHER' && !(dto.category == 'TEACHER_RESOURCE' || dto.category == 'ASSIGNMENT')) {
+      throw new ForbiddenException('Teachers can only create Teacher Resource subjects or Assignments');
     }
 
     if (user.role === 'STUDENT' && dto.category !== 'STUDENT_RESOURCE') {
       throw new ForbiddenException('Students can only create Student Resource subjects');
     }
 
-    // Check if subject already exists (case-insensitive)
+    // Check if subject already exists in the same category (case-insensitive)
     const existing = await this.prisma.subject.findFirst({
-      where: { name: { equals: dto.name, mode: 'insensitive' } },
+      where: { 
+        name: { equals: dto.name, mode: 'insensitive' },
+        category: dto.category 
+      },
     });
 
     if (existing) {
-      throw new ConflictException('Subject already exists');
+      throw new ConflictException(`Subject with this name already exists in ${dto.category}`);
     }
 
     return this.prisma.subject.create({
@@ -35,7 +38,7 @@ export class SubjectService {
     });
   }
 
-  async findAll(category?: LibraryCategory) {
+  async findAll(category?: SubjectCategory) {
     return this.prisma.subject.findMany({
       where: {
         // If a category is provided, filter by it. Otherwise, return all.
@@ -118,10 +121,10 @@ export class SubjectService {
     // 2. The "Role vs. Category" Rule
     // Admins can delete anything. Others must match their world.
     if (userRole !== 'ADMIN') {
-      if (userRole === 'STUDENT' && subject.category !== LibraryCategory.STUDENT_RESOURCE) {
+      if (userRole === 'STUDENT' && subject.category !== SubjectCategory.STUDENT_RESOURCE) {
         throw new ForbiddenException('Students can only delete subjects in the Student Library');
       }
-      if (userRole === 'TEACHER' && subject.category !== LibraryCategory.TEACHER_RESOURCE) {
+      if (userRole === 'TEACHER' && subject.category !== SubjectCategory.TEACHER_RESOURCE) {
         throw new ForbiddenException('Teachers can only delete subjects in the Teacher Library');
       }
     }
