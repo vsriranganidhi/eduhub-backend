@@ -21,6 +21,8 @@ model User {
   resources LibraryResource[]
   comments  Comment[]
   upvotes   Upvote[]
+  createdAssignments Assignment[] @relation("CreatedAssignments")
+  submissions        Submission[] @relation("UserSubmissions")
 }
 
 model Notice {
@@ -41,6 +43,7 @@ model Subject {
   name      String            @unique // e.g., "Operating Systems"
   category  SubjectCategory // this determines if it's a teacher or student resource
   resources LibraryResource[]
+  assignments Assignment[]
   createdAt DateTime          @default(now())
 
   // Ensure a name is unique per category (so you can have "Math" in both)
@@ -96,6 +99,44 @@ model Upvote {
 
   // Ensure a user can only upvote a specific resource ONCE
   @@unique([userId, resourceId]) 
+}
+
+model Assignment {
+  id           String       @id @default(uuid())
+  title        String
+  description  String?
+  fileUrl      String?      // The question paper/instructions
+  dueDate      DateTime
+  
+  // Link to Subject (Connecting to the official Teacher subjects)
+  subjectId    String
+  subject      Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  // The User who created this (Teacher)
+  creatorId    String
+  creator      User         @relation("CreatedAssignments", fields: [creatorId], references: [id])
+  
+  submissions  Submission[]
+
+  createdAt    DateTime     @default(now())
+}
+
+model Submission {
+  id           String           @id @default(uuid())
+  fileUrl      String           // The student's answer file
+  submittedAt  DateTime         @default(now())
+  grade        String?
+  feedback     String?
+  
+  // Relations
+  assignmentId String
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  
+  // The User who submitted this (Student)
+  submitterId  String
+  submitter    User             @relation("UserSubmissions", fields: [submitterId], references: [id])
+
+  @@unique([submitterId, assignmentId]) // One submission per student per assignment
 }
 
 enum Role {

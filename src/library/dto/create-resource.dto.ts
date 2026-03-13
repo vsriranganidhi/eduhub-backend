@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
-import { LibraryCategory } from '../../generated/prisma/client';
+import { SubjectCategory } from '../../generated/prisma/client';
 
 export class CreateResourceDto {
   @IsString()
@@ -14,7 +14,7 @@ export class CreateResourceDto {
   @IsNotEmpty()
   subjectId: string; // The ID of the Subject (Folder)
 
-  @IsEnum(LibraryCategory)
+  @IsEnum(SubjectCategory)
   @IsNotEmpty()
-  category: LibraryCategory; // TEACHER_RESOURCE or STUDENT_RESOURCE
+  category: SubjectCategory; // TEACHER_RESOURCE or STUDENT_RESOURCE
 }

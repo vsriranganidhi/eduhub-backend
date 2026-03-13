@@ -10,6 +10,7 @@ import { LibraryModule } from './library/library.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SubjectModule } from './subject/subject.module';
+import { AssignmentModule } from './assignment/assignment.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { SubjectModule } from './subject/subject.module';
     AuthModule, 
     NoticeModule, 
     ScheduleModule.forRoot(), 
-    LibraryModule, SubjectModule
+    LibraryModule, SubjectModule, AssignmentModule
   ],
   controllers: [AppController],
 })

@@ -56,7 +56,9 @@ export const ModelName = {
   Subject: 'Subject',
   LibraryResource: 'LibraryResource',
   Comment: 'Comment',
-  Upvote: 'Upvote'
+  Upvote: 'Upvote',
+  Assignment: 'Assignment',
+  Submission: 'Submission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -148,6 +150,33 @@ export const UpvoteScalarFieldEnum = {
 } as const
 
 export type UpvoteScalarFieldEnum = (typeof UpvoteScalarFieldEnum)[keyof typeof UpvoteScalarFieldEnum]
+
+
+export const AssignmentScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  fileUrl: 'fileUrl',
+  dueDate: 'dueDate',
+  subjectId: 'subjectId',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt'
+} as const
+
+export type AssignmentScalarFieldEnum = (typeof AssignmentScalarFieldEnum)[keyof typeof AssignmentScalarFieldEnum]
+
+
+export const SubmissionScalarFieldEnum = {
+  id: 'id',
+  fileUrl: 'fileUrl',
+  submittedAt: 'submittedAt',
+  grade: 'grade',
+  feedback: 'feedback',
+  assignmentId: 'assignmentId',
+  submitterId: 'submitterId'
+} as const
+
+export type SubmissionScalarFieldEnum = (typeof SubmissionScalarFieldEnum)[keyof typeof SubmissionScalarFieldEnum]
 
 
 export const SortOrder = {

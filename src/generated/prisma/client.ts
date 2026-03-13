@@ -69,3 +69,13 @@ export type Comment = Prisma.CommentModel
  * 
  */
 export type Upvote = Prisma.UpvoteModel
+/**
+ * Model Assignment
+ * 
+ */
+export type Assignment = Prisma.AssignmentModel
+/**
+ * Model Submission
+ * 
+ */
+export type Submission = Prisma.SubmissionModel
