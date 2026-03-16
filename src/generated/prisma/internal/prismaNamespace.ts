@@ -1123,6 +1123,7 @@ export const AssignmentScalarFieldEnum = {
   description: 'description',
   fileUrl: 'fileUrl',
   dueDate: 'dueDate',
+  isLateAllowed: 'isLateAllowed',
   subjectId: 'subjectId',
   creatorId: 'creatorId',
   createdAt: 'createdAt'
@@ -1135,6 +1136,9 @@ export const SubmissionScalarFieldEnum = {
   id: 'id',
   fileUrl: 'fileUrl',
   submittedAt: 'submittedAt',
+  submissionStatus: 'submissionStatus',
+  reviewStatus: 'reviewStatus',
+  isLate: 'isLate',
   grade: 'grade',
   feedback: 'feedback',
   assignmentId: 'assignmentId',
@@ -1241,6 +1245,41 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'SubmissionStatus'
+ */
+export type EnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SubmissionStatus[]'
+ */
+export type ListEnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewStatus'
+ */
+export type EnumReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewStatus[]'
+ */
+export type ListEnumReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewStatus[]'>
     
 
 

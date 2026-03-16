@@ -25,3 +25,19 @@ export const SubjectCategory = {
 } as const
 
 export type SubjectCategory = (typeof SubjectCategory)[keyof typeof SubjectCategory]
+
+
+export const SubmissionStatus = {
+  SUBMITTED: 'SUBMITTED',
+  PENDING_SUBMISSION: 'PENDING_SUBMISSION'
+} as const
+
+export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus]
+
+
+export const ReviewStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  GRADED: 'GRADED'
+} as const
+
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus]

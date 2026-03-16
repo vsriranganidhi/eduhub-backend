@@ -30,6 +30,7 @@ export type AssignmentMinAggregateOutputType = {
   description: string | null
   fileUrl: string | null
   dueDate: Date | null
+  isLateAllowed: boolean | null
   subjectId: string | null
   creatorId: string | null
   createdAt: Date | null
@@ -41,6 +42,7 @@ export type AssignmentMaxAggregateOutputType = {
   description: string | null
   fileUrl: string | null
   dueDate: Date | null
+  isLateAllowed: boolean | null
   subjectId: string | null
   creatorId: string | null
   createdAt: Date | null
@@ -52,6 +54,7 @@ export type AssignmentCountAggregateOutputType = {
   description: number
   fileUrl: number
   dueDate: number
+  isLateAllowed: number
   subjectId: number
   creatorId: number
   createdAt: number
@@ -65,6 +68,7 @@ export type AssignmentMinAggregateInputType = {
   description?: true
   fileUrl?: true
   dueDate?: true
+  isLateAllowed?: true
   subjectId?: true
   creatorId?: true
   createdAt?: true
@@ -76,6 +80,7 @@ export type AssignmentMaxAggregateInputType = {
   description?: true
   fileUrl?: true
   dueDate?: true
+  isLateAllowed?: true
   subjectId?: true
   creatorId?: true
   createdAt?: true
@@ -87,6 +92,7 @@ export type AssignmentCountAggregateInputType = {
   description?: true
   fileUrl?: true
   dueDate?: true
+  isLateAllowed?: true
   subjectId?: true
   creatorId?: true
   createdAt?: true
@@ -171,6 +177,7 @@ export type AssignmentGroupByOutputType = {
   description: string | null
   fileUrl: string | null
   dueDate: Date
+  isLateAllowed: boolean
   subjectId: string
   creatorId: string
   createdAt: Date
@@ -203,6 +210,7 @@ export type AssignmentWhereInput = {
   description?: Prisma.StringNullableFilter<"Assignment"> | string | null
   fileUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Assignment"> | Date | string
+  isLateAllowed?: Prisma.BoolFilter<"Assignment"> | boolean
   subjectId?: Prisma.StringFilter<"Assignment"> | string
   creatorId?: Prisma.StringFilter<"Assignment"> | string
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -217,6 +225,7 @@ export type AssignmentOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  isLateAllowed?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -234,6 +243,7 @@ export type AssignmentWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Assignment"> | string | null
   fileUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Assignment"> | Date | string
+  isLateAllowed?: Prisma.BoolFilter<"Assignment"> | boolean
   subjectId?: Prisma.StringFilter<"Assignment"> | string
   creatorId?: Prisma.StringFilter<"Assignment"> | string
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -248,6 +258,7 @@ export type AssignmentOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  isLateAllowed?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -265,6 +276,7 @@ export type AssignmentScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   fileUrl?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   dueDate?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
+  isLateAllowed?: Prisma.BoolWithAggregatesFilter<"Assignment"> | boolean
   subjectId?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   creatorId?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
@@ -276,6 +288,7 @@ export type AssignmentCreateInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   createdAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssignmentsInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedAssignmentsInput
@@ -288,6 +301,7 @@ export type AssignmentUncheckedCreateInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   subjectId: string
   creatorId: string
   createdAt?: Date | string
@@ -300,6 +314,7 @@ export type AssignmentUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssignmentsNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssignmentsNestedInput
@@ -312,6 +327,7 @@ export type AssignmentUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -324,6 +340,7 @@ export type AssignmentCreateManyInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   subjectId: string
   creatorId: string
   createdAt?: Date | string
@@ -335,6 +352,7 @@ export type AssignmentUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -344,6 +362,7 @@ export type AssignmentUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -365,6 +384,7 @@ export type AssignmentCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  isLateAllowed?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -376,6 +396,7 @@ export type AssignmentMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  isLateAllowed?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -387,6 +408,7 @@ export type AssignmentMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  isLateAllowed?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -481,6 +503,10 @@ export type AssignmentUncheckedUpdateManyWithoutSubjectNestedInput = {
   deleteMany?: Prisma.AssignmentScalarWhereInput | Prisma.AssignmentScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type AssignmentCreateNestedOneWithoutSubmissionsInput = {
   create?: Prisma.XOR<Prisma.AssignmentCreateWithoutSubmissionsInput, Prisma.AssignmentUncheckedCreateWithoutSubmissionsInput>
   connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutSubmissionsInput
@@ -501,6 +527,7 @@ export type AssignmentCreateWithoutCreatorInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   createdAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssignmentsInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutAssignmentInput
@@ -512,6 +539,7 @@ export type AssignmentUncheckedCreateWithoutCreatorInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   subjectId: string
   createdAt?: Date | string
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutAssignmentInput
@@ -552,6 +580,7 @@ export type AssignmentScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Assignment"> | string | null
   fileUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Assignment"> | Date | string
+  isLateAllowed?: Prisma.BoolFilter<"Assignment"> | boolean
   subjectId?: Prisma.StringFilter<"Assignment"> | string
   creatorId?: Prisma.StringFilter<"Assignment"> | string
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -563,6 +592,7 @@ export type AssignmentCreateWithoutSubjectInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   createdAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAssignmentsInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutAssignmentInput
@@ -574,6 +604,7 @@ export type AssignmentUncheckedCreateWithoutSubjectInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   creatorId: string
   createdAt?: Date | string
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutAssignmentInput
@@ -611,6 +642,7 @@ export type AssignmentCreateWithoutSubmissionsInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   createdAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssignmentsInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedAssignmentsInput
@@ -622,6 +654,7 @@ export type AssignmentUncheckedCreateWithoutSubmissionsInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   subjectId: string
   creatorId: string
   createdAt?: Date | string
@@ -649,6 +682,7 @@ export type AssignmentUpdateWithoutSubmissionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssignmentsNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssignmentsNestedInput
@@ -660,6 +694,7 @@ export type AssignmentUncheckedUpdateWithoutSubmissionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -671,6 +706,7 @@ export type AssignmentCreateManyCreatorInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   subjectId: string
   createdAt?: Date | string
 }
@@ -681,6 +717,7 @@ export type AssignmentUpdateWithoutCreatorInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssignmentsNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutAssignmentNestedInput
@@ -692,6 +729,7 @@ export type AssignmentUncheckedUpdateWithoutCreatorInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutAssignmentNestedInput
@@ -703,6 +741,7 @@ export type AssignmentUncheckedUpdateManyWithoutCreatorInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjectId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -713,6 +752,7 @@ export type AssignmentCreateManySubjectInput = {
   description?: string | null
   fileUrl?: string | null
   dueDate: Date | string
+  isLateAllowed: boolean
   creatorId: string
   createdAt?: Date | string
 }
@@ -723,6 +763,7 @@ export type AssignmentUpdateWithoutSubjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssignmentsNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutAssignmentNestedInput
@@ -734,6 +775,7 @@ export type AssignmentUncheckedUpdateWithoutSubjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutAssignmentNestedInput
@@ -745,6 +787,7 @@ export type AssignmentUncheckedUpdateManyWithoutSubjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isLateAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -786,6 +829,7 @@ export type AssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   description?: boolean
   fileUrl?: boolean
   dueDate?: boolean
+  isLateAllowed?: boolean
   subjectId?: boolean
   creatorId?: boolean
   createdAt?: boolean
@@ -801,6 +845,7 @@ export type AssignmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   description?: boolean
   fileUrl?: boolean
   dueDate?: boolean
+  isLateAllowed?: boolean
   subjectId?: boolean
   creatorId?: boolean
   createdAt?: boolean
@@ -814,6 +859,7 @@ export type AssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   description?: boolean
   fileUrl?: boolean
   dueDate?: boolean
+  isLateAllowed?: boolean
   subjectId?: boolean
   creatorId?: boolean
   createdAt?: boolean
@@ -827,12 +873,13 @@ export type AssignmentSelectScalar = {
   description?: boolean
   fileUrl?: boolean
   dueDate?: boolean
+  isLateAllowed?: boolean
   subjectId?: boolean
   creatorId?: boolean
   createdAt?: boolean
 }
 
-export type AssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fileUrl" | "dueDate" | "subjectId" | "creatorId" | "createdAt", ExtArgs["result"]["assignment"]>
+export type AssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fileUrl" | "dueDate" | "isLateAllowed" | "subjectId" | "creatorId" | "createdAt", ExtArgs["result"]["assignment"]>
 export type AssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -861,6 +908,7 @@ export type $AssignmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     description: string | null
     fileUrl: string | null
     dueDate: Date
+    isLateAllowed: boolean
     subjectId: string
     creatorId: string
     createdAt: Date
@@ -1295,6 +1343,7 @@ export interface AssignmentFieldRefs {
   readonly description: Prisma.FieldRef<"Assignment", 'String'>
   readonly fileUrl: Prisma.FieldRef<"Assignment", 'String'>
   readonly dueDate: Prisma.FieldRef<"Assignment", 'DateTime'>
+  readonly isLateAllowed: Prisma.FieldRef<"Assignment", 'Boolean'>
   readonly subjectId: Prisma.FieldRef<"Assignment", 'String'>
   readonly creatorId: Prisma.FieldRef<"Assignment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Assignment", 'DateTime'>

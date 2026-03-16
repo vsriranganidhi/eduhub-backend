@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsOptional, IsUUID, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsUUID, IsDateString, IsBoolean } from 'class-validator';
 
 export class CreateAssignmentDto {
   @IsString()
@@ -16,4 +16,8 @@ export class CreateAssignmentDto {
   @IsUUID()
   @IsNotEmpty()
   subjectId: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isLateAllowed: boolean;
 }

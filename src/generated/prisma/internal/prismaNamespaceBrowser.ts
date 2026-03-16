@@ -158,6 +158,7 @@ export const AssignmentScalarFieldEnum = {
   description: 'description',
   fileUrl: 'fileUrl',
   dueDate: 'dueDate',
+  isLateAllowed: 'isLateAllowed',
   subjectId: 'subjectId',
   creatorId: 'creatorId',
   createdAt: 'createdAt'
@@ -170,6 +171,9 @@ export const SubmissionScalarFieldEnum = {
   id: 'id',
   fileUrl: 'fileUrl',
   submittedAt: 'submittedAt',
+  submissionStatus: 'submissionStatus',
+  reviewStatus: 'reviewStatus',
+  isLate: 'isLate',
   grade: 'grade',
   feedback: 'feedback',
   assignmentId: 'assignmentId',

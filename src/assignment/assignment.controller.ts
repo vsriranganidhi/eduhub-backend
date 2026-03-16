@@ -1,5 +1,5 @@
-import { 
-  Controller, Post, Get, Body, Param, UseGuards, Req, UseInterceptors, UploadedFile, BadRequestException 
+import {
+  Controller, Post, Get, Delete, Put, Body, Param, UseGuards, Req, UseInterceptors, UploadedFile, BadRequestException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -10,7 +10,10 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../generated/prisma/client';
 import { AssignmentService } from './assignment.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
+import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
+import { GradeSubmissionDto } from './dto/grade-submission.dto';
+import { UpdateGradeDto } from './dto/update-grade.dto';
 
 // Custom file type validator
 const customFileTypeValidator = (file: Express.Multer.File): boolean => {
@@ -34,7 +37,7 @@ const customFileTypeValidator = (file: Express.Multer.File): boolean => {
 @Controller('assignments')
 @UseGuards(AuthGuard, RolesGuard)
 export class AssignmentController {
-  constructor(private readonly assignmentService: AssignmentService) {}
+  constructor(private readonly assignmentService: AssignmentService) { }
 
   @Post('/createAssignment')
   @Roles(Role.TEACHER, Role.ADMIN)
@@ -55,23 +58,83 @@ export class AssignmentController {
     return this.assignmentService.createAssignment(dto, file, req.user.sub);
   }
 
+  @Put('/assignment/:assignmentId')
+  @Roles(Role.TEACHER, Role.ADMIN)
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads/assignments/questions',
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  updateAssignment(
+    @Param('assignmentId') assignmentId: string,
+    @Body() dto: UpdateAssignmentDto,
+    @UploadedFile() file: Express.Multer.File | undefined,
+    @Req() req: any
+  ) {
+    return this.assignmentService.updateAssignment(assignmentId, dto, file, req.user.sub);
+  }
+
+  @Delete('/assignment/:assignmentId')
+  @Roles(Role.TEACHER, Role.ADMIN)
+  deleteAssignment(
+    @Param('assignmentId') assignmentId: string,
+    @Req() req: any
+  ) {
+    return this.assignmentService.deleteAssignment(assignmentId, req.user.sub);
+  }
+
   @Post('/createSubmission')
-  @Roles(Role.TEACHER, Role.STUDENT, Role.ADMIN)
+  @Roles(Role.STUDENT, Role.ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/assignments/submissions',
       filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now + '-' + Math.round(Math.random()*1e9);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
       },
     }),
   }))
   createSubmission(
     @Body() dto: CreateSubmissionDto,
-    @UploadedFile() file:Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: any
   ) {
     return this.assignmentService.createSubmission(dto, file, req.user.sub);
+  }
+
+  @Delete('/submission/:submissionId')
+  @Roles(Role.STUDENT, Role.ADMIN)
+  deleteSubmission(
+    @Param('submissionId') submissionId: string,
+    @Req() req: any
+  ) {
+    return this.assignmentService.deleteSubmission(submissionId, req.user.sub);
+  }
+
+  @Put('/submission/:submissionId')
+  @Roles(Role.STUDENT, Role.ADMIN)
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads/assignments/submissions',
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  updateSubmission(
+    @Param('submissionId') submissionId: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any
+  ) {
+    if (!file) {
+      throw new BadRequestException('File is required for submission update');
+    }
+    return this.assignmentService.updateSubmission(submissionId, req.user.sub, file.path.replace(/\\/g, '/'));
   }
 
   @Get('subject/:subjectId')
@@ -80,7 +143,30 @@ export class AssignmentController {
   }
 
   @Get('assignement/:assignmentId')
-  findAllSubmissionsForAssignment(@Param('assignmentId') assignmentId: string) {
-    return this.assignmentService.findAllSubmissionsForAssignment(assignmentId);
+  @UseGuards(AuthGuard)
+  findAllSubmissionsForAssignment(
+    @Param('assignmentId') assignmentId: string,
+    @Req() req: any
+  ) {
+    return this.assignmentService.findAllSubmissionsForAssignment(assignmentId, req.user.sub, req.user.role);
+  }
+
+  @Post('/gradeSubmission')
+  @Roles(Role.TEACHER, Role.ADMIN)
+  gradeSubmission(
+    @Body() dto: GradeSubmissionDto,
+    @Req() req: any
+  ) {
+    return this.assignmentService.gradeSubmission(dto.submissionId, dto.grade, dto.feedback);
+  }
+
+  @Put('/submission/:submissionId/grade')
+  @Roles(Role.TEACHER, Role.ADMIN)
+  updateGrade(
+    @Param('submissionId') submissionId: string,
+    @Body() dto: UpdateGradeDto,
+    @Req() req: any
+  ) {
+    return this.assignmentService.updateGrade(submissionId, dto, req.user.sub);
   }
 }

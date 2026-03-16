@@ -107,6 +107,7 @@ model Assignment {
   description  String?
   fileUrl      String?      // The question paper/instructions
   dueDate      DateTime
+  isLateAllowed Boolean
   
   // Link to Subject (Connecting to the official Teacher subjects)
   subjectId    String
@@ -122,19 +123,22 @@ model Assignment {
 }
 
 model Submission {
-  id           String           @id @default(uuid())
-  fileUrl      String           // The student's answer file
-  submittedAt  DateTime         @default(now())
-  grade        String?
-  feedback     String?
+  id             String           @id @default(uuid())
+  fileUrl        String           // The student's answer file
+  submittedAt    DateTime         @default(now())
+  submissionStatus SubmissionStatus @default(SUBMITTED)
+  reviewStatus   ReviewStatus     @default(PENDING_REVIEW)
+  isLate         Boolean          @default(false)
+  grade          String?
+  feedback       String?
   
   // Relations
-  assignmentId String
-  assignment   Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  assignmentId   String
+  assignment     Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   
   // The User who submitted this (Student)
-  submitterId  String
-  submitter    User             @relation("UserSubmissions", fields: [submitterId], references: [id])
+  submitterId    String
+  submitter      User             @relation("UserSubmissions", fields: [submitterId], references: [id])
 
   @@unique([submitterId, assignmentId]) // One submission per student per assignment
 }
@@ -149,4 +153,14 @@ enum SubjectCategory {
   TEACHER_RESOURCE // For Library
   STUDENT_RESOURCE // For Library
   ASSIGNMENT       // For the Assignments Module
+}
+
+enum SubmissionStatus {
+  SUBMITTED
+  PENDING_SUBMISSION
+}
+
+enum ReviewStatus {
+  PENDING_REVIEW
+  GRADED
 }
