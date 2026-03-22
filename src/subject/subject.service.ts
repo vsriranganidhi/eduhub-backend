@@ -21,6 +21,14 @@ export class SubjectService {
       throw new ForbiddenException('Students can only create Student Resource subjects');
     }
 
+    // Fetch user's institution ID
+    const userRecord = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: { institutionId: true },
+    });
+
+    if (!userRecord) throw new NotFoundException('User not found');
+
     // Check if subject already exists in the same category (case-insensitive)
     const existing = await this.prisma.subject.findFirst({
       where: { 
@@ -34,7 +42,10 @@ export class SubjectService {
     }
 
     return this.prisma.subject.create({
-      data: { ...dto },
+      data: { 
+        ...dto,
+        institutionId: userRecord.institutionId,
+      },
     });
   }
 

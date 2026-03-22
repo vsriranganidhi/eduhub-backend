@@ -11,10 +11,18 @@ export class NoticeService {
   constructor(private prisma: PrismaService) { }
 
   async create(dto: CreateNoticeDto, userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { institutionId: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
     return this.prisma.notice.create({
       data: {
         ...dto,
         authorId: userId,
+        institutionId: user.institutionId,
         updatedAt: new Date(),
       },
     });

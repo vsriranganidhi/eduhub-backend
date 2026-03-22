@@ -41,3 +41,12 @@ Error resolved when initially in prisma.service.ts
     const adapter = new PrismaPg({ url: process.env.DATABASE_URL });
 was used but changes it to 
     const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+
+
+http: for sending webistes to browser
+smtp: for sending emails 
+it handles outgoing emails only
+it doesnot receive emails
+imap/pop3: for receiving emails
+1. next js app creates the email
+2. 

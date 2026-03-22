@@ -1,7 +1,9 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { AuthGuard } from './auth.gaurd';
 
 @Controller('auth') // All routes here start with /auth
 export class AuthController {
@@ -16,5 +18,12 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('reset-password')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() dto: ResetPasswordDto, @Req() req: any) {
+    return this.authService.resetPassword(req.user.sub, dto.oldPassword, dto.newPassword, dto.confirmPassword);
   }
 }

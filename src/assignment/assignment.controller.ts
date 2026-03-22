@@ -40,7 +40,7 @@ export class AssignmentController {
   constructor(private readonly assignmentService: AssignmentService) { }
 
   @Post('/createAssignment')
-  @Roles(Role.TEACHER, Role.ADMIN)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/assignments/questions',
@@ -59,7 +59,7 @@ export class AssignmentController {
   }
 
   @Put('/assignment/:assignmentId')
-  @Roles(Role.TEACHER, Role.ADMIN)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/assignments/questions',
@@ -79,7 +79,7 @@ export class AssignmentController {
   }
 
   @Delete('/assignment/:assignmentId')
-  @Roles(Role.TEACHER, Role.ADMIN)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   deleteAssignment(
     @Param('assignmentId') assignmentId: string,
     @Req() req: any
@@ -88,7 +88,7 @@ export class AssignmentController {
   }
 
   @Post('/createSubmission')
-  @Roles(Role.STUDENT, Role.ADMIN)
+  @Roles(Role.STUDENT, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/assignments/submissions',
@@ -107,7 +107,7 @@ export class AssignmentController {
   }
 
   @Delete('/submission/:submissionId')
-  @Roles(Role.STUDENT, Role.ADMIN)
+  @Roles(Role.STUDENT, Role.COLLEGE_ADMIN)
   deleteSubmission(
     @Param('submissionId') submissionId: string,
     @Req() req: any
@@ -116,7 +116,7 @@ export class AssignmentController {
   }
 
   @Put('/submission/:submissionId')
-  @Roles(Role.STUDENT, Role.ADMIN)
+  @Roles(Role.STUDENT, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/assignments/submissions',
@@ -152,7 +152,7 @@ export class AssignmentController {
   }
 
   @Post('/gradeSubmission')
-  @Roles(Role.TEACHER, Role.ADMIN)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   gradeSubmission(
     @Body() dto: GradeSubmissionDto,
     @Req() req: any
@@ -161,7 +161,7 @@ export class AssignmentController {
   }
 
   @Put('/submission/:submissionId/grade')
-  @Roles(Role.TEACHER, Role.ADMIN)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   updateGrade(
     @Param('submissionId') submissionId: string,
     @Body() dto: UpdateGradeDto,

@@ -15,7 +15,7 @@ export class SubjectController {
   constructor(private readonly subjectService: SubjectService) { }
 
   @Post()
-  @Roles(Role.TEACHER, Role.ADMIN, Role.STUDENT)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
   @UseGuards(AuthGuard, RolesGuard)
   create(@Body() createSubjectDto: CreateSubjectDto, @Req() req: any) {
     return this.subjectService.create(createSubjectDto, req.user);
@@ -28,7 +28,7 @@ export class SubjectController {
   }
 
   @Patch(':id')
-  @Roles(Role.TEACHER, Role.ADMIN, Role.STUDENT)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
   @UseGuards(AuthGuard, RolesGuard)
   update(@Param('id') id: string, @Body() dto: UpdateSubjectDto, @Req() req: any) {
     return this.subjectService.update(id, dto, req.user);

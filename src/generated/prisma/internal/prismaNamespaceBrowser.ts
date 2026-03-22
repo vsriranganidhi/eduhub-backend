@@ -51,7 +51,9 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Institution: 'Institution',
   User: 'User',
+  Invitation: 'Invitation',
   Notice: 'Notice',
   Subject: 'Subject',
   LibraryResource: 'LibraryResource',
@@ -77,6 +79,17 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const InstitutionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  branch: 'branch',
+  joinCode: 'joinCode',
+  createdAt: 'createdAt'
+} as const
+
+export type InstitutionScalarFieldEnum = (typeof InstitutionScalarFieldEnum)[keyof typeof InstitutionScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -85,10 +98,27 @@ export const UserScalarFieldEnum = {
   lastName: 'lastName',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  registrationNumber: 'registrationNumber',
+  institutionId: 'institutionId',
+  requiresPasswordReset: 'requiresPasswordReset'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  role: 'role',
+  isUsed: 'isUsed',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  institutionId: 'institutionId'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
 
 
 export const NoticeScalarFieldEnum = {
@@ -100,7 +130,8 @@ export const NoticeScalarFieldEnum = {
   subject: 'subject',
   expiresAt: 'expiresAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  institutionId: 'institutionId'
 } as const
 
 export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
@@ -110,7 +141,8 @@ export const SubjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   category: 'category',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  institutionId: 'institutionId'
 } as const
 
 export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]

@@ -19,8 +19,12 @@ export class AuthService {
       // 2. Save user to DB
       const user = await this.prisma.user.create({
         data: {
-          ...dto,
+          email: dto.email,
           password: hashedPassword,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          role: dto.role,
+          institutionId: dto.institutionId,
         },
       });
 
@@ -48,8 +52,45 @@ export class AuthService {
 
     // 3. Generate JWT
     const payload = { sub: user.id, email: user.email, role: user.role };
-    return {
+    const response: any = {
       access_token: await this.jwtService.signAsync(payload),
     };
+
+    // 4. Include requiresPasswordReset flag if true
+    if (user.requiresPasswordReset) {
+      response.requiresPasswordReset = true;
+    }
+
+    return response;
+  }
+
+  async resetPassword(userId: string, oldPassword: string, newPassword: string, confirmPassword: string) {
+    // 1. Validate passwords match
+    if (newPassword !== confirmPassword) {
+      throw new ConflictException('New password and confirm password do not match');
+    }
+
+    // 2. Find user
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    // 3. Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) throw new UnauthorizedException('Old password is incorrect');
+
+    // 4. Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // 5. Update password and reset flag
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: hashedPassword,
+        requiresPasswordReset: false,
+      },
+    });
   }
 }

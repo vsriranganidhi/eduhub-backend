@@ -45,7 +45,7 @@ export class LibraryController {
   constructor(private readonly libraryService: LibraryService) { }
 
   @Post('upload')
-  @Roles(Role.TEACHER, Role.ADMIN, Role.STUDENT)
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({

@@ -11,6 +11,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SubjectModule } from './subject/subject.module';
 import { AssignmentModule } from './assignment/assignment.module';
+import { InstitutionModule } from './institution/institution.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { AssignmentModule } from './assignment/assignment.module';
     AuthModule, 
     NoticeModule, 
     ScheduleModule.forRoot(), 
-    LibraryModule, SubjectModule, AssignmentModule
+    LibraryModule, SubjectModule, AssignmentModule, InstitutionModule, EmailModule
   ],
   controllers: [AppController],
 })

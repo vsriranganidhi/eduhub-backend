@@ -8,6 +8,23 @@ datasource db {
   provider = "postgresql"
 }
 
+// ------------------------------------------------------
+// MULTI-TENANCY CORE
+// ------------------------------------------------------
+model Institution {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "Engineering College A"
+  branch      String?
+  joinCode    String   @unique // For students to type in when registering
+  createdAt   DateTime @default(now())
+  
+  // Relations: Everything belongs to an institution
+  users       User[]
+  invitations Invitation[]
+  notices     Notice[]
+  subjects    Subject[]
+}
+
 model User {
   id        String            @id @default(uuid())
   email     String            @unique
@@ -17,12 +34,45 @@ model User {
   role      Role              @default(STUDENT)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+
+  // Student-Specific Field
+  registrationNumber String?  
+  
+  // The Multi-Tenant Link
+  institutionId      String
+  institution        Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
   notices   Notice[]
   resources LibraryResource[]
   comments  Comment[]
   upvotes   Upvote[]
   createdAssignments Assignment[] @relation("CreatedAssignments")
   submissions        Submission[] @relation("UserSubmissions")
+
+  requiresPasswordReset Boolean? @default(false)
+
+  // Ensure an email is only unique WITHIN a specific college
+  @@unique([email, institutionId])
+}
+
+// ------------------------------------------------------
+// INVITATION SYSTEM
+// ------------------------------------------------------
+model Invitation {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  token         String   @unique
+  role          Role     @default(TEACHER)
+  isUsed        Boolean  @default(false)
+  expiresAt     DateTime
+  createdAt     DateTime @default(now())
+
+  // The Multi-Tenant Link (Crucial so the teacher joins the right college)
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
+  // A teacher can only have one active invite per college
+  @@unique([email, institutionId])
 }
 
 model Notice {
@@ -36,18 +86,26 @@ model Notice {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   author    User      @relation(fields: [authorId], references: [id])
+
+  // Multi-Tenant Link
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 }
 
 model Subject {
   id        String            @id @default(uuid())
-  name      String            @unique // e.g., "Operating Systems"
+  name      String            
   category  SubjectCategory // this determines if it's a teacher or student resource
   resources LibraryResource[]
   assignments Assignment[]
   createdAt DateTime          @default(now())
 
+  // Multi-Tenant Link
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
   // Ensure a name is unique per category (so you can have "Math" in both)
-  @@unique([name, category])
+  @@unique([name, category, institutionId])
 }
 
 model LibraryResource {
@@ -146,7 +204,8 @@ model Submission {
 enum Role {
   STUDENT
   TEACHER
-  ADMIN
+  COLLEGE_ADMIN // Added this so colleges can manage their own invites
+  SUPER_ADMIN   // Added this for you (the platform owner)
 }
 
 enum SubjectCategory {

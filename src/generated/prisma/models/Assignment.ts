@@ -503,10 +503,6 @@ export type AssignmentUncheckedUpdateManyWithoutSubjectNestedInput = {
   deleteMany?: Prisma.AssignmentScalarWhereInput | Prisma.AssignmentScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type AssignmentCreateNestedOneWithoutSubmissionsInput = {
   create?: Prisma.XOR<Prisma.AssignmentCreateWithoutSubmissionsInput, Prisma.AssignmentUncheckedCreateWithoutSubmissionsInput>
   connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutSubmissionsInput

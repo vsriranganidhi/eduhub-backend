@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional, IsUUID } from 'class-validator';
 import { Role } from '../../generated/prisma/client';
 
 export class RegisterDto {
@@ -21,4 +21,8 @@ export class RegisterDto {
   @IsEnum(Role)
   @IsOptional()
   role?: Role; // Default is STUDENT in Prisma, but we allow specifying it here
+
+  @IsUUID()
+  @IsNotEmpty()
+  institutionId: string;
 }

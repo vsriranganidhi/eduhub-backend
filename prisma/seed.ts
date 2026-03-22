@@ -6,21 +6,42 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const adminPassword = await bcrypt.hash('admin123', 10);
+  // Check if super admin already exists
+  const existingSuperAdmin = await prisma.user.findFirst({
+    where: { role: Role.SUPER_ADMIN },
+  });
 
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@eduhub.com' },
-    update: {},
-    create: {
-      email: 'admin@eduhub.com',
-      password: adminPassword,
-      firstName: 'System',
-      lastName: 'Admin',
-      role: Role.ADMIN,
+  if (existingSuperAdmin) {
+    console.log('Super admin already exists, skipping seed');
+    return;
+  }
+
+  // Create the master institution
+  const eduhubHQ = await prisma.institution.create({
+    data: {
+      name: 'Eduhub Master Tenant',
+      joinCode: 'MASTER-KEY-DO-NOT-USE',
     },
   });
 
-  console.log({ admin });
+  console.log('Created institution:', eduhubHQ);
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash('admin123', 10);
+
+  // Create the super admin user
+  const superAdmin = await prisma.user.create({
+    data: {
+      email: 'superAdmin@eduhub.com',
+      password: hashedPassword,
+      firstName: 'System',
+      lastName: 'Super Admin',
+      role: Role.SUPER_ADMIN,
+      institutionId: eduhubHQ.id,
+    },
+  });
+
+  console.log('Created super admin user:', superAdmin);
 }
 
 main()

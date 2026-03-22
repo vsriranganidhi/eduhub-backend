@@ -47,7 +47,7 @@ export class NoticeController {
   }
 
   @Delete(':id')
-  @Roles(Role.TEACHER, Role.ADMIN) // Both can hit this route
+  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN) // Both can hit this route
   @UseGuards(AuthGuard, RolesGuard)
   remove(@Param('id') id: string, @Req() req: any) {
     // Pass the ID, the UserID, AND the Role to the service
