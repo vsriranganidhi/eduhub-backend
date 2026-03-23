@@ -164,12 +164,34 @@ export class LibraryService {
 
     if (!resource) throw new NotFoundException('Resource not found');
 
-    // 2. Create the comment
+    // 2. If parentId is provided, validate it's a valid root comment
+    if (dto.parentId) {
+      const parentComment = await this.prisma.comment.findUnique({
+        where: { id: dto.parentId },
+      });
+
+      if (!parentComment) {
+        throw new NotFoundException('Parent comment not found');
+      }
+
+      // Ensure parent comment belongs to the same resource
+      if (parentComment.resourceId !== resourceId) {
+        throw new BadRequestException('Parent comment must belong to the same resource');
+      }
+
+      // Enforce strict 2-level threading: parent must be a root comment (parentId === null)
+      if (parentComment.parentId !== null) {
+        throw new BadRequestException('Cannot reply to a reply. Replies can only be added to root comments');
+      }
+    }
+
+    // 3. Create the comment
     return this.prisma.comment.create({
       data: {
         content: dto.content,
         resourceId: resourceId,
         authorId: userId,
+        parentId: dto.parentId || null,
       },
       include: {
         author: {
@@ -180,15 +202,26 @@ export class LibraryService {
   }
 
   async getComments(resourceId: string) {
-    return this.prisma.comment.findMany({
-      where: { resourceId },
+    // Fetch only root comments (where parentId is null)
+    const rootComments = await this.prisma.comment.findMany({
+      where: { resourceId, parentId: null },
       include: {
         author: {
           select: { firstName: true, lastName: true },
         },
+        replies: {
+          include: {
+            author: {
+              select: { firstName: true, lastName: true },
+            },
+          },
+          orderBy: { createdAt: 'asc' }, // Oldest replies first
+        },
       },
-      orderBy: { createdAt: 'desc' }, // Newest comments first
+      orderBy: { createdAt: 'desc' }, // Newest root comments first
     });
+
+    return rootComments;
   }
 
   async updateComment(commentId: string, userId: string, dto: UpdateCommentDto) {
@@ -213,7 +246,7 @@ export class LibraryService {
     if (!comment) throw new NotFoundException('Comment not found');
 
     // Security: Author can delete, OR an Admin can delete (for moderation)
-    if (comment.authorId !== userId && userRole !== 'ADMIN') {
+    if (comment.authorId !== userId && userRole !== 'COLLEGE_ADMIN') {
       throw new ForbiddenException('You do not have permission to delete this comment');
     }
 
@@ -228,7 +261,7 @@ export class LibraryService {
     if (!resource) throw new NotFoundException('Resource not found');
 
     // Security: Only the uploader or an Admin can delete the file
-    if (resource.uploaderId !== userId && userRole !== 'ADMIN') {
+    if (resource.uploaderId !== userId && userRole !== 'COLLEGE_ADMIN') {
       throw new ForbiddenException('You do not have permission to delete this file');
     }
 

@@ -153,11 +153,12 @@ model Comment {
   authorId   String
   author     User            @relation(fields: [authorId], references: [id])
 
-  // --- Threaded Replies Logic ---
-  //parentId   String?         // If null, it's a top-level comment
-  //parent     Comment?        @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  //replies    Comment[]       @relation("CommentReplies")
-  // ------------------------------
+  // --- Strict 2-Level Threading ---
+  // If parentId is null, it is a top-level (root) comment.
+  // If parentId has a value, it is a reply, and MUST point to a root comment.
+  parentId   String?         
+  parent     Comment?        @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    Comment[]       @relation("CommentReplies")
 
   createdAt  DateTime        @default(now())
 }
