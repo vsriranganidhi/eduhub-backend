@@ -16,6 +16,15 @@ export class AuthService {
     private emailService: EmailService,
   ) { }
 
+  private async storePasswordHistory(userId: string, passwordHash: string) {
+    await this.prisma.passwordHistory.create({
+      data: {
+        userId,
+        passwordHash,
+      },
+    });
+  }
+
   async registerStudent(dto: StudentRegisterDto) {
     // 1. Validate join code exists and belongs to institution
     const institution = await this.prisma.institution.findFirst({
@@ -56,6 +65,9 @@ export class AuthService {
           institutionId: institution.id,
         },
       });
+
+      // 5. Store password in history
+      await this.storePasswordHistory(user.id, hashedPassword);
 
       return user;
     } catch (error) {
@@ -110,7 +122,10 @@ export class AuthService {
         },
       });
 
-      // 5. Mark invitation as used
+      // 5. Store password in history
+      await this.storePasswordHistory(user.id, hashedPassword);
+
+      // 6. Mark invitation as used
       await this.prisma.invitation.update({
         where: { id: invitation.id },
         data: { isUsed: true },
@@ -219,16 +234,25 @@ export class AuthService {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) throw new UnauthorizedException('Old password is incorrect');
 
-    // 4. Ensure new password is different from old password
-    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
-    if (isSameAsOld) {
-      throw new ConflictException('New password cannot be the same as old password');
+    // 5. Check if new password matches any previously used passwords
+    const passwordHistory = await this.prisma.passwordHistory.findMany({
+      where: { userId },
+    });
+
+    for (const history of passwordHistory) {
+      const isPasswordUsedBefore = await bcrypt.compare(newPassword, history.passwordHash);
+      if (isPasswordUsedBefore) {
+        throw new ConflictException('This password was used previously. Please choose a different password');
+      }
     }
 
-    // 5. Hash new password
+    // 6. Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // 6. Update password and reset flag
+    // 7. Store old password in history
+    await this.storePasswordHistory(userId, user.password);
+
+    // 8. Update password and reset flag
     return this.prisma.user.update({
       where: { id: userId },
       data: {

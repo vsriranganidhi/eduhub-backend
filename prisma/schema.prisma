@@ -48,11 +48,23 @@ model User {
   upvotes   Upvote[]
   createdAssignments Assignment[] @relation("CreatedAssignments")
   submissions        Submission[] @relation("UserSubmissions")
+  passwordHistory    PasswordHistory[]
 
   requiresPasswordReset Boolean? @default(false)
 
   // Ensure an email is only unique WITHIN a specific college
   @@unique([email, institutionId])
+}
+
+// ------------------------------------------------------
+// PASSWORD HISTORY
+// ------------------------------------------------------
+model PasswordHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passwordHash String
+  createdAt DateTime @default(now())
 }
 
 // ------------------------------------------------------

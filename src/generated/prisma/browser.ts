@@ -28,6 +28,11 @@ export type Institution = Prisma.InstitutionModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model PasswordHistory
+ * 
+ */
+export type PasswordHistory = Prisma.PasswordHistoryModel
+/**
  * Model Invitation
  * 
  */

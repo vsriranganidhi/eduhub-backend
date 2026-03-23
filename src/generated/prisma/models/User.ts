@@ -237,6 +237,7 @@ export type UserWhereInput = {
   upvotes?: Prisma.UpvoteListRelationFilter
   createdAssignments?: Prisma.AssignmentListRelationFilter
   submissions?: Prisma.SubmissionListRelationFilter
+  passwordHistory?: Prisma.PasswordHistoryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -258,6 +259,7 @@ export type UserOrderByWithRelationInput = {
   upvotes?: Prisma.UpvoteOrderByRelationAggregateInput
   createdAssignments?: Prisma.AssignmentOrderByRelationAggregateInput
   submissions?: Prisma.SubmissionOrderByRelationAggregateInput
+  passwordHistory?: Prisma.PasswordHistoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -283,6 +285,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   upvotes?: Prisma.UpvoteListRelationFilter
   createdAssignments?: Prisma.AssignmentListRelationFilter
   submissions?: Prisma.SubmissionListRelationFilter
+  passwordHistory?: Prisma.PasswordHistoryListRelationFilter
 }, "id" | "email" | "email_institutionId">
 
 export type UserOrderByWithAggregationInput = {
@@ -337,6 +340,7 @@ export type UserCreateInput = {
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -357,6 +361,7 @@ export type UserUncheckedCreateInput = {
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -377,6 +382,7 @@ export type UserUpdateInput = {
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -397,6 +403,7 @@ export type UserUncheckedUpdateInput = {
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -552,6 +559,20 @@ export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
 
+export type UserCreateNestedOneWithoutPasswordHistoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordHistoryInput, Prisma.UserUncheckedCreateWithoutPasswordHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordHistoryInput, Prisma.UserUncheckedCreateWithoutPasswordHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordHistoryInput
+  upsert?: Prisma.UserUpsertWithoutPasswordHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordHistoryInput, Prisma.UserUpdateWithoutPasswordHistoryInput>, Prisma.UserUncheckedUpdateWithoutPasswordHistoryInput>
+}
+
 export type UserCreateNestedOneWithoutNoticesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNoticesInput, Prisma.UserUncheckedCreateWithoutNoticesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNoticesInput
@@ -653,6 +674,7 @@ export type UserCreateWithoutInstitutionInput = {
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInstitutionInput = {
@@ -672,6 +694,7 @@ export type UserUncheckedCreateWithoutInstitutionInput = {
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInstitutionInput = {
@@ -717,6 +740,102 @@ export type UserScalarWhereInput = {
   requiresPasswordReset?: Prisma.BoolNullableFilter<"User"> | boolean | null
 }
 
+export type UserCreateWithoutPasswordHistoryInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrationNumber?: string | null
+  requiresPasswordReset?: boolean | null
+  institution: Prisma.InstitutionCreateNestedOneWithoutUsersInput
+  notices?: Prisma.NoticeCreateNestedManyWithoutAuthorInput
+  resources?: Prisma.LibraryResourceCreateNestedManyWithoutUploaderInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
+  createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+}
+
+export type UserUncheckedCreateWithoutPasswordHistoryInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrationNumber?: string | null
+  institutionId: string
+  requiresPasswordReset?: boolean | null
+  notices?: Prisma.NoticeUncheckedCreateNestedManyWithoutAuthorInput
+  resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutUploaderInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
+  createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+}
+
+export type UserCreateOrConnectWithoutPasswordHistoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordHistoryInput, Prisma.UserUncheckedCreateWithoutPasswordHistoryInput>
+}
+
+export type UserUpsertWithoutPasswordHistoryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordHistoryInput, Prisma.UserUncheckedUpdateWithoutPasswordHistoryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordHistoryInput, Prisma.UserUncheckedCreateWithoutPasswordHistoryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordHistoryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordHistoryInput, Prisma.UserUncheckedUpdateWithoutPasswordHistoryInput>
+}
+
+export type UserUpdateWithoutPasswordHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiresPasswordReset?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  institution?: Prisma.InstitutionUpdateOneRequiredWithoutUsersNestedInput
+  notices?: Prisma.NoticeUpdateManyWithoutAuthorNestedInput
+  resources?: Prisma.LibraryResourceUpdateManyWithoutUploaderNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
+  createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  institutionId?: Prisma.StringFieldUpdateOperationsInput | string
+  requiresPasswordReset?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  notices?: Prisma.NoticeUncheckedUpdateManyWithoutAuthorNestedInput
+  resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutUploaderNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
+  createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+}
+
 export type UserCreateWithoutNoticesInput = {
   id?: string
   email: string
@@ -734,6 +853,7 @@ export type UserCreateWithoutNoticesInput = {
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNoticesInput = {
@@ -753,6 +873,7 @@ export type UserUncheckedCreateWithoutNoticesInput = {
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNoticesInput = {
@@ -788,6 +909,7 @@ export type UserUpdateWithoutNoticesInput = {
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNoticesInput = {
@@ -807,6 +929,7 @@ export type UserUncheckedUpdateWithoutNoticesInput = {
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResourcesInput = {
@@ -826,6 +949,7 @@ export type UserCreateWithoutResourcesInput = {
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResourcesInput = {
@@ -845,6 +969,7 @@ export type UserUncheckedCreateWithoutResourcesInput = {
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResourcesInput = {
@@ -880,6 +1005,7 @@ export type UserUpdateWithoutResourcesInput = {
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResourcesInput = {
@@ -899,6 +1025,7 @@ export type UserUncheckedUpdateWithoutResourcesInput = {
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -918,6 +1045,7 @@ export type UserCreateWithoutCommentsInput = {
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -937,6 +1065,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -972,6 +1101,7 @@ export type UserUpdateWithoutCommentsInput = {
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -991,6 +1121,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUpvotesInput = {
@@ -1010,6 +1141,7 @@ export type UserCreateWithoutUpvotesInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUpvotesInput = {
@@ -1029,6 +1161,7 @@ export type UserUncheckedCreateWithoutUpvotesInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUpvotesInput = {
@@ -1064,6 +1197,7 @@ export type UserUpdateWithoutUpvotesInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpvotesInput = {
@@ -1083,6 +1217,7 @@ export type UserUncheckedUpdateWithoutUpvotesInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedAssignmentsInput = {
@@ -1102,6 +1237,7 @@ export type UserCreateWithoutCreatedAssignmentsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   submissions?: Prisma.SubmissionCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAssignmentsInput = {
@@ -1121,6 +1257,7 @@ export type UserUncheckedCreateWithoutCreatedAssignmentsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAssignmentsInput = {
@@ -1156,6 +1293,7 @@ export type UserUpdateWithoutCreatedAssignmentsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAssignmentsInput = {
@@ -1175,6 +1313,7 @@ export type UserUncheckedUpdateWithoutCreatedAssignmentsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSubmissionsInput = {
@@ -1194,6 +1333,7 @@ export type UserCreateWithoutSubmissionsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   upvotes?: Prisma.UpvoteCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentCreateNestedManyWithoutCreatorInput
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSubmissionsInput = {
@@ -1213,6 +1353,7 @@ export type UserUncheckedCreateWithoutSubmissionsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   upvotes?: Prisma.UpvoteUncheckedCreateNestedManyWithoutUserInput
   createdAssignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutCreatorInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSubmissionsInput = {
@@ -1248,6 +1389,7 @@ export type UserUpdateWithoutSubmissionsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubmissionsInput = {
@@ -1267,6 +1409,7 @@ export type UserUncheckedUpdateWithoutSubmissionsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInstitutionInput = {
@@ -1299,6 +1442,7 @@ export type UserUpdateWithoutInstitutionInput = {
   upvotes?: Prisma.UpvoteUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInstitutionInput = {
@@ -1318,6 +1462,7 @@ export type UserUncheckedUpdateWithoutInstitutionInput = {
   upvotes?: Prisma.UpvoteUncheckedUpdateManyWithoutUserNestedInput
   createdAssignments?: Prisma.AssignmentUncheckedUpdateManyWithoutCreatorNestedInput
   submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutInstitutionInput = {
@@ -1345,6 +1490,7 @@ export type UserCountOutputType = {
   upvotes: number
   createdAssignments: number
   submissions: number
+  passwordHistory: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1354,6 +1500,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   upvotes?: boolean | UserCountOutputTypeCountUpvotesArgs
   createdAssignments?: boolean | UserCountOutputTypeCountCreatedAssignmentsArgs
   submissions?: boolean | UserCountOutputTypeCountSubmissionsArgs
+  passwordHistory?: boolean | UserCountOutputTypeCountPasswordHistoryArgs
 }
 
 /**
@@ -1408,6 +1555,13 @@ export type UserCountOutputTypeCountSubmissionsArgs<ExtArgs extends runtime.Type
   where?: Prisma.SubmissionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordHistoryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1428,6 +1582,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   upvotes?: boolean | Prisma.User$upvotesArgs<ExtArgs>
   createdAssignments?: boolean | Prisma.User$createdAssignmentsArgs<ExtArgs>
   submissions?: boolean | Prisma.User$submissionsArgs<ExtArgs>
+  passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1484,6 +1639,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   upvotes?: boolean | Prisma.User$upvotesArgs<ExtArgs>
   createdAssignments?: boolean | Prisma.User$createdAssignmentsArgs<ExtArgs>
   submissions?: boolean | Prisma.User$submissionsArgs<ExtArgs>
+  passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1503,6 +1659,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     upvotes: Prisma.$UpvotePayload<ExtArgs>[]
     createdAssignments: Prisma.$AssignmentPayload<ExtArgs>[]
     submissions: Prisma.$SubmissionPayload<ExtArgs>[]
+    passwordHistory: Prisma.$PasswordHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1917,6 +2074,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   upvotes<T extends Prisma.User$upvotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$upvotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UpvotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdAssignments<T extends Prisma.User$createdAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   submissions<T extends Prisma.User$submissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordHistory<T extends Prisma.User$passwordHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2494,6 +2652,30 @@ export type User$submissionsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.SubmissionScalarFieldEnum | Prisma.SubmissionScalarFieldEnum[]
+}
+
+/**
+ * User.passwordHistory
+ */
+export type User$passwordHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordHistory
+   */
+  select?: Prisma.PasswordHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordHistory
+   */
+  omit?: Prisma.PasswordHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordHistoryInclude<ExtArgs> | null
+  where?: Prisma.PasswordHistoryWhereInput
+  orderBy?: Prisma.PasswordHistoryOrderByWithRelationInput | Prisma.PasswordHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordHistoryScalarFieldEnum | Prisma.PasswordHistoryScalarFieldEnum[]
 }
 
 /**
