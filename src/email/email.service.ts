@@ -60,4 +60,40 @@ export class EmailService {
       console.error(`Failed to send email to ${collegeAdminEmail}:`, error);
     }
   }
+
+  async sendTeacherInvitation(
+  email: string,
+  token: string,
+  joinCode: string,
+  institutionName: string,
+  collegeAdminEmail: string,
+): Promise<void> {
+  try {
+    const registrationLink = `${process.env.FRONTEND_URL}/register/teacher?token=${token}&email=${email}&joinCode=${joinCode}`;
+    
+    const templatePath = path.join(
+      process.cwd(),
+      'src/email/templates/teacher-invitation.html',
+    );
+    let htmlContent = fs.readFileSync(templatePath, 'utf-8');
+
+    htmlContent = htmlContent
+      .replace('{{institutionName}}', institutionName)
+      .replace('{{registrationLink}}', registrationLink)
+      .replace('{{joinCode}}', joinCode);
+
+    const mailOptions = {
+      from: collegeAdminEmail,
+      to: email,
+      subject: `Invitation to join ${institutionName} on Eduhub`,
+      html: htmlContent,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+    console.log(`Teacher invitation email sent to ${email}`);
+  } catch (error) {
+    console.error(`Failed to send invitation email to ${email}:`, error);
+  }
+}
+  
 }

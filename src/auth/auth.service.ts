@@ -1,38 +1,176 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { RegisterDto } from './dto/register.dto';
+import { StudentRegisterDto } from './dto/student-register.dto';
+import { TeacherRegisterDto } from './dto/teacher-register.dto';
+import { InviteTeacherDto } from './dto/invite-teacher.dto'
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import * as crypto from 'crypto';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-  ) {}
+    private emailService: EmailService,
+  ) { }
 
-  async register(dto: RegisterDto) {
-    // 1. Hash the password
+  async registerStudent(dto: StudentRegisterDto) {
+    // 1. Validate join code exists and belongs to institution
+    const institution = await this.prisma.institution.findFirst({
+      where: {
+        joinCode: dto.joinCode,
+      },
+    });
+
+    if (!institution) {
+      throw new UnauthorizedException('Invalid join code or institution');
+    }
+
+    // 2. Check if student with same registration number already exists in this institution
+    const existingStudent = await this.prisma.user.findFirst({
+      where: {
+        registrationNumber: dto.registrationNumber,
+        institutionId: institution.id,
+      },
+    });
+
+    if (existingStudent) {
+      throw new ConflictException('A student with this registration number already exists in this institution');
+    }
+
+    // 3. Hash password
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     try {
-      // 2. Save user to DB
+      // 4. Create student user
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
           password: hashedPassword,
           firstName: dto.firstName,
           lastName: dto.lastName,
-          role: dto.role,
-          institutionId: dto.institutionId,
+          role: 'STUDENT',
+          registrationNumber: dto.registrationNumber,
+          institutionId: institution.id,
         },
       });
 
-      // Don't return the password to the client!
       return user;
     } catch (error) {
-      if (error.code === 'P2002') { // Prisma code for unique constraint (email)
-        throw new ConflictException('Email already exists');
+      if (error.code === 'P2002') {
+        throw new ConflictException('Email already exists in this institution');
+      }
+      throw error;
+    }
+  }
+
+  async registerTeacher(dto: TeacherRegisterDto) {
+    // 1. Validate join code exists and belongs to institution
+    const institution = await this.prisma.institution.findFirst({
+      where: {
+        joinCode: dto.joinCode,
+      },
+    });
+
+    if (!institution) {
+      throw new UnauthorizedException('Invalid join code or institution');
+    }
+
+    // 2. Validate invitation exists, is not used, and not expired
+    const invitation = await this.prisma.invitation.findFirst({
+      where: {
+        email: dto.email,
+        token: dto.invitationToken,
+        isUsed: false,
+        expiresAt: {
+          gt: new Date(), // Greater than current time (not expired)
+        },
+      },
+    });
+
+    if (!invitation) {
+      throw new UnauthorizedException('Invalid or expired invitation');
+    }
+
+    // 3. Hash password
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    try {
+      // 4. Create teacher user
+      const user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          password: hashedPassword,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          role: 'TEACHER',
+          institutionId: institution.id,
+        },
+      });
+
+      // 5. Mark invitation as used
+      await this.prisma.invitation.update({
+        where: { id: invitation.id },
+        data: { isUsed: true },
+      });
+
+      return user;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Email already exists in this institution');
+      }
+      throw error;
+    }
+  }
+
+  async inviteTeacher(dto: InviteTeacherDto, institutionId: string, userId: string) {
+    // 1. Generate a unique token
+    const token = crypto.randomBytes(32).toString('hex');
+
+    // 2. Set expiration (7 days)
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
+
+    try {
+      // 3. Create invitation record
+      const invitation = await this.prisma.invitation.create({
+        data: {
+          email: dto.email,
+          token: token,
+          role: 'TEACHER',
+          institutionId: institutionId,
+          expiresAt: expiresAt,
+        },
+      });
+
+      // 4. Get institution to retrieve join code
+      const institution = await this.prisma.institution.findUnique({
+        where: { id: institutionId },
+      });
+
+      const collegeAdmin = await this.prisma.user.findUnique({
+        where: { id: userId }, // This would need to be passed from controller
+      });
+
+      // 5. Send email to teacher with invitation link
+
+      await this.emailService.sendTeacherInvitation(
+        dto.email,
+        token,
+        institution?.joinCode || '',
+        institution?.name || '',
+        collegeAdmin?.email || '',
+      );
+
+      return {
+        message: 'Invitation sent successfully',
+        expiresAt: expiresAt,
+      };
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('An active invitation already exists for this email');
       }
       throw error;
     }
@@ -51,7 +189,7 @@ export class AuthService {
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 
     // 3. Generate JWT
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role, institutionId: user.institutionId };
     const response: any = {
       access_token: await this.jwtService.signAsync(payload),
     };
@@ -81,10 +219,16 @@ export class AuthService {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) throw new UnauthorizedException('Old password is incorrect');
 
-    // 4. Hash new password
+    // 4. Ensure new password is different from old password
+    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsOld) {
+      throw new ConflictException('New password cannot be the same as old password');
+    }
+
+    // 5. Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // 5. Update password and reset flag
+    // 6. Update password and reset flag
     return this.prisma.user.update({
       where: { id: userId },
       data: {

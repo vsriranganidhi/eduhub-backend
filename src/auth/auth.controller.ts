@@ -1,17 +1,35 @@
 import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
+import { StudentRegisterDto } from './dto/student-register.dto';
+import { TeacherRegisterDto } from './dto/teacher-register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AuthGuard } from './auth.gaurd';
+import { ForbiddenException } from '@nestjs/common';
+import { InviteTeacherDto } from './dto/invite-teacher.dto';
 
 @Controller('auth') // All routes here start with /auth
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    return this.authService.register(dto);
+  @Post('register/student')
+  async register(@Body() dto: StudentRegisterDto) {
+    return this.authService.registerStudent(dto);
+  }
+
+  @Post('register/teacher')
+  async registerTeacher(@Body() dto: TeacherRegisterDto) {
+    return this.authService.registerTeacher(dto);
+  }
+
+  @Post('invite-teacher')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async inviteTeacher(@Body() dto: InviteTeacherDto, @Req() req: any) {
+    if (req.user.role !== 'COLLEGE_ADMIN') {
+      throw new ForbiddenException('Only college admins can invite teachers');
+    }
+    return this.authService.inviteTeacher(dto, req.user.institutionId, req.user.sub);
   }
 
   @HttpCode(HttpStatus.OK) // Login usually returns 200 OK instead of 201 Created
