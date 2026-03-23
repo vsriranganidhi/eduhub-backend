@@ -10,28 +10,23 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 export class NoticeService {
   constructor(private prisma: PrismaService) { }
 
-  async create(dto: CreateNoticeDto, userId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      select: { institutionId: true },
-    });
-
-    if (!user) throw new NotFoundException('User not found');
-
+  async create(dto: CreateNoticeDto, userId: string, institutionId: string) {
     return this.prisma.notice.create({
       data: {
         ...dto,
         authorId: userId,
-        institutionId: user.institutionId,
+        institutionId,
         updatedAt: new Date(),
       },
     });
   }
 
-  async findAll(search?: string, subject?: string, teacherName?: string) {
+  async findAll(search?: string, subject?: string, teacherName?: string, institutionId?: string) {
     return this.prisma.notice.findMany({
       where: {
         AND: [
+          // Filter by user's institution
+          institutionId ? { institutionId } : {},
           // Only fetch active notices (not deleted)
           { deletedAt: null },
           // 1. Search in Title or Content
@@ -95,12 +90,13 @@ export class NoticeService {
     });
   }
 
-  async remove(id: string, userId: string, userRole: string) {
+
+  async remove(id: string, userId: string, userRole: string, institutionId: string) {
     const notice = await this.prisma.notice.findUnique({ where: { id } });
 
     if (!notice) throw new NotFoundException('Notice not found');
 
-    if (notice.authorId !== userId && userRole !== 'ADMIN') {
+    if (notice.authorId !== userId && userRole !== 'COLLEGE_ADMIN' && notice.institutionId !== institutionId) {
       throw new ForbiddenException('No permission');
     }
 
@@ -111,12 +107,18 @@ export class NoticeService {
     });
   }
 
-  async findArchived() {
+  async findArchived(institutionId?: string) {
     return this.prisma.notice.findMany({
       where: {
-        OR: [
-          { deletedAt: { not: null } }, // Manually deleted
-          { expiresAt: { lt: new Date() } } // Naturally expired
+        AND: [
+          // Filter by user's institution
+          institutionId ? { institutionId } : {},
+          {
+            OR: [
+              { deletedAt: { not: null } }, // Manually deleted
+              { expiresAt: { lt: new Date() } } // Naturally expired
+            ],
+          },
         ],
       },
       orderBy: { updatedAt: 'desc' },

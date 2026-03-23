@@ -11,7 +11,7 @@ import { join } from 'path';
 export class SubjectService {
   constructor(private prisma: PrismaService) { }
 
-  async create(dto: CreateSubjectDto, user: { id: string, role: string }) {
+  async create(dto: CreateSubjectDto, user: { id: string, role: string, institutionId: string }) {
     // Role-based validation for subject creation
     if (user.role === 'TEACHER' && !(dto.category == 'TEACHER_RESOURCE' || dto.category == 'ASSIGNMENT')) {
       throw new ForbiddenException('Teachers can only create Teacher Resource subjects or Assignments');
@@ -20,14 +20,6 @@ export class SubjectService {
     if (user.role === 'STUDENT' && dto.category !== 'STUDENT_RESOURCE') {
       throw new ForbiddenException('Students can only create Student Resource subjects');
     }
-
-    // Fetch user's institution ID
-    const userRecord = await this.prisma.user.findUnique({
-      where: { id: user.id },
-      select: { institutionId: true },
-    });
-
-    if (!userRecord) throw new NotFoundException('User not found');
 
     // Check if subject already exists in the same category (case-insensitive)
     const existing = await this.prisma.subject.findFirst({
@@ -44,16 +36,18 @@ export class SubjectService {
     return this.prisma.subject.create({
       data: { 
         ...dto,
-        institutionId: userRecord.institutionId,
+        institutionId: user.institutionId,
+        createdBy: user.id,
       },
     });
   }
 
-  async findAll(category?: SubjectCategory) {
+  async findAll(category?: SubjectCategory, institutionId?: string) {
     return this.prisma.subject.findMany({
       where: {
         // If a category is provided, filter by it. Otherwise, return all.
         ...(category ? { category } : {}),
+        ...(institutionId ? { institutionId } : {}),
       },
       include: {
         _count: {
@@ -69,38 +63,12 @@ export class SubjectService {
 
     if (!subject) throw new NotFoundException('Subject not found');
 
-    // 1. Admin Rule (God Mode) - Can update any subject
-    if (user.role === 'ADMIN') {
-      // Check if new name already exists (excluding current subject)
-      if (dto.name) {
-        const existing = await this.prisma.subject.findFirst({
-          where: {
-            name: { equals: dto.name, mode: 'insensitive' },
-            id: { not: id } // Exclude current subject
-          },
-        });
-
-        if (existing) {
-          throw new ConflictException('Subject with this name already exists');
-        }
-      }
-
-      return this.prisma.subject.update({
-        where: { id },
-        data: dto,
-      });
+    // Authorization: Only COLLEGE_ADMIN or the creator can update
+    if (user.role !== 'COLLEGE_ADMIN' && subject.createdBy !== user.id) {
+      throw new ForbiddenException('You can only update subjects you created');
     }
 
-    // 2. Cross-Category Rule for Teachers and Students
-    if (user.role === 'TEACHER' && subject.category !== 'TEACHER_RESOURCE') {
-      throw new ForbiddenException('Teachers can only update Teacher Resource subjects');
-    }
-
-    if (user.role === 'STUDENT' && subject.category !== 'STUDENT_RESOURCE') {
-      throw new ForbiddenException('Students can only update Student Resource subjects');
-    }
-
-    // 3. Check if new name already exists (excluding current subject)
+    // Check if new name already exists (excluding current subject)
     if (dto.name) {
       const existing = await this.prisma.subject.findFirst({
         where: {
@@ -120,7 +88,7 @@ export class SubjectService {
     });
   }
 
-  async remove(id: string, userRole: string) {
+  async remove(id: string, userId: string, userRole: string) {
     // 1. Fetch the subject and its resources
     const subject = await this.prisma.subject.findUnique({
       where: { id },
@@ -129,15 +97,9 @@ export class SubjectService {
 
     if (!subject) throw new NotFoundException('Subject not found');
 
-    // 2. The "Role vs. Category" Rule
-    // Admins can delete anything. Others must match their world.
-    if (userRole !== 'ADMIN') {
-      if (userRole === 'STUDENT' && subject.category !== SubjectCategory.STUDENT_RESOURCE) {
-        throw new ForbiddenException('Students can only delete subjects in the Student Library');
-      }
-      if (userRole === 'TEACHER' && subject.category !== SubjectCategory.TEACHER_RESOURCE) {
-        throw new ForbiddenException('Teachers can only delete subjects in the Teacher Library');
-      }
+    // 2. Authorization: Only COLLEGE_ADMIN or the creator can delete
+    if (userRole !== 'COLLEGE_ADMIN' && subject.createdBy !== userId) {
+      throw new ForbiddenException('You can only delete subjects you created');
     }
 
     // 3. Physical File Cleanup (Mass Delete)

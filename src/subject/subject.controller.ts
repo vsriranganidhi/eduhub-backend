@@ -23,8 +23,8 @@ export class SubjectController {
 
   @Get() // Everyone can see the list of subjects
   @UseGuards(AuthGuard)
-  findAll(@Query('category') category?: SubjectCategory) {
-    return this.subjectService.findAll(category);
+  findAll(@Req() req: any, @Query('category') category?: SubjectCategory) {
+    return this.subjectService.findAll(category, req.user.institutionId);
   }
 
   @Patch(':id')
@@ -36,8 +36,8 @@ export class SubjectController {
 
   @Delete(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  // We allow all roles here; the Service will check if the Role matches the Subject Category
+  // We allow all roles here; the Service will check if the user is the creator or admin
   remove(@Param('id') id: string, @Req() req: any) {
-    return this.subjectService.remove(id, req.user.role);
+    return this.subjectService.remove(id, req.user.id, req.user.role);
   }
 }

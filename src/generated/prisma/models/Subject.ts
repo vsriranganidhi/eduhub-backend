@@ -29,6 +29,7 @@ export type SubjectMinAggregateOutputType = {
   name: string | null
   category: $Enums.SubjectCategory | null
   createdAt: Date | null
+  createdBy: string | null
   institutionId: string | null
 }
 
@@ -37,6 +38,7 @@ export type SubjectMaxAggregateOutputType = {
   name: string | null
   category: $Enums.SubjectCategory | null
   createdAt: Date | null
+  createdBy: string | null
   institutionId: string | null
 }
 
@@ -45,6 +47,7 @@ export type SubjectCountAggregateOutputType = {
   name: number
   category: number
   createdAt: number
+  createdBy: number
   institutionId: number
   _all: number
 }
@@ -55,6 +58,7 @@ export type SubjectMinAggregateInputType = {
   name?: true
   category?: true
   createdAt?: true
+  createdBy?: true
   institutionId?: true
 }
 
@@ -63,6 +67,7 @@ export type SubjectMaxAggregateInputType = {
   name?: true
   category?: true
   createdAt?: true
+  createdBy?: true
   institutionId?: true
 }
 
@@ -71,6 +76,7 @@ export type SubjectCountAggregateInputType = {
   name?: true
   category?: true
   createdAt?: true
+  createdBy?: true
   institutionId?: true
   _all?: true
 }
@@ -152,6 +158,7 @@ export type SubjectGroupByOutputType = {
   name: string
   category: $Enums.SubjectCategory
   createdAt: Date
+  createdBy: string
   institutionId: string
   _count: SubjectCountAggregateOutputType | null
   _min: SubjectMinAggregateOutputType | null
@@ -181,9 +188,11 @@ export type SubjectWhereInput = {
   name?: Prisma.StringFilter<"Subject"> | string
   category?: Prisma.EnumSubjectCategoryFilter<"Subject"> | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+  createdBy?: Prisma.StringFilter<"Subject"> | string
   institutionId?: Prisma.StringFilter<"Subject"> | string
   resources?: Prisma.LibraryResourceListRelationFilter
   assignments?: Prisma.AssignmentListRelationFilter
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   institution?: Prisma.XOR<Prisma.InstitutionScalarRelationFilter, Prisma.InstitutionWhereInput>
 }
 
@@ -192,9 +201,11 @@ export type SubjectOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   category?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
   institutionId?: Prisma.SortOrder
   resources?: Prisma.LibraryResourceOrderByRelationAggregateInput
   assignments?: Prisma.AssignmentOrderByRelationAggregateInput
+  creator?: Prisma.UserOrderByWithRelationInput
   institution?: Prisma.InstitutionOrderByWithRelationInput
 }
 
@@ -207,9 +218,11 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Subject"> | string
   category?: Prisma.EnumSubjectCategoryFilter<"Subject"> | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+  createdBy?: Prisma.StringFilter<"Subject"> | string
   institutionId?: Prisma.StringFilter<"Subject"> | string
   resources?: Prisma.LibraryResourceListRelationFilter
   assignments?: Prisma.AssignmentListRelationFilter
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   institution?: Prisma.XOR<Prisma.InstitutionScalarRelationFilter, Prisma.InstitutionWhereInput>
 }, "id" | "name_category_institutionId">
 
@@ -218,6 +231,7 @@ export type SubjectOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   category?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
   institutionId?: Prisma.SortOrder
   _count?: Prisma.SubjectCountOrderByAggregateInput
   _max?: Prisma.SubjectMaxOrderByAggregateInput
@@ -232,6 +246,7 @@ export type SubjectScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   category?: Prisma.EnumSubjectCategoryWithAggregatesFilter<"Subject"> | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
+  createdBy?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   institutionId?: Prisma.StringWithAggregatesFilter<"Subject"> | string
 }
 
@@ -242,6 +257,7 @@ export type SubjectCreateInput = {
   createdAt?: Date | string
   resources?: Prisma.LibraryResourceCreateNestedManyWithoutSubjectInput
   assignments?: Prisma.AssignmentCreateNestedManyWithoutSubjectInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedSubjectsInput
   institution: Prisma.InstitutionCreateNestedOneWithoutSubjectsInput
 }
 
@@ -250,6 +266,7 @@ export type SubjectUncheckedCreateInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
   institutionId: string
   resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutSubjectInput
   assignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutSubjectInput
@@ -262,6 +279,7 @@ export type SubjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resources?: Prisma.LibraryResourceUpdateManyWithoutSubjectNestedInput
   assignments?: Prisma.AssignmentUpdateManyWithoutSubjectNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSubjectsNestedInput
   institution?: Prisma.InstitutionUpdateOneRequiredWithoutSubjectsNestedInput
 }
 
@@ -270,6 +288,7 @@ export type SubjectUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   institutionId?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutSubjectNestedInput
   assignments?: Prisma.AssignmentUncheckedUpdateManyWithoutSubjectNestedInput
@@ -280,6 +299,7 @@ export type SubjectCreateManyInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
   institutionId: string
 }
 
@@ -295,6 +315,7 @@ export type SubjectUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   institutionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -319,6 +340,7 @@ export type SubjectCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   category?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
   institutionId?: Prisma.SortOrder
 }
 
@@ -327,6 +349,7 @@ export type SubjectMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   category?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
   institutionId?: Prisma.SortOrder
 }
 
@@ -335,6 +358,7 @@ export type SubjectMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   category?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
   institutionId?: Prisma.SortOrder
 }
 
@@ -385,6 +409,48 @@ export type SubjectUncheckedUpdateManyWithoutInstitutionNestedInput = {
   deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
 }
 
+export type SubjectCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput> | Prisma.SubjectCreateWithoutCreatorInput[] | Prisma.SubjectUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutCreatorInput | Prisma.SubjectCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.SubjectCreateManyCreatorInputEnvelope
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+}
+
+export type SubjectUncheckedCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput> | Prisma.SubjectCreateWithoutCreatorInput[] | Prisma.SubjectUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutCreatorInput | Prisma.SubjectCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.SubjectCreateManyCreatorInputEnvelope
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+}
+
+export type SubjectUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput> | Prisma.SubjectCreateWithoutCreatorInput[] | Prisma.SubjectUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutCreatorInput | Prisma.SubjectCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.SubjectUpsertWithWhereUniqueWithoutCreatorInput | Prisma.SubjectUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.SubjectCreateManyCreatorInputEnvelope
+  set?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  disconnect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  delete?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  update?: Prisma.SubjectUpdateWithWhereUniqueWithoutCreatorInput | Prisma.SubjectUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.SubjectUpdateManyWithWhereWithoutCreatorInput | Prisma.SubjectUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+}
+
+export type SubjectUncheckedUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput> | Prisma.SubjectCreateWithoutCreatorInput[] | Prisma.SubjectUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutCreatorInput | Prisma.SubjectCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.SubjectUpsertWithWhereUniqueWithoutCreatorInput | Prisma.SubjectUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.SubjectCreateManyCreatorInputEnvelope
+  set?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  disconnect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  delete?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  update?: Prisma.SubjectUpdateWithWhereUniqueWithoutCreatorInput | Prisma.SubjectUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.SubjectUpdateManyWithWhereWithoutCreatorInput | Prisma.SubjectUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+}
+
 export type EnumSubjectCategoryFieldUpdateOperationsInput = {
   set?: $Enums.SubjectCategory
 }
@@ -424,6 +490,7 @@ export type SubjectCreateWithoutInstitutionInput = {
   createdAt?: Date | string
   resources?: Prisma.LibraryResourceCreateNestedManyWithoutSubjectInput
   assignments?: Prisma.AssignmentCreateNestedManyWithoutSubjectInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedSubjectsInput
 }
 
 export type SubjectUncheckedCreateWithoutInstitutionInput = {
@@ -431,6 +498,7 @@ export type SubjectUncheckedCreateWithoutInstitutionInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
   resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutSubjectInput
   assignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutSubjectInput
 }
@@ -469,7 +537,54 @@ export type SubjectScalarWhereInput = {
   name?: Prisma.StringFilter<"Subject"> | string
   category?: Prisma.EnumSubjectCategoryFilter<"Subject"> | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+  createdBy?: Prisma.StringFilter<"Subject"> | string
   institutionId?: Prisma.StringFilter<"Subject"> | string
+}
+
+export type SubjectCreateWithoutCreatorInput = {
+  id?: string
+  name: string
+  category: $Enums.SubjectCategory
+  createdAt?: Date | string
+  resources?: Prisma.LibraryResourceCreateNestedManyWithoutSubjectInput
+  assignments?: Prisma.AssignmentCreateNestedManyWithoutSubjectInput
+  institution: Prisma.InstitutionCreateNestedOneWithoutSubjectsInput
+}
+
+export type SubjectUncheckedCreateWithoutCreatorInput = {
+  id?: string
+  name: string
+  category: $Enums.SubjectCategory
+  createdAt?: Date | string
+  institutionId: string
+  resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutSubjectInput
+  assignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectCreateOrConnectWithoutCreatorInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput>
+}
+
+export type SubjectCreateManyCreatorInputEnvelope = {
+  data: Prisma.SubjectCreateManyCreatorInput | Prisma.SubjectCreateManyCreatorInput[]
+  skipDuplicates?: boolean
+}
+
+export type SubjectUpsertWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutCreatorInput, Prisma.SubjectUncheckedUpdateWithoutCreatorInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutCreatorInput, Prisma.SubjectUncheckedCreateWithoutCreatorInput>
+}
+
+export type SubjectUpdateWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutCreatorInput, Prisma.SubjectUncheckedUpdateWithoutCreatorInput>
+}
+
+export type SubjectUpdateManyWithWhereWithoutCreatorInput = {
+  where: Prisma.SubjectScalarWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateManyMutationInput, Prisma.SubjectUncheckedUpdateManyWithoutCreatorInput>
 }
 
 export type SubjectCreateWithoutResourcesInput = {
@@ -478,6 +593,7 @@ export type SubjectCreateWithoutResourcesInput = {
   category: $Enums.SubjectCategory
   createdAt?: Date | string
   assignments?: Prisma.AssignmentCreateNestedManyWithoutSubjectInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedSubjectsInput
   institution: Prisma.InstitutionCreateNestedOneWithoutSubjectsInput
 }
 
@@ -486,6 +602,7 @@ export type SubjectUncheckedCreateWithoutResourcesInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
   institutionId: string
   assignments?: Prisma.AssignmentUncheckedCreateNestedManyWithoutSubjectInput
 }
@@ -512,6 +629,7 @@ export type SubjectUpdateWithoutResourcesInput = {
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.AssignmentUpdateManyWithoutSubjectNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSubjectsNestedInput
   institution?: Prisma.InstitutionUpdateOneRequiredWithoutSubjectsNestedInput
 }
 
@@ -520,6 +638,7 @@ export type SubjectUncheckedUpdateWithoutResourcesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   institutionId?: Prisma.StringFieldUpdateOperationsInput | string
   assignments?: Prisma.AssignmentUncheckedUpdateManyWithoutSubjectNestedInput
 }
@@ -530,6 +649,7 @@ export type SubjectCreateWithoutAssignmentsInput = {
   category: $Enums.SubjectCategory
   createdAt?: Date | string
   resources?: Prisma.LibraryResourceCreateNestedManyWithoutSubjectInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedSubjectsInput
   institution: Prisma.InstitutionCreateNestedOneWithoutSubjectsInput
 }
 
@@ -538,6 +658,7 @@ export type SubjectUncheckedCreateWithoutAssignmentsInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
   institutionId: string
   resources?: Prisma.LibraryResourceUncheckedCreateNestedManyWithoutSubjectInput
 }
@@ -564,6 +685,7 @@ export type SubjectUpdateWithoutAssignmentsInput = {
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resources?: Prisma.LibraryResourceUpdateManyWithoutSubjectNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSubjectsNestedInput
   institution?: Prisma.InstitutionUpdateOneRequiredWithoutSubjectsNestedInput
 }
 
@@ -572,6 +694,7 @@ export type SubjectUncheckedUpdateWithoutAssignmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   institutionId?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutSubjectNestedInput
 }
@@ -581,6 +704,7 @@ export type SubjectCreateManyInstitutionInput = {
   name: string
   category: $Enums.SubjectCategory
   createdAt?: Date | string
+  createdBy: string
 }
 
 export type SubjectUpdateWithoutInstitutionInput = {
@@ -590,6 +714,7 @@ export type SubjectUpdateWithoutInstitutionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resources?: Prisma.LibraryResourceUpdateManyWithoutSubjectNestedInput
   assignments?: Prisma.AssignmentUpdateManyWithoutSubjectNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSubjectsNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutInstitutionInput = {
@@ -597,6 +722,7 @@ export type SubjectUncheckedUpdateWithoutInstitutionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutSubjectNestedInput
   assignments?: Prisma.AssignmentUncheckedUpdateManyWithoutSubjectNestedInput
 }
@@ -606,6 +732,43 @@ export type SubjectUncheckedUpdateManyWithoutInstitutionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type SubjectCreateManyCreatorInput = {
+  id?: string
+  name: string
+  category: $Enums.SubjectCategory
+  createdAt?: Date | string
+  institutionId: string
+}
+
+export type SubjectUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.LibraryResourceUpdateManyWithoutSubjectNestedInput
+  assignments?: Prisma.AssignmentUpdateManyWithoutSubjectNestedInput
+  institution?: Prisma.InstitutionUpdateOneRequiredWithoutSubjectsNestedInput
+}
+
+export type SubjectUncheckedUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  institutionId?: Prisma.StringFieldUpdateOperationsInput | string
+  resources?: Prisma.LibraryResourceUncheckedUpdateManyWithoutSubjectNestedInput
+  assignments?: Prisma.AssignmentUncheckedUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectUncheckedUpdateManyWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumSubjectCategoryFieldUpdateOperationsInput | $Enums.SubjectCategory
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  institutionId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -653,9 +816,11 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name?: boolean
   category?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   institutionId?: boolean
   resources?: boolean | Prisma.Subject$resourcesArgs<ExtArgs>
   assignments?: boolean | Prisma.Subject$assignmentsArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
@@ -665,7 +830,9 @@ export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   category?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   institutionId?: boolean
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
@@ -674,7 +841,9 @@ export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   category?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   institutionId?: boolean
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
@@ -683,20 +852,24 @@ export type SubjectSelectScalar = {
   name?: boolean
   category?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   institutionId?: boolean
 }
 
-export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "category" | "createdAt" | "institutionId", ExtArgs["result"]["subject"]>
+export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "category" | "createdAt" | "createdBy" | "institutionId", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resources?: boolean | Prisma.Subject$resourcesArgs<ExtArgs>
   assignments?: boolean | Prisma.Subject$assignmentsArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
 }
 export type SubjectIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   institution?: boolean | Prisma.InstitutionDefaultArgs<ExtArgs>
 }
 
@@ -705,6 +878,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     resources: Prisma.$LibraryResourcePayload<ExtArgs>[]
     assignments: Prisma.$AssignmentPayload<ExtArgs>[]
+    creator: Prisma.$UserPayload<ExtArgs>
     institution: Prisma.$InstitutionPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -712,6 +886,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     name: string
     category: $Enums.SubjectCategory
     createdAt: Date
+    createdBy: string
     institutionId: string
   }, ExtArgs["result"]["subject"]>
   composites: {}
@@ -1109,6 +1284,7 @@ export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   resources<T extends Prisma.Subject$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LibraryResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignments<T extends Prisma.Subject$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   institution<T extends Prisma.InstitutionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstitutionDefaultArgs<ExtArgs>>): Prisma.Prisma__InstitutionClient<runtime.Types.Result.GetResult<Prisma.$InstitutionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1143,6 +1319,7 @@ export interface SubjectFieldRefs {
   readonly name: Prisma.FieldRef<"Subject", 'String'>
   readonly category: Prisma.FieldRef<"Subject", 'SubjectCategory'>
   readonly createdAt: Prisma.FieldRef<"Subject", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"Subject", 'String'>
   readonly institutionId: Prisma.FieldRef<"Subject", 'String'>
 }
     

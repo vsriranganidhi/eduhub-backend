@@ -49,6 +49,7 @@ model User {
   createdAssignments Assignment[] @relation("CreatedAssignments")
   submissions        Submission[] @relation("UserSubmissions")
   passwordHistory    PasswordHistory[]
+  createdSubjects    Subject[]
 
   requiresPasswordReset Boolean? @default(false)
 
@@ -111,6 +112,10 @@ model Subject {
   resources LibraryResource[]
   assignments Assignment[]
   createdAt DateTime          @default(now())
+
+  // Track who created this subject
+  createdBy String
+  creator   User              @relation(fields: [createdBy], references: [id])
 
   // Multi-Tenant Link
   institutionId String
