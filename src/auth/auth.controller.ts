@@ -44,4 +44,18 @@ export class AuthController {
   async resetPassword(@Body() dto: ResetPasswordDto, @Req() req: any) {
     return this.authService.resetPassword(req.user.sub, dto.oldPassword, dto.newPassword, dto.confirmPassword);
   }
+
+  @Post('logout')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async logout(@Req() req: any) {
+    return this.authService.logout(req.user.sub);
+  }
+
+  @Post('delete-account')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async deleteAccount(@Req() req: any) {
+    return this.authService.deleteAccount(req.user.sub);
+  }
 }

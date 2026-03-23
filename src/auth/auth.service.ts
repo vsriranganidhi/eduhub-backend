@@ -261,4 +261,22 @@ export class AuthService {
       },
     });
   }
+
+  async logout(userId: string) {
+    return { message: 'Logged out successfully' };
+  }
+
+  async deleteAccount(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    await this.prisma.user.delete({
+      where: { id: userId },
+    });
+
+    return { message: 'Account deleted successfully' };
+  }
 }
