@@ -43,6 +43,7 @@ export class InstitutionService {
         const institution = await tx.institution.create({
           data: {
             name: dto.name,
+            branch: dto.branch,
             joinCode: joinCode,
           },
         });
@@ -57,6 +58,14 @@ export class InstitutionService {
             role: Role.COLLEGE_ADMIN,
             institutionId: institution.id,
             requiresPasswordReset: true,
+          },
+        });
+
+        // Store password in history
+        await tx.passwordHistory.create({
+          data: {
+            userId: collegeAdmin.id,
+            passwordHash: hashedPassword,
           },
         });
 

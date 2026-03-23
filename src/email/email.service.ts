@@ -69,7 +69,7 @@ export class EmailService {
   collegeAdminEmail: string,
 ): Promise<void> {
   try {
-    const registrationLink = `${process.env.FRONTEND_URL}/register/teacher?token=${token}&email=${email}&joinCode=${joinCode}`;
+    const registrationLink = `${process.env.FRONTEND_URL}/auth/register/teacher?token=${token}&email=${email}&joinCode=${joinCode}`;
     
     const templatePath = path.join(
       process.cwd(),
