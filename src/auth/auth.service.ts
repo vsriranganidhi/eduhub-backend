@@ -25,6 +25,115 @@ export class AuthService {
     });
   }
 
+  async inviteTeacher(dto: InviteTeacherDto, institutionId: string, userId: string) {
+    // 1. Generate a unique token
+    const token = crypto.randomBytes(32).toString('hex');
+
+    // 2. Set expiration (7 days)
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
+
+    try {
+      // 3. Create invitation record
+      const invitation = await this.prisma.invitation.create({
+        data: {
+          email: dto.email,
+          token: token,
+          role: 'TEACHER',
+          institutionId: institutionId,
+          expiresAt: expiresAt,
+        },
+      });
+
+      // 4. Get institution to retrieve join code
+      const institution = await this.prisma.institution.findUnique({
+        where: { id: institutionId },
+      });
+
+      const collegeAdmin = await this.prisma.user.findUnique({
+        where: { id: userId }, // This would need to be passed from controller
+      });
+
+      // 5. Send email to teacher with invitation link
+
+      await this.emailService.sendTeacherInvitation(
+        dto.email,
+        token,
+        institution?.joinCode || '',
+        institution?.name || '',
+        collegeAdmin?.email || '',
+      );
+
+      return {
+        message: 'Invitation sent successfully',
+        expiresAt: expiresAt,
+      };
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('An active invitation already exists for this email');
+      }
+      throw error;
+    }
+  }
+
+  async resendTeacherInvitation(dto: any, institutionId: string, userId: string) {
+    // 1. Find existing invitation for this email and institution
+    const existingInvitation = await this.prisma.invitation.findFirst({
+      where: {
+        email: dto.email,
+        institutionId: institutionId,
+      },
+    });
+
+    if (!existingInvitation) {
+      throw new UnauthorizedException('No invitation found for this email in your institution');
+    }
+
+    // 2. Generate a new token
+    const newToken = crypto.randomBytes(32).toString('hex');
+
+    // 3. Set new expiration (7 days from now)
+    const newExpiresAt = new Date();
+    newExpiresAt.setDate(newExpiresAt.getDate() + 7);
+
+    try {
+      // 4. Update the invitation with new token and expiration
+      const updatedInvitation = await this.prisma.invitation.update({
+        where: { id: existingInvitation.id },
+        data: {
+          token: newToken,
+          expiresAt: newExpiresAt,
+          isUsed: false,
+        },
+      });
+
+      // 5. Get institution and college admin details
+      const institution = await this.prisma.institution.findUnique({
+        where: { id: institutionId },
+      });
+
+      const collegeAdmin = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      // 6. Send email with new invitation link
+      await this.emailService.sendTeacherInvitation(
+        dto.email,
+        newToken,
+        institution?.joinCode || '',
+        institution?.name || '',
+        collegeAdmin?.email || '',
+      );
+
+      return {
+        message: 'Invitation resent successfully',
+        expiresAt: newExpiresAt,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async registerStudent(dto: StudentRegisterDto) {
     // 1. Validate join code exists and belongs to institution
     const institution = await this.prisma.institution.findFirst({
@@ -95,6 +204,7 @@ export class AuthService {
       where: {
         email: dto.email,
         token: dto.invitationToken,
+        institutionId: institution.id,
         isUsed: false,
         expiresAt: {
           gt: new Date(), // Greater than current time (not expired)
@@ -135,57 +245,6 @@ export class AuthService {
     } catch (error) {
       if (error.code === 'P2002') {
         throw new ConflictException('Email already exists in this institution');
-      }
-      throw error;
-    }
-  }
-
-  async inviteTeacher(dto: InviteTeacherDto, institutionId: string, userId: string) {
-    // 1. Generate a unique token
-    const token = crypto.randomBytes(32).toString('hex');
-
-    // 2. Set expiration (7 days)
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7);
-
-    try {
-      // 3. Create invitation record
-      const invitation = await this.prisma.invitation.create({
-        data: {
-          email: dto.email,
-          token: token,
-          role: 'TEACHER',
-          institutionId: institutionId,
-          expiresAt: expiresAt,
-        },
-      });
-
-      // 4. Get institution to retrieve join code
-      const institution = await this.prisma.institution.findUnique({
-        where: { id: institutionId },
-      });
-
-      const collegeAdmin = await this.prisma.user.findUnique({
-        where: { id: userId }, // This would need to be passed from controller
-      });
-
-      // 5. Send email to teacher with invitation link
-
-      await this.emailService.sendTeacherInvitation(
-        dto.email,
-        token,
-        institution?.joinCode || '',
-        institution?.name || '',
-        collegeAdmin?.email || '',
-      );
-
-      return {
-        message: 'Invitation sent successfully',
-        expiresAt: expiresAt,
-      };
-    } catch (error) {
-      if (error.code === 'P2002') {
-        throw new ConflictException('An active invitation already exists for this email');
       }
       throw error;
     }

@@ -1,52 +1,69 @@
-Error1
+Authentication System
 
-  port: 3000
-}
+1. Registering super admin by running seed
+    - Every user should be associated with an institution. 
+    - So, first we create a master institution with a join code which should not be used by any other user. 
+    - Then we create the super admin user with first name, last name, email, password and institution id.
+    - User role is set to SUPER_ADMIN.
 
-Node.js v25.3.0
-ranga.nidhi@MB-M-RANGANI eduhub-backend % lsof -ti:3000 | xargs kill -9
-ranga.nidhi@MB-M-RANGANI eduhub-backend % npm run start dev            
+2. Onboarding institutions and Registering college admins
+  - Route: POST /institutions
+    - Only super admins are allowed to onboard institutions.
+    - Super admin sends institution details (name, branch) and college admin details (first name, last name, email) to the endpoint.
+    - Join code for the institution and a temporary password for the college admin are generated. resetPassword is set to true.
+    - The endpoint creates the institution and college admin user in a single transaction.
+    - After successful creation, the college admin is sent an email with the join code, password and login url.
+    - If sending email fails and creation of entries in database are successful, then the endpoint throws an error.
 
-> eduhub-backend@0.0.1 start
-> nest start dev
+3. First time logging in of college admins
+  - Route: POST /auth/login
+    - college admin sends email and password to the endpoint.
+    - Since resetPassword is set to true instead of directly sending a jwt token resetPassword=true is sent in response. Then the college admin should be redirected to a page to reset their password.
 
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [NestFactory] Starting Nest application...
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +5ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RoutesResolver] AppController {/}: +1ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post/:id, GET} route +1ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/feed, GET} route +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/filtered-posts/:searchString, GET} route +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post, POST} route +1ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/user, POST} route +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/publish/:id, PUT} route +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [RouterExplorer] Mapped {/post/:id, DELETE} route +0ms
-[Nest] 58755  - 02/18/2026, 11:34:04 PM     LOG [NestApplication] Nest application successfully started +0ms
-[Nest] 58755  - 02/18/2026, 11:34:07 PM   ERROR [ExceptionsHandler] Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string
-    at /Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/pg-pool/index.js:45:11
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
-    at async PrismaPgAdapter.performIO (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/adapter-pg/dist/index.js:652:22)
-    at async PrismaPgAdapter.queryRaw (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/adapter-pg/dist/index.js:602:30)
-    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:182:26)
-    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:209:41)
-    at async e.interpretNode (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:268:41)
-    at async e.run (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:93:23)
-    at async e.execute (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client/src/runtime/core/engines/client/LocalExecutor.ts:81:12)
-    at async qt.request (/Users/ranga.nidhi/Documents/PersonalProject1/eduhub-backend/node_modules/@prisma/client/src/runtime/core/engines/client/ClientEngine.ts:492:22) {
-  clientVersion: '7.4.0'
-}
+4. Forced password reset
+  - Route: POST /auth/reset-password
+    - college admin sends old password, new password and confirm password to the endpoint.
+    - All passwords are stored in passwordHistory table so that they should not be repeated.
+    - The new password should not be the same as any of the passwords used before.
+    - The endpoint updates the password and sets resetPassword to false.
 
-Error resolved when initially in prisma.service.ts 
-    const adapter = new PrismaPg({ url: process.env.DATABASE_URL });
-was used but changes it to 
-    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+5. Logging in after password reset
+  - Route: POST /auth/login
+    - college admin sends email and password to the endpoint.
+    - Since resetPassword is set to false a jwt token is sent in response.
+
+6. Inviting teachers via email
+  - Route: POST /auth/invite-teacher
+    - Only college admins are allowed to invite teachers.
+    - College admin sends email id of the teachers to the endpoint and institution id is extracted from the request context.
+    - We generate a unique invitation token and store it in the invitation table with an expiration date (7 days), role as TEACHER and also isUsed flag as false initially with the email id of the teacher.
+    - We send an email to the teacher with the registration link which has the invitation token and join code as a query parameter.
+
+7. Registering teachers via invitation link
+  - Route: POST /auth/register
+    - Teacher clicks on the registration link and is redirected to a registration page. Join code, invitation token and role are passed as query parameters.
+    - Teacher enters their details (first name, last name) and a password and hits the endpoint.
+    - Validation is done using join code and invitation token to check if teacher is registering in institution they are supposed to. Invalid or expired invitation tokens should throw an error.
+    - After registering the invitation token is marked as used.
+
+8. Resending invitation to teachers if invitation is expired
+  - Route: POST /auth/resend-invitation
+    - When invitation is expired, the teacher sees an error in frontend and contacts the college admin.
+    - A new invitation is generated and sent to the teacher.
+    - Here college admin updates the existing invitation with a new token and expiration date.
+
+9. Registering students
+  - Route: POST /auth/register
+    - Students are shared the join code by the college admin.
+    - Students enter their details (email, first name, last name, registration number), join code and a password and hit the endpoint.
+    - Unique registration numbers inside an institution.
+
+10. Logging in of teachers and students
+  - Route: POST /auth/login
+    - Teachers and students send email and password to the endpoint.
+    - A jwt token is sent in response.
 
 
-http: for sending webistes to browser
-smtp: for sending emails 
-it handles outgoing emails only
-it doesnot receive emails
-imap/pop3: for receiving emails
-1. next js app creates the email
-2. 
+
+    
+

@@ -7,20 +7,12 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AuthGuard } from './auth.gaurd';
 import { ForbiddenException } from '@nestjs/common';
 import { InviteTeacherDto } from './dto/invite-teacher.dto';
+import { ResendInvitationDto } from './dto/resend-invitation.dto';
 
 @Controller('auth') // All routes here start with /auth
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post('register/student')
-  async register(@Body() dto: StudentRegisterDto) {
-    return this.authService.registerStudent(dto);
-  }
-
-  @Post('register/teacher')
-  async registerTeacher(@Body() dto: TeacherRegisterDto) {
-    return this.authService.registerTeacher(dto);
-  }
 
   @Post('invite-teacher')
   @UseGuards(AuthGuard)
@@ -30,6 +22,26 @@ export class AuthController {
       throw new ForbiddenException('Only college admins can invite teachers');
     }
     return this.authService.inviteTeacher(dto, req.user.institutionId, req.user.sub);
+  }
+
+  @Post('resend-invitation')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async resendInvitation(@Body() dto: ResendInvitationDto, @Req() req: any) {
+    if (req.user.role !== 'COLLEGE_ADMIN') {
+      throw new ForbiddenException('Only college admins can resend invitations');
+    }
+    return this.authService.resendTeacherInvitation(dto, req.user.institutionId, req.user.sub);
+  }
+
+  @Post('register/student')
+  async register(@Body() dto: StudentRegisterDto) {
+    return this.authService.registerStudent(dto);
+  }
+
+  @Post('register/teacher')
+  async registerTeacher(@Body() dto: TeacherRegisterDto) {
+    return this.authService.registerTeacher(dto);
   }
 
   @HttpCode(HttpStatus.OK) // Login usually returns 200 OK instead of 201 Created
