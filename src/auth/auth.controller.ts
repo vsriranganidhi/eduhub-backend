@@ -6,9 +6,10 @@ import { TeacherRegisterDto } from './dto/teacher-register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AuthGuard } from './auth.gaurd';
-import { ForbiddenException } from '@nestjs/common';
 import { InviteTeacherDto } from './dto/invite-teacher.dto';
 import { ResendInvitationDto } from './dto/resend-invitation.dto';
+import { Roles } from './decorators/roles.decorator';
+import { RolesGuard } from './roles.gaurd';
 
 @Controller('auth') // All routes here start with /auth
 export class AuthController {
@@ -16,22 +17,18 @@ export class AuthController {
 
 
   @Post('invite-teacher')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('COLLEGE_ADMIN')
   @HttpCode(HttpStatus.OK)
   async inviteTeacher(@Body() dto: InviteTeacherDto, @Req() req: any) {
-    if (req.user.role !== 'COLLEGE_ADMIN') {
-      throw new ForbiddenException('Only college admins can invite teachers');
-    }
     return this.authService.inviteTeacher(dto, req.user.institutionId, req.user.sub);
   }
 
   @Post('resend-invitation')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('COLLEGE_ADMIN')
   @HttpCode(HttpStatus.OK)
   async resendInvitation(@Body() dto: ResendInvitationDto, @Req() req: any) {
-    if (req.user.role !== 'COLLEGE_ADMIN') {
-      throw new ForbiddenException('Only college admins can resend invitations');
-    }
     return this.authService.resendTeacherInvitation(dto, req.user.institutionId, req.user.sub);
   }
 

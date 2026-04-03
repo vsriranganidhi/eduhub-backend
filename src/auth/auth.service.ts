@@ -29,23 +29,26 @@ export class AuthService {
     // 1. Generate a unique token
     const token = crypto.randomBytes(32).toString('hex');
 
-    // 2. Set expiration (7 days)
+    // 2. Hash the token for storage
+    const tokenHash = await bcrypt.hash(token, 10);
+
+    // 3. Set expiration (7 days)
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 
     try {
-      // 3. Create invitation record
+      // 4. Create invitation record with hashed token
       const invitation = await this.prisma.invitation.create({
         data: {
           email: dto.email,
-          token: token,
+          token: tokenHash,
           role: 'TEACHER',
           institutionId: institutionId,
           expiresAt: expiresAt,
         },
       });
 
-      // 4. Get institution to retrieve join code
+      // 5. Get institution to retrieve join code
       const institution = await this.prisma.institution.findUnique({
         where: { id: institutionId },
       });
@@ -54,7 +57,7 @@ export class AuthService {
         where: { id: userId }, // This would need to be passed from controller
       });
 
-      // 5. Send email to teacher with invitation link
+      // 6. Send email to teacher with plain-text token (not the hash)
 
       await this.emailService.sendTeacherInvitation(
         dto.email,
@@ -92,22 +95,25 @@ export class AuthService {
     // 2. Generate a new token
     const newToken = crypto.randomBytes(32).toString('hex');
 
-    // 3. Set new expiration (7 days from now)
+    // 3. Hash the new token for storage
+    const newTokenHash = await bcrypt.hash(newToken, 10);
+
+    // 4. Set new expiration (7 days from now)
     const newExpiresAt = new Date();
     newExpiresAt.setDate(newExpiresAt.getDate() + 7);
 
     try {
-      // 4. Update the invitation with new token and expiration
+      // 5. Update the invitation with new token hash and expiration
       const updatedInvitation = await this.prisma.invitation.update({
         where: { id: existingInvitation.id },
         data: {
-          token: newToken,
+          token: newTokenHash,
           expiresAt: newExpiresAt,
           isUsed: false,
         },
       });
 
-      // 5. Get institution and college admin details
+      // 6. Get institution and college admin details
       const institution = await this.prisma.institution.findUnique({
         where: { id: institutionId },
       });
@@ -116,7 +122,7 @@ export class AuthService {
         where: { id: userId },
       });
 
-      // 6. Send email with new invitation link
+      // 7. Send email with new plain-text token (not the hash)
       await this.emailService.sendTeacherInvitation(
         dto.email,
         newToken,
@@ -162,21 +168,30 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     try {
-      // 4. Create student user
-      const user = await this.prisma.user.create({
-        data: {
-          email: dto.email,
-          password: hashedPassword,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-          role: 'STUDENT',
-          registrationNumber: dto.registrationNumber,
-          institutionId: institution.id,
-        },
-      });
+      // 4. Create student user and store password history in a transaction
+      const user = await this.prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            email: dto.email,
+            password: hashedPassword,
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            role: 'STUDENT',
+            registrationNumber: dto.registrationNumber,
+            institutionId: institution.id,
+          },
+        });
 
-      // 5. Store password in history
-      await this.storePasswordHistory(user.id, hashedPassword);
+        // 5. Store password in history
+        await tx.passwordHistory.create({
+          data: {
+            userId: createdUser.id,
+            passwordHash: hashedPassword,
+          },
+        });
+
+        return createdUser;
+      });
 
       return user;
     } catch (error) {
@@ -199,11 +214,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid join code or institution');
     }
 
-    // 2. Validate invitation exists, is not used, and not expired
+    // 2. Find invitation by email and institution (not used and not expired)
     const invitation = await this.prisma.invitation.findFirst({
       where: {
         email: dto.email,
-        token: dto.invitationToken,
         institutionId: institution.id,
         isUsed: false,
         expiresAt: {
@@ -216,29 +230,44 @@ export class AuthService {
       throw new UnauthorizedException('Invalid or expired invitation');
     }
 
-    // 3. Hash password
+    // 3. Validate the provided token against the stored hash
+    const isTokenValid = await bcrypt.compare(dto.invitationToken, invitation.token);
+    if (!isTokenValid) {
+      throw new UnauthorizedException('Invalid invitation token');
+    }
+
+    // 4. Hash password
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     try {
-      // 4. Create teacher user
-      const user = await this.prisma.user.create({
-        data: {
-          email: dto.email,
-          password: hashedPassword,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-          role: 'TEACHER',
-          institutionId: institution.id,
-        },
-      });
+      // 5. Create teacher user, store password history, and mark invitation as used in a transaction
+      const user = await this.prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            email: dto.email,
+            password: hashedPassword,
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            role: 'TEACHER',
+            institutionId: institution.id,
+          },
+        });
 
-      // 5. Store password in history
-      await this.storePasswordHistory(user.id, hashedPassword);
+        // 6. Store password in history
+        await tx.passwordHistory.create({
+          data: {
+            userId: createdUser.id,
+            passwordHash: hashedPassword,
+          },
+        });
 
-      // 6. Mark invitation as used
-      await this.prisma.invitation.update({
-        where: { id: invitation.id },
-        data: { isUsed: true },
+        // 7. Mark invitation as used
+        await tx.invitation.update({
+          where: { id: invitation.id },
+          data: { isUsed: true },
+        });
+
+        return createdUser;
       });
 
       return user;
@@ -308,16 +337,23 @@ export class AuthService {
     // 6. Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // 7. Store old password in history
-    await this.storePasswordHistory(userId, user.password);
+    // 7. Store old password in history and update password in a transaction
+    return this.prisma.$transaction(async (tx) => {
+      await tx.passwordHistory.create({
+        data: {
+          userId,
+          passwordHash: user.password,
+        },
+      });
 
-    // 8. Update password and reset flag
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        password: hashedPassword,
-        requiresPasswordReset: false,
-      },
+      // 8. Update password and reset flag
+      return tx.user.update({
+        where: { id: userId },
+        data: {
+          password: hashedPassword,
+          requiresPasswordReset: false,
+        },
+      });
     });
   }
 
