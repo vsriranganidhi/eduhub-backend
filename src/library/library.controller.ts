@@ -57,15 +57,12 @@ export class LibraryController {
         callback(null, `${uniqueSuffix}${ext}`);
       },
     }),
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit (in bytes)
+    },
   }))
   async uploadFile(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB limit
-        ],
-      }),
-    ) file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreateResourceDto,
     @Req() req: any
   ) {
@@ -73,14 +70,14 @@ export class LibraryController {
     return this.libraryService.createResource(file, dto, req.user.sub, req.user.role);
   }
 
-  @Get()
+  @Get(':subjectId')
   @UseGuards(AuthGuard) // Everyone (Student, Teacher, Admin) can view the library
   findAll(
-    @Query('subject') subject?: string,
+    @Param('subjectId') subjectId: string,
     @Query('search') search?: string,
     @Query('uploaderName') uploaderName?: string,
   ) {
-    return this.libraryService.findAll(subject, search, uploaderName);
+    return this.libraryService.findAll(subjectId, search, uploaderName);
   }
 
   @Post(':id/upvote')

@@ -42,7 +42,7 @@ export class LibraryService {
     }
 
     // For students, override the category to ensure consistency
-    const finalCategory = userRole === 'STUDENT' ? 'STUDENT_RESOURCE' : dto.category;
+    const finalCategory = userRole === 'STUDENT' ? 'STUDENT_RESOURCE' : subject.category;
 
     // 3. Create the resource
     return this.prisma.libraryResource.create({
@@ -58,16 +58,12 @@ export class LibraryService {
     });
   }
 
-  async findAll(subject?: string, search?: string, uploaderName?: string) {
+  async findAll(subjectId: string, search?: string, uploaderName?: string) {
     const resources = await this.prisma.libraryResource.findMany({
       where: {
         AND: [
-          // Filter by subject name through relation
-          subject ? {
-            subject: {
-              name: { contains: subject, mode: 'insensitive' }
-            }
-          } : {},
+          // Filter by subject ID
+          { subjectId },
           // Search in title and description
           search ? {
             OR: [
@@ -202,26 +198,18 @@ export class LibraryService {
   }
 
   async getComments(resourceId: string) {
-    // Fetch only root comments (where parentId is null)
-    const rootComments = await this.prisma.comment.findMany({
-      where: { resourceId, parentId: null },
+    // Fetch all comments (root and child) with parent IDs for frontend hierarchy
+    const allComments = await this.prisma.comment.findMany({
+      where: { resourceId },
       include: {
         author: {
           select: { firstName: true, lastName: true },
         },
-        replies: {
-          include: {
-            author: {
-              select: { firstName: true, lastName: true },
-            },
-          },
-          orderBy: { createdAt: 'asc' }, // Oldest replies first
-        },
       },
-      orderBy: { createdAt: 'desc' }, // Newest root comments first
+      orderBy: { createdAt: 'asc' },
     });
 
-    return rootComments;
+    return allComments;
   }
 
   async updateComment(commentId: string, userId: string, dto: UpdateCommentDto) {

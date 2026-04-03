@@ -15,7 +15,7 @@ export class SubjectController {
   constructor(private readonly subjectService: SubjectService) { }
 
   @Post()
-  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
+  @Roles(Role.TEACHER, Role.STUDENT)
   @UseGuards(AuthGuard, RolesGuard)
   create(@Body() createSubjectDto: CreateSubjectDto, @Req() req: any) {
     return this.subjectService.create(createSubjectDto, req.user);

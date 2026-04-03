@@ -63,7 +63,188 @@ Authentication System
     - Teachers and students send email and password to the endpoint.
     - A jwt token is sent in response.
 
+11. Logging out
+  - Route: POST /auth/logout
+    - It is done in frontend side by clearing out the jwt token as it is serverless system.
+    - A log statement is made for successful logging out.
+
+12. Deleting account
+  - Route: POST /auth/delete
+    -Entry of the user from database is removed. All the data related to the user are auto deleted because of cascading deletion.
 
 
-    
+Notices
 
+  1. Creating Notices
+    - Route: POST /notice
+      - Notices can be of two types: i. Related to a subject 
+                                     ii. General
+      - While subject is a field in notice table and not the subject associated with library or assignment.
+      - Only a teacher or college admin has the authority to create a notice.
+      - Notice has to be created with title, content, subject (optional and is General by default). Creator can set an expiration date to the notice. Institution id of the creator is attached to the notice.
+      - The notices which are expired are not immediately deleted but after 7 days of deletion. Until then they are considered archive.
+      - A cron job runs every mid night to delete the notices which are expired and are for more than 7 days from the notice table.
+
+  2. Fetching notices
+    - Route: GET /notice
+      - Teachers, students and college admins can fetch notices.
+      - Notices are filtered using institutionId and only active notices are fetched. (which are not expired/ deleted).
+
+  3. Updating notices
+    -Route: PATCH /notice/:id
+      - Only creators of notice/ college admins can update the notices.
+
+  4. Fetching archived notices
+    - Route: GET /notice/archived
+      -Fetch all deleted or expired notices from the last 7 days.
+
+  5. Delete notices
+    -Route: DELETE /notice/:id
+      - Only college admin or owner of the notice can delete it.
+      - Only soft deletion is done by updating the deletedAt time without deleting it directly from notice table in order to make them archived for 7 days.
+
+Subjects
+
+  1. Creating Subjects
+    - Route: POST /subjects
+      - Subjects are of 3 categories (STUDENT_RESORUCE, TEACHER_RESOUCE, ASSIGNMENT).
+      - In each category subject name should be unique.
+      - User sends subject name, category to the endpoint and institution id is gained from the request object.
+      - STUDENT_RESORUCE subjects can be created only by students. TEACHER_RESOUCE and ASSIGNMENT subjects can be created by teachers.
+      - Validation is done using the role of the user.
+
+  2. Fetching subjects
+    - Route: GET /subjects
+      - All subjects of the institution irrespective of the category can be fetched. By passing category in query parameter only subjects belonging to that category can be fetched.
+      - Also count of the subjects is returned
+  
+  3. Updating subjects
+    -Route: PATCH /subjects/:id
+      - Only names of the subjects can be updated.
+      - Only college admin or the creator of the subject should be able to update it.
+
+  4. Deleting subjects
+    -Route: DELETE /subjects/:id
+      - Only college admin or the creator of the subject should be able to update it.
+      - All the resources associated with the subject are first cleaned up.
+      - Then entries in the database of the subject are deleted and all related data is cleaned with cascading deletion.
+
+Library 
+
+  Uploading a file: 
+    - Normally, frontend sends json objects but when files are included it sends multipart/ formData. The dto is also appended to the formData object.
+    - When multipart data comes, Interceptor triggers multer (a library for handling file uploads).
+    - Interceptor first looks at the header and finds content-type as multipart/formData. Then it starts parsing binary stream instead of trying to read json.
+    - Frontend sends data with a field 'file', we make Interceptor grab incoming data with field 'file'. This step is like key matching.
+    - If it finds, it starts processing file using disk storage logic. Then it puts the metadata of the file into req.file field.
+    - When the uploadFile funtion is called, the @UploadedFile decorator takes the req.file and puts it into the argument 'file' and sends it to the service implementation.
+    - Interceptor separates file from other text data and pushes it into request.body.
+    - The body decorator takes req.body and puts it in body argument to pass it to the function.
+
+    - File Interceptor is a wrapper around the multer instance. It creates an instance of multer.
+      - The first argument ('file'): Tells Multer to look for the form field named "file".
+      - The second argument: This is the Multer Options object. This is where you configure how Multer behaves.
+
+
+  1. Creating a Library resource
+    - Route: POST /library/upload
+      - File Interceptor grabs the file, validates if it's size is less than 10MB and  stores the file in the disk at location /uploads/resources with file name originalName + timestamp.
+      - User sends title, description and subjectId in the request.
+      - The subject is found and validation is done if the user is allowed to create a resource in the category of the subjectId.
+      - Entry is made in libraryResource table for the uploaded file.
+
+  2. Fetching resources in a subject
+    - Route: GET /library/:id
+      - Subject id is passed as url parameter. 
+      - search and uploader are query parameters which can be used to filter using them.
+
+  3. Toggling upvote on resources
+    - Route: POST /library/:id/upvote
+      - Only student resources can be upvoted.
+
+  4.  Commenting on a resource
+    - Route: POST /library/:id/comments
+      - Only 2 level commenting is allowed.
+      - Check if the resource is exsiting.
+      - Check if parentId is not null and if a parent comment exists check if it belongs to the same resource and also check is parentId is exsiting for the parent comment also and donot allow more than 2 levels of comments.
+      - Content and parentId are sent in the dto.
+
+  5. Fetching all comments
+    - Route: GET /library/:id/comments
+      - Fetch all comments with the resource id and using parentId field, we can get to know if they are root comments or replies.
+
+  6. Editing a comment
+    - Route: PATCH /library/comments/:commentId
+      - Only author can edit the comments.
+
+  7. Deleting a comment
+    - Route: DELETE /library/comments/:id
+      - Only author or college admin can delete the comments.
+      - Replies are deleted on cascading.
+
+  8.  Deleting a library resource
+    - Route: Delete /library/:id
+      - Only author or college admin can delete the resources.
+      - First physical file is deleted then database entry. All comments, upvotes are deleted on cascading.
+
+Assignment
+
+  1.  Creating an assignment
+    - Route: POST /assignments/createAssignment
+      - Only teachers and college admins can create the assignments.
+      - title, description, dueDate, subjectId and isLateAllowed are accepted in request.
+      - We upload the files to ./uploads/assignments/questions location.
+      - We verify is the subject exists and belongs to assignment category.
+      - We create an entry in the database for the assignment.
+
+  2.  Updating an assignment
+    - Route: PUT /assignments/:assignmentId
+      - Only teachers(if they are authors) and college admins can update the assignments.
+      - If updation contains file, delete old file and upload new one.
+      - If due date is postponed while updating, we compute isLate again for all submissions.
+  
+  3.  Deleting an assignment
+    - Route: DELETE /assignment/:assignmentId
+      - Only teachers(if they are authors) and college admins can delete the assignments.
+      - Assignment entry is deleted from database, its submissions are deleted on cascading. The files from the physical location are manually deleted for both assignment and submissions.
+
+  4.  Creating a submission
+    - Route: POST /createSubmission
+      - Only students and college admins are allowed to do that.
+      - File is always required in submission.
+      - Late submissions are allowed for an assignment only is LateAllowed field is true and the assignments are marked late in that case.
+      - Review status is set to PENDING_REVIEW
+
+  5.  Deleting a submission
+    - Route: DELETE /submission/:submissionId
+      - Only students (is author of the submission) and college admin can delete
+      - File is deleted from file system and submission is deleted from db.
+
+  6.  Editing a submission
+    - Route: PUT /submission/:submissionId
+      - Only students (is author of the submission) and college admin can update
+      - If due date is passed and late submissions are not allowed, submissions cannot be updated.
+      - If late submissions are allowed, isLate is computed again.
+      - If incoming request contains file, old file is deleted and new file is stored to the file system and database update is made.
+
+  7.  Fetching assignments of a subject
+    - Route: GET /subject/:subjectId
+      - Assignments of a subject are fetched using subject id
+
+  8.  Fetching submissions of an assignment
+    - Route: GET /assignement/:assignmentId
+      - Only teachers (if author of the assignment) or college admin can fetch all submissions of an assignment.
+      - Fetching is done using assignment id.
+      - Student can fetch only their assignments using this route.
+
+  9.  Grading a submission and giving feedback(optional)
+    - Route: /submission/:submissionId/grad
+      - Only teachers (if author of the assignment) or college admin can grade a submissions of an assignment.
+      - Submission cannot be graded before dueDate.
+      - Grade and feedback are updated to the db.
+
+CORS
+  - Added CORS configuration to restrict API access to whitelisted origins only.
+  - Configured via CORS_ORIGINS environment variable for flexibility.
+
+  

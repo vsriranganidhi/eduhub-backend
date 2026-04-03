@@ -75,7 +75,7 @@ export class AssignmentController {
     @UploadedFile() file: Express.Multer.File | undefined,
     @Req() req: any
   ) {
-    return this.assignmentService.updateAssignment(assignmentId, dto, file, req.user.sub);
+    return this.assignmentService.updateAssignment(assignmentId, dto, file, req.user.sub, req.user.role);
   }
 
   @Delete('/assignment/:assignmentId')
@@ -84,7 +84,7 @@ export class AssignmentController {
     @Param('assignmentId') assignmentId: string,
     @Req() req: any
   ) {
-    return this.assignmentService.deleteAssignment(assignmentId, req.user.sub);
+    return this.assignmentService.deleteAssignment(assignmentId, req.user.sub, req.user.role);
   }
 
   @Post('/createSubmission')
@@ -151,22 +151,13 @@ export class AssignmentController {
     return this.assignmentService.findAllSubmissionsForAssignment(assignmentId, req.user.sub, req.user.role);
   }
 
-  @Post('/gradeSubmission')
+  @Put('/submission/:submissionId/grade')
   @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   gradeSubmission(
+    @Param('submissionId') submissionId: string,
     @Body() dto: GradeSubmissionDto,
     @Req() req: any
   ) {
-    return this.assignmentService.gradeSubmission(dto.submissionId, dto.grade, dto.feedback);
-  }
-
-  @Put('/submission/:submissionId/grade')
-  @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
-  updateGrade(
-    @Param('submissionId') submissionId: string,
-    @Body() dto: UpdateGradeDto,
-    @Req() req: any
-  ) {
-    return this.assignmentService.updateGrade(submissionId, dto, req.user.sub);
+    return this.assignmentService.gradeSubmission(submissionId, dto.grade, dto.feedback, req.user.sub, req.user.role);
   }
 }

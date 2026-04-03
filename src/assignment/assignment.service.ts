@@ -11,33 +11,45 @@ export class AssignmentService {
   constructor(private prisma: PrismaService) { }
 
   async createAssignment(dto: CreateAssignmentDto, file: Express.Multer.File | undefined, teacherId: string) {
-    // 1. Verify Subject exists and is an ASSIGNMENT category
-    const subject = await this.prisma.subject.findUnique({
-      where: { id: dto.subjectId },
-    });
+    try {
+      // 1. Verify Subject exists and is an ASSIGNMENT category
+      const subject = await this.prisma.subject.findUnique({
+        where: { id: dto.subjectId },
+      });
 
-    if (!subject || subject.category !== 'ASSIGNMENT') {
-      throw new BadRequestException('Invalid subject: Assignment must be linked to an ASSIGNMENT category subject');
-    }
-
-    // 2. Create the Assignment
-    return this.prisma.assignment.create({
-      data: {
-        title: dto.title,
-        description: dto.description,
-        dueDate: new Date(dto.dueDate),
-        isLateAllowed: dto.isLateAllowed,
-        fileUrl: file ? file.path.replace(/\\/g, '/') : null, // Store question paper path
-        subjectId: dto.subjectId,
-        creatorId: teacherId,
-      },
-      include: {
-        subject: { select: { name: true } }
+      if (!subject || subject.category !== 'ASSIGNMENT') {
+        throw new BadRequestException('Invalid subject: Assignment must be linked to an ASSIGNMENT category subject');
       }
-    });
+
+      // 2. Create the Assignment
+      return this.prisma.assignment.create({
+        data: {
+          title: dto.title,
+          description: dto.description,
+          dueDate: new Date(dto.dueDate),
+          isLateAllowed: dto.isLateAllowed,
+          fileUrl: file ? file.path.replace(/\\/g, '/') : null, // Store question paper path
+          subjectId: dto.subjectId,
+          creatorId: teacherId,
+        },
+        include: {
+          subject: { select: { name: true } }
+        }
+      });
+    } catch (error) {
+      // Clean up uploaded file if any error occurs
+      if (file) {
+        try {
+          await fs.unlink(file.path);
+        } catch (unlinkError) {
+          // Log but don't throw - file cleanup failure shouldn't mask the original error
+        }
+      }
+      throw error;
+    }
   }
 
-  async updateAssignment(assignmentId: string, dto: UpdateAssignmentDto, file: Express.Multer.File | undefined, teacherId: string) {
+  async updateAssignment(assignmentId: string, dto: UpdateAssignmentDto, file: Express.Multer.File | undefined, teacherId: string, userRole: string) {
     // 1. Verify assignment exists and belongs to the teacher
     const assignment = await this.prisma.assignment.findUnique({
       where: { id: assignmentId },
@@ -48,7 +60,7 @@ export class AssignmentService {
       throw new NotFoundException('Assignment not found');
     }
 
-    if (assignment.creatorId !== teacherId) {
+    if (assignment.creatorId !== teacherId && userRole !== 'COLLEGE_ADMIN') {
       throw new BadRequestException('You can only update your own assignments');
     }
 
@@ -111,7 +123,7 @@ export class AssignmentService {
     return updatedAssignment;
   }
 
-  async deleteAssignment(assignmentId: string, teacherId: string) {
+  async deleteAssignment(assignmentId: string, teacherId: string, userRole: string) {
     // 1. Verify assignment exists and belongs to the teacher
     const assignment = await this.prisma.assignment.findUnique({
       where: { id: assignmentId },
@@ -122,7 +134,7 @@ export class AssignmentService {
       throw new NotFoundException('Assignment not found');
     }
 
-    if (assignment.creatorId !== teacherId) {
+    if (assignment.creatorId !== teacherId && userRole !== 'COLLEGE_ADMIN') {
       throw new BadRequestException('You can only delete your own assignments');
     }
 
@@ -262,9 +274,19 @@ export class AssignmentService {
     if (now > submission.assignment.dueDate && !submission.assignment.isLateAllowed) {
       throw new BadRequestException('Cannot update submission after due date');
     }
-    // 3. Determine if update is late
+    // 3. Delete old file if it exists
+    if (submission.fileUrl) {
+      try {
+        await fs.unlink(submission.fileUrl);
+      } catch (error: any) {
+        if (error.code !== 'ENOENT') {
+          throw error;
+        }
+      }
+    }
+    // 4. Determine if update is late
     const isLate = now > submission.assignment.dueDate;
-    // 4. Update submission with new file and timestamp
+    // 5. Update submission with new file and timestamp
     return this.prisma.submission.update({
       where: { id: submissionId },
       data: {
@@ -331,24 +353,29 @@ export class AssignmentService {
     throw new BadRequestException('Invalid user role');
   }
 
-  async gradeSubmission(submissionId: string, grade: string, feedback?: string) {
-    // 1. Verify submission exists
+  async gradeSubmission(submissionId: string, grade: string, feedback: string | undefined, teacherId: string, userRole: string) {
+    // 1. Verify submission exists and get assignment creator
     const submission = await this.prisma.submission.findUnique({
       where: { id: submissionId },
-      include: { assignment: { select: { dueDate: true } } }
+      include: { assignment: { select: { dueDate: true, creatorId: true } } }
     });
 
     if (!submission) {
       throw new NotFoundException('Submission not found');
     }
 
-    // 2. Check if due date has passed
+    // 2. Verify teacher is the creator of the assignment or is a college admin
+    if (submission.assignment.creatorId !== teacherId && userRole !== 'COLLEGE_ADMIN') {
+      throw new BadRequestException('You can only grade submissions for your own assignments');
+    }
+
+    // 3. Check if due date has passed
     const now = new Date();
     if (now <= submission.assignment.dueDate) {
       throw new BadRequestException('Cannot grade submission before due date');
     }
 
-    // 3. Update submission with grade and feedback
+    // 4. Update submission with grade and feedback
     return this.prisma.submission.update({
       where: { id: submissionId },
       data: {
@@ -365,35 +392,4 @@ export class AssignmentService {
     });
   }
 
-  async updateGrade(submissionId: string, dto: UpdateGradeDto, teacherId: string) {
-    // 1. Verify submission exists and get assignment creator
-    const submission = await this.prisma.submission.findUnique({
-      where: { id: submissionId },
-      include: { assignment: { select: { creatorId: true } } }
-    });
-
-    if (!submission) {
-      throw new NotFoundException('Submission not found');
-    }
-
-    // 2. Verify teacher is the creator of the assignment
-    if (submission.assignment.creatorId !== teacherId) {
-      throw new BadRequestException('You can only grade submissions for your own assignments');
-    }
-
-    // 3. Update grade and feedback
-    return this.prisma.submission.update({
-      where: { id: submissionId },
-      data: {
-        grade: dto.grade,
-        feedback: dto.feedback || null
-      },
-      select: {
-        id: true,
-        grade: true,
-        feedback: true,
-        reviewStatus: true
-      }
-    });
-  }
 }

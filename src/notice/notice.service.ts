@@ -73,14 +73,14 @@ export class NoticeService {
     });
   }
 
-  async update(id: string, userId: string, dto: UpdateNoticeDto) {
+  async update(id: string, userId: string, dto: UpdateNoticeDto, userRole?: string) {
     // 1. Find the notice first
     const notice = await this.prisma.notice.findUnique({ where: { id } });
 
     if (!notice) throw new NotFoundException('Notice not found');
 
-    // 2. Check Ownership
-    if (notice.authorId !== userId) {
+    // 2. Check Ownership or Admin Role
+    if (notice.authorId !== userId && userRole !== 'COLLEGE_ADMIN') {
       throw new ForbiddenException('You can only edit your own notices');
     }
 
@@ -133,7 +133,7 @@ export class NoticeService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handlePeriodicCleanup() {
     const threshold = new Date();
-    threshold.setDate(threshold.getDate() - 1);
+    threshold.setDate(threshold.getDate() - 7);
 
     const deleted = await this.prisma.notice.deleteMany({
       where: {

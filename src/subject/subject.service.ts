@@ -68,6 +68,11 @@ export class SubjectService {
       throw new ForbiddenException('You can only update subjects you created');
     }
 
+    // Only allow name updates, reject category changes
+    if (dto.category) {
+      throw new BadRequestException('Category cannot be updated');
+    }
+
     // Check if new name already exists (excluding current subject)
     if (dto.name) {
       const existing = await this.prisma.subject.findFirst({
@@ -84,7 +89,7 @@ export class SubjectService {
 
     return this.prisma.subject.update({
       where: { id },
-      data: dto,
+      data: { name: dto.name },
     });
   }
 

@@ -1,4 +1,5 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Delete, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { StudentRegisterDto } from './dto/student-register.dto';
 import { TeacherRegisterDto } from './dto/teacher-register.dto';
@@ -64,7 +65,7 @@ export class AuthController {
     return this.authService.logout(req.user.sub);
   }
 
-  @Post('delete-account')
+  @Delete('delete-account')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async deleteAccount(@Req() req: any) {

@@ -39,7 +39,7 @@ export class NoticeController {
     @Req() req: any
   ) {
     // We pass BOTH the notice ID and the logged-in Teacher's ID
-    return this.noticeService.update(id, req.user.sub, dto);
+    return this.noticeService.update(id, req.user.sub, dto, req.user.role);
   }
 
   @Get('archived')

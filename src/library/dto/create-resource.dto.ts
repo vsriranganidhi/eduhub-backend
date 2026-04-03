@@ -13,8 +13,4 @@ export class CreateResourceDto {
   @IsUUID()
   @IsNotEmpty()
   subjectId: string; // The ID of the Subject (Folder)
-
-  @IsEnum(SubjectCategory)
-  @IsNotEmpty()
-  category: SubjectCategory; // TEACHER_RESOURCE or STUDENT_RESOURCE
 }
