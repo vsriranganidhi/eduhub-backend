@@ -108,15 +108,28 @@ export class AssignmentService {
           select: { id: true, submittedAt: true }
         });
 
-        // Update isLate status for all submissions based on new due date
-        // Previously late submissions may become on-time with the extension
-        for (const submission of submissions) {
-          const isLate = submission.submittedAt > newDueDate;
-          await this.prisma.submission.update({
-            where: { id: submission.id },
-            data: { isLate }
-          });
-        }
+        // Separate submissions into two groups: late and on-time based on new due date
+        const lateSubmissionIds = submissions
+          .filter(s => s.submittedAt > newDueDate)
+          .map(s => s.id);
+        
+        const onTimeSubmissionIds = submissions
+          .filter(s => s.submittedAt <= newDueDate)
+          .map(s => s.id);
+
+        // Execute both updates atomically in a transaction
+        await this.prisma.$transaction([
+          // Mark submissions submitted after new due date as late
+          this.prisma.submission.updateMany({
+            where: { id: { in: lateSubmissionIds } },
+            data: { isLate: true }
+          }),
+          // Mark submissions submitted before or on new due date as on-time
+          this.prisma.submission.updateMany({
+            where: { id: { in: onTimeSubmissionIds } },
+            data: { isLate: false }
+          })
+        ]);
       }
     }
 
@@ -138,41 +151,41 @@ export class AssignmentService {
       throw new BadRequestException('You can only delete your own assignments');
     }
 
-    // 2. Delete assignment file if it exists
-    if (assignment.fileUrl) {
-      try {
-        await fs.unlink(assignment.fileUrl);
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') {
-          throw error;
-        }
-      }
-    }
-
-    // 3. Get all submissions for this assignment
+    // 2. Get all submissions for this assignment before deletion
     const submissions = await this.prisma.submission.findMany({
       where: { assignmentId },
       select: { id: true, fileUrl: true }
     });
 
-    // 4. Delete submission files
+    // 3. Delete assignment from database first (cascade will automatically delete all submissions)
+    await this.prisma.assignment.delete({
+      where: { id: assignmentId },
+      select: { id: true }
+    });
+
+    // 4. Delete assignment file if it exists
+    if (assignment.fileUrl) {
+      try {
+        await fs.unlink(assignment.fileUrl);
+      } catch (error: any) {
+        if (error.code !== 'ENOENT') {
+          console.error('Failed to delete assignment file:', error);
+        }
+      }
+    }
+
+    // 5. Delete submission files
     for (const submission of submissions) {
       if (submission.fileUrl) {
         try {
           await fs.unlink(submission.fileUrl);
         } catch (error: any) {
           if (error.code !== 'ENOENT') {
-            throw error;
+            console.error('Failed to delete submission file:', error);
           }
         }
       }
     }
-
-    // 5. Delete assignment (cascade will automatically delete all submissions)
-    return this.prisma.assignment.delete({
-      where: { id: assignmentId },
-      select: { id: true }
-    });
   }
 
   async createSubmission(dto: CreateSubmissionDto, file: Express.Multer.File | undefined, studentId: string) {
@@ -237,24 +250,24 @@ export class AssignmentService {
       throw new BadRequestException('You can only delete your own submission');
     }
 
-    // 3. Delete file from filesystem
-    if (submission.fileUrl) {
-      try {
-        await fs.unlink(submission.fileUrl);
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') {
-          throw error;
-        }
-      }
-    }
-
-    // 4. Delete submission from database
-    return this.prisma.submission.delete({
+    // 2. Delete submission from database first
+    await this.prisma.submission.delete({
       where: { id: submissionId },
       select: {
         id: true
       }
     });
+
+    // 3. Delete file from filesystem after database deletion succeeds
+    if (submission.fileUrl) {
+      try {
+        await fs.unlink(submission.fileUrl);
+      } catch (error: any) {
+        if (error.code !== 'ENOENT') {
+          console.error('Failed to delete submission file:', error);
+        }
+      }
+    }
   }
 
   async updateSubmission(submissionId: string, studentId: string, fileUrl: string) {

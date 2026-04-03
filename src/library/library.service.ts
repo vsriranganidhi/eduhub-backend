@@ -253,17 +253,17 @@ export class LibraryService {
       throw new ForbiddenException('You do not have permission to delete this file');
     }
 
-    // 1. Delete the Physical File from the 'uploads' folder
+    // 1. Delete the Database Row first
+    // (Prisma will automatically delete comments/upvotes if you set up 'onDelete: Cascade' in schema)
+    await this.prisma.libraryResource.delete({ where: { id } });
+
+    // 2. Delete the Physical File from the 'uploads' folder
+    // Only delete file after database deletion succeeds
     try { 
       const filePath = join(process.cwd(), resource.fileUrl);
       await fs.promises.unlink(filePath);
     } catch (err) {
       console.error('File deletion failed:', err);
-      throw new BadRequestException('Failed to delete file. Operation aborted.');
     }
-
-    // 2. Delete the Database Row
-    // (Prisma will automatically delete comments/upvotes if you set up 'onDelete: Cascade' in schema)
-    return this.prisma.libraryResource.delete({ where: { id } });
   }
 }
