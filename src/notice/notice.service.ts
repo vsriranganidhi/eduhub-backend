@@ -96,7 +96,7 @@ export class NoticeService {
 
     if (!notice) throw new NotFoundException('Notice not found');
 
-    if (notice.authorId !== userId && userRole !== 'COLLEGE_ADMIN' && notice.institutionId !== institutionId) {
+    if ((notice.authorId !== userId && userRole !== 'COLLEGE_ADMIN') || notice.institutionId !== institutionId) {
       throw new ForbiddenException('No permission');
     }
 

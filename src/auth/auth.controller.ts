@@ -36,17 +36,20 @@ export class AuthController {
   }
 
   @Post('register/student')
+  @Throttle({ register: { limit: 3, ttl: 3600000 } })
   async register(@Body() dto: StudentRegisterDto) {
     return this.authService.registerStudent(dto);
   }
 
   @Post('register/teacher')
+  @Throttle({ register: { limit: 3, ttl: 3600000 } })
   async registerTeacher(@Body() dto: TeacherRegisterDto) {
     return this.authService.registerTeacher(dto);
   }
 
-  @HttpCode(HttpStatus.OK) // Login usually returns 200 OK instead of 201 Created
+  @HttpCode(HttpStatus.OK)
   @Post('login')
+  @Throttle({ login: { limit: 5, ttl: 900000 } })
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }

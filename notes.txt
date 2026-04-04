@@ -247,4 +247,8 @@ CORS
   - Added CORS configuration to restrict API access to whitelisted origins only.
   - Configured via CORS_ORIGINS environment variable for flexibility.
 
-  
+Rate limitting
+  - Login: 5 in 15 min (Bruteforce attacks)
+  - Register(Student/Teacher): 3 in 1 hour (To prevent fake accounts)
+  - General API: 100 in 1 minute (Prevents server crashing because legitimate users behaviour is to send 1-10 requests per minute).
+  - Rate limitting works per user/ip address.

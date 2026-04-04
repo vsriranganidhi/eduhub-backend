@@ -328,8 +328,8 @@ export class AssignmentService {
     }
 
     // 2. If teacher/admin, return all submissions for the assignment
-    if (userRole === 'TEACHER' || userRole === 'ADMIN') {
-      if (assignment.creatorId !== userId && userRole !== 'ADMIN') {
+    if (userRole === 'TEACHER' || userRole === 'COLLEGE_ADMIN') {
+      if (assignment.creatorId !== userId && userRole !== 'COLLEGE_ADMIN') {
         throw new BadRequestException('You can only view submissions for your own assignments');
       }
       return this.prisma.submission.findMany({
