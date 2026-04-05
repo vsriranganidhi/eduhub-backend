@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -58,6 +58,9 @@ export class EmailService {
       console.log(`Welcome email sent to ${collegeAdminEmail}`);
     } catch (error) {
       console.error(`Failed to send email to ${collegeAdminEmail}:`, error);
+      throw new InternalServerErrorException(
+        `Failed to send welcome email to ${collegeAdminEmail}. Please try again later.`,
+      );
     }
   }
 
@@ -93,6 +96,9 @@ export class EmailService {
     console.log(`Teacher invitation email sent to ${email}`);
   } catch (error) {
     console.error(`Failed to send invitation email to ${email}:`, error);
+    throw new InternalServerErrorException(
+      `Failed to send invitation email to ${email}. Please try again later.`,
+    );
   }
 }
   

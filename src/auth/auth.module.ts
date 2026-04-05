@@ -9,7 +9,7 @@ import { EmailModule } from 'src/email/email.module';
     EmailModule,
     JwtModule.register({
       global: true,
-      secret: 'SUPER_SECRET_KEY', // In production, use an environment variable!
+      secret: process.env.JWT_SECRET || 'your_secret_key_change_in_production',
       signOptions: { expiresIn: '1d' },
     }),
   ],

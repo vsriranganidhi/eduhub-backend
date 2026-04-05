@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     try {
       // Verify the token
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: 'SUPER_SECRET_KEY', // Must match your AuthModule secret
+        secret: process.env.JWT_SECRET || 'your_secret_key_change_in_production',
       });
 
       // Attach the payload (user id, role) to the request object
