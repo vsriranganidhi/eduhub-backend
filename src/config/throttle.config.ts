@@ -4,26 +4,26 @@ export const throttleConfig: ThrottlerModuleOptions = [
   {
     name: 'global',
     ttl: 60000,
-    limit: 100,
+    limit: 1000,
   },
   {
     name: 'login',
     ttl: 900000,
-    limit: 5,
+    limit: 50,
   },
   {
     name: 'register',
     ttl: 3600000,
-    limit: 3,
+    limit: 30,
   },
   {
     name: 'invite',
     ttl: 3600000,
-    limit: 10,
+    limit: 100,
   },
   {
     name: 'passwordReset',
     ttl: 3600000,
-    limit: 3,
+    limit: 30,
   },
 ];
