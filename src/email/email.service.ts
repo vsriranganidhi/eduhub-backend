@@ -35,7 +35,7 @@ export class EmailService {
     try {
       const templatePath = path.join(
         process.cwd(),
-        'src/email/templates/college-admin-welcome.html',
+        'dist/src/email/templates/college-admin-welcome.html',
       );
       let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
@@ -76,7 +76,7 @@ export class EmailService {
     
     const templatePath = path.join(
       process.cwd(),
-      'src/email/templates/teacher-invitation.html',
+      'dist/src/email/templates/teacher-invitation.html',
     );
     let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
