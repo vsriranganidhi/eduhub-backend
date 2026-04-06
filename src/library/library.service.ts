@@ -4,12 +4,14 @@ import { CreateResourceDto } from './dto/create-resource.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { ForbiddenException } from "@nestjs/common";
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import * as fs from 'fs'; // Node.js File System
-import { join } from 'path';
+import { S3StorageService } from './s3-storage.service';
 
 @Injectable()
 export class LibraryService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private s3StorageService: S3StorageService
+  ) { }
 
   async createResource(
     file: Express.Multer.File,
@@ -44,12 +46,15 @@ export class LibraryService {
     // For students, override the category to ensure consistency
     const finalCategory = userRole === 'STUDENT' ? 'STUDENT_RESOURCE' : subject.category;
 
-    // 3. Create the resource
+    // 3. Upload file to S3
+    const fileUrl = await this.s3StorageService.uploadFile(file);
+
+    // 4. Create the resource with S3 URL
     return this.prisma.libraryResource.create({
       data: {
         title: dto.title,
         description: dto.description,
-        fileUrl: file.path.replace(/\\/g, '/'),
+        fileUrl: fileUrl,
         fileType: file.mimetype,
         fileSize: file.size,
         subjectId: dto.subjectId,
@@ -253,17 +258,13 @@ export class LibraryService {
       throw new ForbiddenException('You do not have permission to delete this file');
     }
 
-    // 1. Delete the Database Row first
+    // Delete the file from S3
+    if (resource.fileUrl) {
+      await this.s3StorageService.deleteFile(resource.fileUrl);
+    }
+
+    // Delete the Database Row
     // (Prisma will automatically delete comments/upvotes if you set up 'onDelete: Cascade' in schema)
     await this.prisma.libraryResource.delete({ where: { id } });
-
-    // 2. Delete the Physical File from the 'uploads' folder
-    // Only delete file after database deletion succeeds
-    try { 
-      const filePath = join(process.cwd(), resource.fileUrl);
-      await fs.promises.unlink(filePath);
-    } catch (err) {
-      console.error('File deletion failed:', err);
-    }
   }
 }

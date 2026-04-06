@@ -4,8 +4,7 @@ import {
   BadRequestException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { AuthGuard } from '../auth/auth.gaurd';
 import { RolesGuard } from '../auth/roles.gaurd';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -48,15 +47,7 @@ export class LibraryController {
   @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads/resources', // Where files will be saved
-      filename: (req, file, callback) => {
-        // Create a unique name: timestamp + random + original extension
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = extname(file.originalname);
-        callback(null, `${uniqueSuffix}${ext}`);
-      },
-    }),
+    storage: memoryStorage(),
     limits: {
       fileSize: 10 * 1024 * 1024, // 10MB limit (in bytes)
     },

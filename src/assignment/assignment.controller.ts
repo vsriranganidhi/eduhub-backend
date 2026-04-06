@@ -2,8 +2,7 @@ import {
   Controller, Post, Get, Delete, Put, Body, Param, UseGuards, Req, UseInterceptors, UploadedFile, BadRequestException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { AuthGuard } from '../auth/auth.gaurd';
 import { RolesGuard } from '../auth/roles.gaurd';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -42,13 +41,7 @@ export class AssignmentController {
   @Post('/createAssignment')
   @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads/assignments/questions',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
-      },
-    }),
+    storage: memoryStorage(),
   }))
   createAssignment(
     @Body() dto: CreateAssignmentDto,
@@ -61,13 +54,7 @@ export class AssignmentController {
   @Put('/assignment/:assignmentId')
   @Roles(Role.TEACHER, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads/assignments/questions',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
-      },
-    }),
+    storage: memoryStorage(),
   }))
   updateAssignment(
     @Param('assignmentId') assignmentId: string,
@@ -90,13 +77,7 @@ export class AssignmentController {
   @Post('/createSubmission')
   @Roles(Role.STUDENT, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads/assignments/submissions',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
-      },
-    }),
+    storage: memoryStorage(),
   }))
   createSubmission(
     @Body() dto: CreateSubmissionDto,
@@ -118,13 +99,7 @@ export class AssignmentController {
   @Put('/submission/:submissionId')
   @Roles(Role.STUDENT, Role.COLLEGE_ADMIN)
   @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads/assignments/submissions',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        callback(null, `task-${uniqueSuffix}${extname(file.originalname)}`);
-      },
-    }),
+    storage: memoryStorage(),
   }))
   updateSubmission(
     @Param('submissionId') submissionId: string,
@@ -134,7 +109,7 @@ export class AssignmentController {
     if (!file) {
       throw new BadRequestException('File is required for submission update');
     }
-    return this.assignmentService.updateSubmission(submissionId, req.user.sub, file.path.replace(/\\/g, '/'));
+    return this.assignmentService.updateSubmission(submissionId, req.user.sub, file);
   }
 
   @Get('subject/:subjectId')

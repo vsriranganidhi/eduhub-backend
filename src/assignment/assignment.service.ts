@@ -4,49 +4,46 @@ import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
-import { promises as fs } from 'fs';
+import { S3StorageService } from '../library/s3-storage.service';
 
 @Injectable()
 export class AssignmentService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private s3StorageService: S3StorageService
+  ) { }
 
   async createAssignment(dto: CreateAssignmentDto, file: Express.Multer.File | undefined, teacherId: string) {
-    try {
-      // 1. Verify Subject exists and is an ASSIGNMENT category
-      const subject = await this.prisma.subject.findUnique({
-        where: { id: dto.subjectId },
-      });
+    // 1. Verify Subject exists and is an ASSIGNMENT category
+    const subject = await this.prisma.subject.findUnique({
+      where: { id: dto.subjectId },
+    });
 
-      if (!subject || subject.category !== 'ASSIGNMENT') {
-        throw new BadRequestException('Invalid subject: Assignment must be linked to an ASSIGNMENT category subject');
-      }
-
-      // 2. Create the Assignment
-      return this.prisma.assignment.create({
-        data: {
-          title: dto.title,
-          description: dto.description,
-          dueDate: new Date(dto.dueDate),
-          isLateAllowed: dto.isLateAllowed,
-          fileUrl: file ? file.path.replace(/\\/g, '/') : null, // Store question paper path
-          subjectId: dto.subjectId,
-          creatorId: teacherId,
-        },
-        include: {
-          subject: { select: { name: true } }
-        }
-      });
-    } catch (error) {
-      // Clean up uploaded file if any error occurs
-      if (file) {
-        try {
-          await fs.unlink(file.path);
-        } catch (unlinkError) {
-          // Log but don't throw - file cleanup failure shouldn't mask the original error
-        }
-      }
-      throw error;
+    if (!subject || subject.category !== 'ASSIGNMENT') {
+      throw new BadRequestException('Invalid subject: Assignment must be linked to an ASSIGNMENT category subject');
     }
+
+    // 2. Upload file to S3 if provided
+    let fileUrl: string | null = null;
+    if (file) {
+      fileUrl = await this.s3StorageService.uploadFile(file);
+    }
+
+    // 3. Create the Assignment
+    return this.prisma.assignment.create({
+      data: {
+        title: dto.title,
+        description: dto.description,
+        dueDate: new Date(dto.dueDate),
+        isLateAllowed: dto.isLateAllowed,
+        fileUrl: fileUrl,
+        subjectId: dto.subjectId,
+        creatorId: teacherId,
+      },
+      include: {
+        subject: { select: { name: true } }
+      }
+    });
   }
 
   async updateAssignment(assignmentId: string, dto: UpdateAssignmentDto, file: Express.Multer.File | undefined, teacherId: string, userRole: string) {
@@ -73,17 +70,12 @@ export class AssignmentService {
 
     // 3. Handle file update
     if (file) {
-      // Delete old file if it exists
+      // Delete old file from S3 if it exists
       if (assignment.fileUrl) {
-        try {
-          await fs.unlink(assignment.fileUrl);
-        } catch (error: any) {
-          if (error.code !== 'ENOENT') {
-            throw error;
-          }
-        }
+        await this.s3StorageService.deleteFile(assignment.fileUrl);
       }
-      updateData.fileUrl = file.path.replace(/\\/g, '/');
+      // Upload new file to S3
+      updateData.fileUrl = await this.s3StorageService.uploadFile(file);
     }
 
     // 4. Update assignment
@@ -157,35 +149,23 @@ export class AssignmentService {
       select: { id: true, fileUrl: true }
     });
 
-    // 3. Delete assignment from database first (cascade will automatically delete all submissions)
+    // 3. Delete assignment file from S3 if it exists
+    if (assignment.fileUrl) {
+      await this.s3StorageService.deleteFile(assignment.fileUrl);
+    }
+
+    // 4. Delete all submission files from S3
+    for (const submission of submissions) {
+      if (submission.fileUrl) {
+        await this.s3StorageService.deleteFile(submission.fileUrl);
+      }
+    }
+
+    // 5. Delete assignment from database (cascade will automatically delete all submissions)
     await this.prisma.assignment.delete({
       where: { id: assignmentId },
       select: { id: true }
     });
-
-    // 4. Delete assignment file if it exists
-    if (assignment.fileUrl) {
-      try {
-        await fs.unlink(assignment.fileUrl);
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') {
-          console.error('Failed to delete assignment file:', error);
-        }
-      }
-    }
-
-    // 5. Delete submission files
-    for (const submission of submissions) {
-      if (submission.fileUrl) {
-        try {
-          await fs.unlink(submission.fileUrl);
-        } catch (error: any) {
-          if (error.code !== 'ENOENT') {
-            console.error('Failed to delete submission file:', error);
-          }
-        }
-      }
-    }
   }
 
   async createSubmission(dto: CreateSubmissionDto, file: Express.Multer.File | undefined, studentId: string) {
@@ -212,13 +192,16 @@ export class AssignmentService {
       throw new BadRequestException('Late submissions are not allowed for this assignment');
     }
 
-    // 5. Create the Submission
+    // 5. Upload file to S3
+    const fileUrl = await this.s3StorageService.uploadFile(file);
+
+    // 6. Create the Submission
     try {
       return await this.prisma.submission.create({
         data: {
           assignmentId: dto.assignmentId,
           submitterId: studentId,
-          fileUrl: file.path.replace(/\\/g, '/'),
+          fileUrl: fileUrl,
           submissionStatus: 'SUBMITTED',
           reviewStatus: 'PENDING_REVIEW',
           isLate: isLate,
@@ -250,27 +233,21 @@ export class AssignmentService {
       throw new BadRequestException('You can only delete your own submission');
     }
 
-    // 2. Delete submission from database first
+    // 2. Delete file from S3
+    if (submission.fileUrl) {
+      await this.s3StorageService.deleteFile(submission.fileUrl);
+    }
+
+    // 3. Delete submission from database
     await this.prisma.submission.delete({
       where: { id: submissionId },
       select: {
         id: true
       }
     });
-
-    // 3. Delete file from filesystem after database deletion succeeds
-    if (submission.fileUrl) {
-      try {
-        await fs.unlink(submission.fileUrl);
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') {
-          console.error('Failed to delete submission file:', error);
-        }
-      }
-    }
   }
 
-  async updateSubmission(submissionId: string, studentId: string, fileUrl: string) {
+  async updateSubmission(submissionId: string, studentId: string, file: Express.Multer.File) {
     // 1. Verify submission exists and belongs to the student
     const submission = await this.prisma.submission.findUnique({
       where: { id: submissionId },
@@ -287,17 +264,13 @@ export class AssignmentService {
     if (now > submission.assignment.dueDate && !submission.assignment.isLateAllowed) {
       throw new BadRequestException('Cannot update submission after due date');
     }
-    // 3. Delete old file if it exists
+    // 3. Delete old file from S3 if it exists
     if (submission.fileUrl) {
-      try {
-        await fs.unlink(submission.fileUrl);
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') {
-          throw error;
-        }
-      }
+      await this.s3StorageService.deleteFile(submission.fileUrl);
     }
-    // 4. Determine if update is late
+    // 4. Upload new file to S3
+    const fileUrl = await this.s3StorageService.uploadFile(file);
+    // 5. Determine if update is late
     const isLate = now > submission.assignment.dueDate;
     // 5. Update submission with new file and timestamp
     return this.prisma.submission.update({
