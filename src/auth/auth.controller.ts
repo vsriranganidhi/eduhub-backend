@@ -1,4 +1,5 @@
 import { Controller, Post, Delete, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { StudentRegisterDto } from './dto/student-register.dto';
@@ -17,6 +18,7 @@ export class AuthController {
 
 
   @Post('invite-teacher')
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('COLLEGE_ADMIN')
   @HttpCode(HttpStatus.OK)
@@ -25,6 +27,7 @@ export class AuthController {
   }
 
   @Post('resend-invitation')
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('COLLEGE_ADMIN')
   @HttpCode(HttpStatus.OK)
@@ -52,6 +55,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async resetPassword(@Body() dto: ResetPasswordDto, @Req() req: any) {
@@ -59,6 +63,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async logout(@Req() req: any) {
@@ -66,6 +71,7 @@ export class AuthController {
   }
 
   @Delete('delete-account')
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async deleteAccount(@Req() req: any) {

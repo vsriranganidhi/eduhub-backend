@@ -1,4 +1,5 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { InstitutionService } from './institution.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -11,6 +12,7 @@ export class InstitutionController {
   constructor(private readonly institutionService: InstitutionService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.SUPER_ADMIN)
   async createInstitution(@Body() dto: CreateInstitutionDto) {
