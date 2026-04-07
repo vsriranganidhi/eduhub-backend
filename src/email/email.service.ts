@@ -34,8 +34,8 @@ export class EmailService {
   ): Promise<void> {
     try {
       const templatePath = path.join(
-        process.cwd(),
-        'dist/src/email/templates/college-admin-welcome.html',
+        __dirname,
+        'templates/college-admin-welcome.html',
       );
       let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
@@ -75,8 +75,8 @@ export class EmailService {
     const registrationLink = `${process.env.FRONTEND_URL}/auth/register/teacher?token=${token}&email=${email}&joinCode=${joinCode}`;
     
     const templatePath = path.join(
-      process.cwd(),
-      'dist/src/email/templates/teacher-invitation.html',
+      __dirname,
+      'templates/teacher-invitation.html',
     );
     let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
