@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { InstitutionService } from './institution.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
@@ -17,6 +17,14 @@ export class InstitutionController {
   @Roles(Role.SUPER_ADMIN)
   async createInstitution(@Body() dto: CreateInstitutionDto) {
     return this.institutionService.createInstitution(dto);
+  }
+
+  @Get()
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN)
+  async getAllInstitutions() {
+    return this.institutionService.getAllInstitutions();
   }
 
   @Delete(':id')

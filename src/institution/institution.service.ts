@@ -107,4 +107,8 @@ export class InstitutionService {
       where: { id: institutionId },
     });
   }
+
+  async getAllInstitutions() {
+    return this.prisma.institution.findMany();
+  }
 }
