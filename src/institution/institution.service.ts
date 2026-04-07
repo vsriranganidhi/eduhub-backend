@@ -101,4 +101,10 @@ export class InstitutionService {
       throw error;
     }
   }
+
+  async deleteInstitution(institutionId: string) {
+    return this.prisma.institution.delete({
+      where: { id: institutionId },
+    });
+  }
 }
