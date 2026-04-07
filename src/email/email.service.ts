@@ -33,10 +33,7 @@ export class EmailService {
     loginUrl: string,
   ): Promise<void> {
     try {
-      const templatePath = path.join(
-        __dirname,
-        'templates/college-admin-welcome.html',
-      );
+      const templatePath = path.join(__dirname, 'templates', 'college-admin-welcome.html');
       let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
       htmlContent = htmlContent
