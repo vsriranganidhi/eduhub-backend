@@ -31,7 +31,16 @@ export class S3StorageService {
       }),
     );
 
-    return `${process.env.B2_ENDPOINT}/${process.env.B2_BUCKET_NAME}/${fileKey}`;
+    const endpoint = process.env.B2_ENDPOINT!;
+
+    // If using Supabase, convert the S3 API URL to the Public Browser URL
+    if (endpoint.includes('supabase.co')) {
+      const publicBaseUrl = endpoint.replace('/s3', '/object/public');
+      return `${publicBaseUrl}/${process.env.B2_BUCKET_NAME}/${fileKey}`;
+    }
+
+    // Fallback for standard S3 providers
+    return `${endpoint}/${process.env.B2_BUCKET_NAME}/${fileKey}`;
   }
 
   async deleteFile(fileUrl: string): Promise<void> {
