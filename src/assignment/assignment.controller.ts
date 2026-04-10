@@ -117,7 +117,7 @@ export class AssignmentController {
     return this.assignmentService.findAllAssignmentsForASubject(subjectId);
   }
 
-  @Get('assignement/:assignmentId')
+  @Get('assignment/:assignmentId')
   @UseGuards(AuthGuard)
   findAllSubmissionsForAssignment(
     @Param('assignmentId') assignmentId: string,
