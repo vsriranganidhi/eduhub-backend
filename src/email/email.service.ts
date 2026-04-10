@@ -1,26 +1,14 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import * as fs from 'fs';
 import * as path from 'path';
 
 @Injectable()
 export class EmailService {
-  //We are creating a connection between our nest js application and external email service
-  //We are creating a transporter instance
-  private transporter: nodemailer.Transporter;
+  private resend: Resend;
 
   constructor() {
-
-    //This configures how to send the email
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,//The address of the smtp server
-      port: parseInt(process.env.SMTP_PORT || '465'),//465: secure=true (using SSL), 587: secure=false (using STARTTLS)
-      secure: process.env.SMTP_PORT === '465',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
+    this.resend = new Resend(process.env.RESEND_API_KEY);
   }
 
   async sendCollegeAdminWelcomeEmail(
@@ -44,15 +32,19 @@ export class EmailService {
         .replace('{{joinCode}}', joinCode)
         .replace('{{loginUrl}}', loginUrl);
 
-      const mailOptions = {
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      const { data, error } = await this.resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
         to: collegeAdminEmail,
         subject: `Welcome to Eduhub - ${institutionName}`,
         html: htmlContent,
-      };
+      });
 
-      await this.transporter.sendMail(mailOptions);
-      console.log(`Welcome email sent to ${collegeAdminEmail}`);
+      if (error) {
+        console.error('Resend API Error:', error);
+        throw new Error(error.message);
+      }
+
+      console.log(`Welcome email sent to ${collegeAdminEmail}`, data);
     } catch (error) {
       console.error(`Failed to send email to ${collegeAdminEmail}:`, error);
       throw new InternalServerErrorException(
@@ -82,15 +74,19 @@ export class EmailService {
       .replace('{{registrationLink}}', registrationLink)
       .replace('{{joinCode}}', joinCode);
 
-    const mailOptions = {
-      from: collegeAdminEmail,
+    const { data, error } = await this.resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: email,
       subject: `Invitation to join ${institutionName} on Eduhub`,
       html: htmlContent,
-    };
+    });
 
-    await this.transporter.sendMail(mailOptions);
-    console.log(`Teacher invitation email sent to ${email}`);
+    if (error) {
+      console.error('Resend API Error:', error);
+      throw new Error(error.message);
+    }
+
+    console.log(`Teacher invitation email sent to ${email}`, data);
   } catch (error) {
     console.error(`Failed to send invitation email to ${email}:`, error);
     throw new InternalServerErrorException(
