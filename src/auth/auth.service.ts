@@ -58,17 +58,22 @@ export class AuthService {
       });
 
       // 6. Send email to teacher with plain-text token (not the hash)
-
-      await this.emailService.sendTeacherInvitation(
-        dto.email,
-        token,
-        institution?.joinCode || '',
-        institution?.name || '',
-        collegeAdmin?.email || '',
-      );
+      try {
+        await this.emailService.sendTeacherInvitation(
+          dto.email,
+          token,
+          institution?.joinCode || '',
+          institution?.name || '',
+          collegeAdmin?.email || '',
+        );
+      } catch (emailError) {
+        console.error('Email sending failed, but invitation creation succeeded:', emailError);
+      }
 
       return {
         message: 'Invitation sent successfully',
+        token: token,
+        joinCode: institution?.joinCode || '',
         expiresAt: expiresAt,
       };
     } catch (error) {
@@ -123,16 +128,22 @@ export class AuthService {
       });
 
       // 7. Send email with new plain-text token (not the hash)
-      await this.emailService.sendTeacherInvitation(
-        dto.email,
-        newToken,
-        institution?.joinCode || '',
-        institution?.name || '',
-        collegeAdmin?.email || '',
-      );
+      try {
+        await this.emailService.sendTeacherInvitation(
+          dto.email,
+          newToken,
+          institution?.joinCode || '',
+          institution?.name || '',
+          collegeAdmin?.email || '',
+        );
+      } catch (emailError) {
+        console.error('Email sending failed, but invitation update succeeded:', emailError);
+      }
 
       return {
         message: 'Invitation resent successfully',
+        token: newToken,
+        joinCode: institution?.joinCode || '',
         expiresAt: newExpiresAt,
       };
     } catch (error) {
@@ -373,5 +384,26 @@ export class AuthService {
     });
 
     return { message: 'Account deleted successfully' };
+  }
+
+  async getAllInvitations(institutionId: string) {
+    const invitations = await this.prisma.invitation.findMany({
+      where: {
+        institutionId: institutionId,
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        isUsed: true,
+        expiresAt: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return invitations;
   }
 }

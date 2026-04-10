@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
@@ -76,5 +76,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async deleteAccount(@Req() req: any) {
     return this.authService.deleteAccount(req.user.sub);
+  }
+
+  @Get('invitations')
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('COLLEGE_ADMIN', 'SUPER_ADMIN')
+  async getAllInvitations(@Req() req: any) {
+    return this.authService.getAllInvitations(req.user.institutionId);
   }
 }
