@@ -18,8 +18,10 @@ export class S3StorageService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
-    const fileKey = `${Date.now()}-${file.originalname}`;
-    
+    // This Regex replaces ANY character that is not a letter, number, dot, hyphen, or underscore with a hyphen
+    const cleanFileName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '-');
+    const fileKey = `${Date.now()}-${cleanFileName}`;
+
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: process.env.B2_BUCKET_NAME,
