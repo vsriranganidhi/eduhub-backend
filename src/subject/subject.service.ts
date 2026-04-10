@@ -11,7 +11,7 @@ import { join } from 'path';
 export class SubjectService {
   constructor(private prisma: PrismaService) { }
 
-  async create(dto: CreateSubjectDto, user: { id: string, role: string, institutionId: string }) {
+  async create(dto: CreateSubjectDto, user: { sub: string, role: string, institutionId: string }) {
     // Role-based validation for subject creation
     if (user.role === 'TEACHER' && !(dto.category == 'TEACHER_RESOURCE' || dto.category == 'ASSIGNMENT')) {
       throw new ForbiddenException('Teachers can only create Teacher Resource subjects or Assignments');
@@ -37,7 +37,7 @@ export class SubjectService {
       data: { 
         ...dto,
         institutionId: user.institutionId,
-        createdBy: user.id,
+        createdBy: user.sub,
       },
     });
   }
