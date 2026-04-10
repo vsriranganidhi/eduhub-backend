@@ -14,7 +14,7 @@ export class EmailService {
     //This configures how to send the email
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,//The address of the smtp server
-      port: parseInt(process.env.SMTP_PORT || '587'),//465: secure=true (using SSL), 587: secure=false (using STARTTLS)
+      port: parseInt(process.env.SMTP_PORT || '465'),//465: secure=true (using SSL), 587: secure=false (using STARTTLS)
       secure: process.env.SMTP_PORT === '465',
       auth: {
         user: process.env.SMTP_USER,
