@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, IsUUID, IsDateString, IsBoolean } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateAssignmentDto {
   @IsString()
@@ -17,6 +18,11 @@ export class CreateAssignmentDto {
   @IsNotEmpty()
   subjectId: string;
 
+  @Transform(({ value }) => {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'string') return value.toLowerCase() === 'true';
+    return value;
+  })
   @IsBoolean()
   @IsNotEmpty()
   isLateAllowed: boolean;
