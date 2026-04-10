@@ -25,12 +25,12 @@ export class EmailService {
       let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
       htmlContent = htmlContent
-        .replace('{{firstName}}', firstName)
-        .replace('{{lastName}}', lastName)
-        .replace('{{institutionName}}', institutionName)
-        .replace('{{tempPassword}}', tempPassword)
-        .replace('{{joinCode}}', joinCode)
-        .replace('{{loginUrl}}', loginUrl);
+        .replaceAll('{{firstName}}', firstName)
+        .replaceAll('{{lastName}}', lastName)
+        .replaceAll('{{institutionName}}', institutionName)
+        .replaceAll('{{tempPassword}}', tempPassword)
+        .replaceAll('{{joinCode}}', joinCode)
+        .replaceAll('{{loginUrl}}', loginUrl);
 
       const { data, error } = await this.resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
@@ -70,9 +70,9 @@ export class EmailService {
     let htmlContent = fs.readFileSync(templatePath, 'utf-8');
 
     htmlContent = htmlContent
-      .replace('{{institutionName}}', institutionName)
-      .replace('{{registrationLink}}', registrationLink)
-      .replace('{{joinCode}}', joinCode);
+      .replaceAll('{{institutionName}}', institutionName)
+      .replaceAll('{{registrationLink}}', registrationLink)
+      .replaceAll('{{joinCode}}', joinCode);
 
     const { data, error } = await this.resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
