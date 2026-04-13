@@ -114,7 +114,7 @@ export class LibraryService {
     const baseUrl = process.env.APP_URL || 'http://localhost:3000';
 
     const hasNextPage = resources.length > pageSize;
-    const items = hasNextPage ? resources.slice(0, -1) : resources;
+    const items = resources.slice(0, pageSize);
     const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
 
     return {

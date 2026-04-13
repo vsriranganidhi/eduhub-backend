@@ -76,7 +76,7 @@ export class NoticeService {
     });
 
     const hasNextPage = notices.length > pageSize;
-    const items = hasNextPage ? notices.slice(0, -1) : notices;
+    const items = notices.slice(0, pageSize);
     const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
 
     return {
@@ -146,7 +146,7 @@ export class NoticeService {
     });
 
     const hasNextPage = notices.length > pageSize;
-    const items = hasNextPage ? notices.slice(0, -1) : notices;
+    const items = notices.slice(0, pageSize);
     const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
 
     return {
