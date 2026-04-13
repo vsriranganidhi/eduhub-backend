@@ -70,7 +70,7 @@ export class LibraryController {
     @Query('cursor') cursor?: string,
     @Query('pageSize') pageSize?: string,
   ) {
-    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 10;
     return this.libraryService.findAll(subjectId, search, uploaderName, cursor, parsedPageSize);
   }
 

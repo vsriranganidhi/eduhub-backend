@@ -29,7 +29,7 @@ export class NoticeController {
     @Query('cursor') cursor?: string,
     @Query('pageSize') pageSize?: string,
   ) {
-    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 10;
     return this.noticeService.findAll(search, subject, teacherName, req.user.institutionId, cursor, parsedPageSize);
   }
 
@@ -53,7 +53,7 @@ export class NoticeController {
     @Query('cursor') cursor?: string,
     @Query('pageSize') pageSize?: string,
   ) {
-    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 10;
     return this.noticeService.findArchived(req.user.institutionId, cursor, parsedPageSize);
   }
 
