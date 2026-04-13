@@ -63,7 +63,7 @@ export class LibraryService {
     });
   }
 
-  async findAll(subjectId: string, search?: string, uploaderName?: string, cursor?: string, pageSize: number = 20) {
+  async findAll(subjectId: string, search?: string, uploaderName?: string, cursor?: string, pageSize: number = 10) {
     const resources = await this.prisma.libraryResource.findMany({
       where: {
         AND: [
@@ -108,11 +108,30 @@ export class LibraryService {
       take: pageSize + 1,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: cursor } : undefined,
+      },
+      take: pageSize + 1,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
     });
 
     // Use an environment variable for the base URL
     const baseUrl = process.env.APP_URL || 'http://localhost:3000';
 
+    const hasNextPage = resources.length > pageSize;
+    const items = hasNextPage ? resources.slice(0, -1) : resources;
+    const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
+
+    return {
+      items: items.map(res => ({
+        ...res,
+        // We map 'uploads/' to our static route '/static/'
+        fileUrl: `${baseUrl}/static/${res.fileUrl.replace('uploads/', '')}`,
+        upvoteCount: res.upvotes.length,
+        commentCount: res.comments.length,
+      })),
+      nextCursor,
+      hasNextPage,
+    };
     const hasNextPage = resources.length > pageSize;
     const items = hasNextPage ? resources.slice(0, -1) : resources;
     const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
