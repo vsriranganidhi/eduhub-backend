@@ -67,8 +67,11 @@ export class LibraryController {
     @Param('subjectId') subjectId: string,
     @Query('search') search?: string,
     @Query('uploaderName') uploaderName?: string,
+    @Query('cursor') cursor?: string,
+    @Query('pageSize') pageSize?: string,
   ) {
-    return this.libraryService.findAll(subjectId, search, uploaderName);
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    return this.libraryService.findAll(subjectId, search, uploaderName, cursor, parsedPageSize);
   }
 
   @Post(':id/upvote')

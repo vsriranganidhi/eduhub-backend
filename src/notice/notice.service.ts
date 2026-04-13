@@ -21,8 +21,8 @@ export class NoticeService {
     });
   }
 
-  async findAll(search?: string, subject?: string, teacherName?: string, institutionId?: string) {
-    return this.prisma.notice.findMany({
+  async findAll(search?: string, subject?: string, teacherName?: string, institutionId?: string, cursor?: string, pageSize: number = 20) {
+    const notices = await this.prisma.notice.findMany({
       where: {
         AND: [
           // Filter by user's institution
@@ -70,7 +70,20 @@ export class NoticeService {
           select: { firstName: true, lastName: true },
         },
       },
+      take: pageSize + 1,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
     });
+
+    const hasNextPage = notices.length > pageSize;
+    const items = hasNextPage ? notices.slice(0, -1) : notices;
+    const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
+
+    return {
+      items,
+      nextCursor,
+      hasNextPage,
+    };
   }
 
   async update(id: string, userId: string, dto: UpdateNoticeDto, userRole?: string) {
@@ -107,8 +120,8 @@ export class NoticeService {
     });
   }
 
-  async findArchived(institutionId?: string) {
-    return this.prisma.notice.findMany({
+  async findArchived(institutionId?: string, cursor?: string, pageSize: number = 20) {
+    const notices = await this.prisma.notice.findMany({
       where: {
         AND: [
           // Filter by user's institution
@@ -127,7 +140,20 @@ export class NoticeService {
           select: { firstName: true, lastName: true },
         },
       },
+      take: pageSize + 1,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
     });
+
+    const hasNextPage = notices.length > pageSize;
+    const items = hasNextPage ? notices.slice(0, -1) : notices;
+    const nextCursor = hasNextPage ? items[items.length - 1]?.id : null;
+
+    return {
+      items,
+      nextCursor,
+      hasNextPage,
+    };
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

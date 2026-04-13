@@ -95,30 +95,22 @@ export class AssignmentService {
       // Only recalculate if due date is postponed (moved later)
       // If preponed (moved earlier), lock existing submissions' isLate status
       if (newDueDate > oldDueDate) {
-        const submissions = await this.prisma.submission.findMany({
-          where: { assignmentId },
-          select: { id: true, submittedAt: true }
-        });
-
-        // Separate submissions into two groups: late and on-time based on new due date
-        const lateSubmissionIds = submissions
-          .filter(s => s.submittedAt > newDueDate)
-          .map(s => s.id);
-        
-        const onTimeSubmissionIds = submissions
-          .filter(s => s.submittedAt <= newDueDate)
-          .map(s => s.id);
-
-        // Execute both updates atomically in a transaction
+        // Use PostgreSQL conditional logic to update isLate based on submittedAt vs new due date
         await this.prisma.$transaction([
           // Mark submissions submitted after new due date as late
           this.prisma.submission.updateMany({
-            where: { id: { in: lateSubmissionIds } },
+            where: {
+              assignmentId,
+              submittedAt: { gt: newDueDate }
+            },
             data: { isLate: true }
           }),
           // Mark submissions submitted before or on new due date as on-time
           this.prisma.submission.updateMany({
-            where: { id: { in: onTimeSubmissionIds } },
+            where: {
+              assignmentId,
+              submittedAt: { lte: newDueDate }
+            },
             data: { isLate: false }
           })
         ]);

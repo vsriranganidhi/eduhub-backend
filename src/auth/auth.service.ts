@@ -333,16 +333,19 @@ export class AuthService {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) throw new UnauthorizedException('Old password is incorrect');
 
-    // 5. Check if new password matches any previously used passwords
+    // 5. Check if new password matches any previously used passwords (last 5 only)
     const passwordHistory = await this.prisma.passwordHistory.findMany({
       where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
     });
 
-    for (const history of passwordHistory) {
-      const isPasswordUsedBefore = await bcrypt.compare(newPassword, history.passwordHash);
-      if (isPasswordUsedBefore) {
-        throw new ConflictException('This password was used previously. Please choose a different password');
-      }
+    const comparisonResults = await Promise.all(
+      passwordHistory.map(history => bcrypt.compare(newPassword, history.passwordHash))
+    );
+
+    if (comparisonResults.some(isMatch => isMatch)) {
+      throw new ConflictException('This password was used previously. Please choose a different password');
     }
 
     // 6. Hash new password

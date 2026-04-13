@@ -25,9 +25,12 @@ export class NoticeController {
     @Req() req: any,
     @Query('search') search?: string,
     @Query('subject') subject?: string,
-    @Query('teacherName') teacherName?: string, // Renamed from teacherId
+    @Query('teacherName') teacherName?: string,
+    @Query('cursor') cursor?: string,
+    @Query('pageSize') pageSize?: string,
   ) {
-    return this.noticeService.findAll(search, subject, teacherName, req.user.institutionId);
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    return this.noticeService.findAll(search, subject, teacherName, req.user.institutionId, cursor, parsedPageSize);
   }
 
   @Patch(':id') // Edit
@@ -45,8 +48,13 @@ export class NoticeController {
   @Get('archived')
   @Roles(Role.TEACHER, Role.COLLEGE_ADMIN, Role.STUDENT)
   @UseGuards(AuthGuard)
-  findArchived(@Req() req: any) {
-    return this.noticeService.findArchived(req.user.institutionId);
+  findArchived(
+    @Req() req: any,
+    @Query('cursor') cursor?: string,
+    @Query('pageSize') pageSize?: string,
+  ) {
+    const parsedPageSize = pageSize ? Math.min(parseInt(pageSize, 10), 100) : 20;
+    return this.noticeService.findArchived(req.user.institutionId, cursor, parsedPageSize);
   }
 
   @Delete(':id')
