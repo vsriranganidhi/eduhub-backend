@@ -431,10 +431,6 @@ export type InvitationUncheckedUpdateManyWithoutInstitutionNestedInput = {
   deleteMany?: Prisma.InvitationScalarWhereInput | Prisma.InvitationScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type InvitationCreateWithoutInstitutionInput = {
   id?: string
   email: string

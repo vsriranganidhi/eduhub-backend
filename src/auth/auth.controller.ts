@@ -6,6 +6,8 @@ import { StudentRegisterDto } from './dto/student-register.dto';
 import { TeacherRegisterDto } from './dto/teacher-register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordTokenDto } from './dto/reset-password-token.dto';
 import { AuthGuard } from './auth.gaurd';
 import { InviteTeacherDto } from './dto/invite-teacher.dto';
 import { ResendInvitationDto } from './dto/resend-invitation.dto';
@@ -60,6 +62,20 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async resetPassword(@Body() dto: ResetPasswordDto, @Req() req: any) {
     return this.authService.resetPassword(req.user.sub, dto.oldPassword, dto.newPassword, dto.confirmPassword);
+  }
+
+  @Post('forgot-password')
+  @Throttle({ forgotPassword: { limit: 3, ttl: 3600000 } })
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto.email);
+  }
+
+  @Post('reset-password-token')
+  @Throttle({ resetPassword: { limit: 5, ttl: 3600000 } })
+  @HttpCode(HttpStatus.OK)
+  async resetPasswordWithToken(@Body() dto: ResetPasswordTokenDto) {
+    return this.authService.resetPasswordWithToken(dto.email, dto.token, dto.newPassword, dto.confirmPassword);
   }
 
   @Post('logout')

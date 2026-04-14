@@ -38,6 +38,11 @@ export type User = Prisma.UserModel
  */
 export type PasswordHistory = Prisma.PasswordHistoryModel
 /**
+ * Model PasswordReset
+ * 
+ */
+export type PasswordReset = Prisma.PasswordResetModel
+/**
  * Model Invitation
  * 
  */

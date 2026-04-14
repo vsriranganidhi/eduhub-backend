@@ -94,5 +94,47 @@ export class EmailService {
     );
   }
 }
-  
+
+  async sendPasswordResetEmail(
+    email: string,
+    token: string,
+    firstName: string,
+    lastName: string,
+    institutionName: string,
+  ): Promise<void> {
+    try {
+      const resetLink = `${process.env.FRONTEND_URL}/auth/reset-password?token=${token}&email=${email}`;
+      
+      const templatePath = path.join(
+        __dirname,
+        'templates/password-reset.html',
+      );
+      let htmlContent = fs.readFileSync(templatePath, 'utf-8');
+
+      htmlContent = htmlContent
+        .replaceAll('{{firstName}}', firstName)
+        .replaceAll('{{lastName}}', lastName)
+        .replaceAll('{{institutionName}}', institutionName)
+        .replaceAll('{{resetLink}}', resetLink);
+
+      const { data, error } = await this.resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+        to: email,
+        subject: `Password Reset Request - ${institutionName}`,
+        html: htmlContent,
+      });
+
+      if (error) {
+        console.error('Resend API Error:', error);
+        throw new Error(error.message);
+      }
+
+      console.log(`Password reset email sent to ${email}`, data);
+    } catch (error) {
+      console.error(`Failed to send password reset email to ${email}:`, error);
+      throw new InternalServerErrorException(
+        `Failed to send password reset email to ${email}. Please try again later.`,
+      );
+    }
+  }
 }

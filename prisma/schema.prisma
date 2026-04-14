@@ -58,6 +58,7 @@ model User {
   createdAssignments Assignment[] @relation("CreatedAssignments")
   submissions        Submission[] @relation("UserSubmissions")
   passwordHistory    PasswordHistory[]
+  passwordResets     PasswordReset[]
   createdSubjects    Subject[]
 
   requiresPasswordReset Boolean? @default(false)
@@ -74,6 +75,18 @@ model PasswordHistory {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   passwordHash String
+  createdAt DateTime @default(now())
+}
+
+// PASSWORD RESET
+// ------------------------------------------------------
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 

@@ -409,4 +409,148 @@ export class AuthService {
 
     return invitations;
   }
+
+  async forgotPassword(email: string) {
+    // 1. Find user by email
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true, firstName: true, lastName: true, institutionId: true }
+    });
+
+    if (!user) {
+      // Don't reveal if email exists or not (security best practice)
+      return {
+        message: 'If an account with this email exists, a password reset link has been sent.'
+      };
+    }
+
+    // 2. Generate reset token
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenHash = await bcrypt.hash(token, 10);
+
+    // 3. Set expiration (1 hour)
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 1);
+
+    try {
+      // 4. Create password reset record
+      await this.prisma.passwordReset.create({
+        data: {
+          userId: user.id,
+          token: tokenHash,
+          expiresAt,
+        },
+      });
+
+      // 5. Get institution name
+      const institution = await this.prisma.institution.findUnique({
+        where: { id: user.institutionId },
+        select: { name: true }
+      });
+
+      // 6. Send email with reset link
+      try {
+        await this.emailService.sendPasswordResetEmail(
+          email,
+          token,
+          user.firstName,
+          user.lastName,
+          institution?.name || 'Eduhub'
+        );
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+      }
+
+      return {
+        message: 'If an account with this email exists, a password reset link has been sent.'
+      };
+    } catch (error) {
+      console.error('Error creating password reset record:', error);
+      return {
+        message: 'If an account with this email exists, a password reset link has been sent.'
+      };
+    }
+  }
+
+  async resetPasswordWithToken(email: string, token: string, newPassword: string, confirmPassword: string) {
+    // 1. Validate passwords match
+    if (newPassword !== confirmPassword) {
+      throw new ConflictException('New password and confirm password do not match');
+    }
+
+    // 2. Find user by email
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true, password: true }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or token');
+    }
+
+    // 3. Find valid password reset record
+    const passwordReset = await this.prisma.passwordReset.findFirst({
+      where: {
+        userId: user.id,
+        isUsed: false,
+        expiresAt: { gt: new Date() }
+      }
+    });
+
+    if (!passwordReset) {
+      throw new UnauthorizedException('Invalid or expired reset token');
+    }
+
+    // 4. Verify token
+    const isTokenValid = await bcrypt.compare(token, passwordReset.token);
+    if (!isTokenValid) {
+      throw new UnauthorizedException('Invalid or expired reset token');
+    }
+
+    // 5. Check if new password matches any previously used passwords (last 5)
+    const passwordHistory = await this.prisma.passwordHistory.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+    });
+
+    const comparisonResults = await Promise.all(
+      passwordHistory.map(history => bcrypt.compare(newPassword, history.passwordHash))
+    );
+
+    if (comparisonResults.some(isMatch => isMatch)) {
+      throw new ConflictException('This password was used previously. Please choose a different password');
+    }
+
+    // 6. Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // 7. Update password and mark reset token as used
+    return this.prisma.$transaction(async (tx) => {
+      // Store old password in history
+      await tx.passwordHistory.create({
+        data: {
+          userId: user.id,
+          passwordHash: user.password,
+        },
+      });
+
+      // Update password
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          password: hashedPassword,
+          requiresPasswordReset: false,
+        },
+      });
+
+      // Mark reset token as used
+      await tx.passwordReset.update({
+        where: { id: passwordReset.id },
+        data: { isUsed: true },
+      });
+
+      return { message: 'Password reset successfully' };
+    });
+  }
 }

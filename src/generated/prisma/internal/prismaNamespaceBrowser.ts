@@ -55,6 +55,7 @@ export const ModelName = {
   Department: 'Department',
   User: 'User',
   PasswordHistory: 'PasswordHistory',
+  PasswordReset: 'PasswordReset',
   Invitation: 'Invitation',
   Notice: 'Notice',
   Subject: 'Subject',
@@ -126,6 +127,18 @@ export const PasswordHistoryScalarFieldEnum = {
 } as const
 
 export type PasswordHistoryScalarFieldEnum = (typeof PasswordHistoryScalarFieldEnum)[keyof typeof PasswordHistoryScalarFieldEnum]
+
+
+export const PasswordResetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  isUsed: 'isUsed',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
 
 
 export const InvitationScalarFieldEnum = {
