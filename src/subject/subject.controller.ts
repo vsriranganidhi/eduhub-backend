@@ -23,8 +23,8 @@ export class SubjectController {
 
   @Get() // Everyone can see the list of subjects
   @UseGuards(AuthGuard)
-  findAll(@Req() req: any, @Query('category') category?: SubjectCategory) {
-    return this.subjectService.findAll(category, req.user.institutionId);
+  findAll(@Req() req: any, @Query('category') category?: SubjectCategory, @Query('departmentId') departmentId?: string, @Query('name') name?: string) {
+    return this.subjectService.findAll(category, departmentId, name);
   }
 
   @Patch(':id')

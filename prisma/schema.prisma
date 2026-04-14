@@ -22,7 +22,16 @@ model Institution {
   users       User[]
   invitations Invitation[]
   notices     Notice[]
-  subjects    Subject[]
+  departments Department[]
+}
+
+model Department {
+  id            String      @id @default(uuid())
+  name          String      
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  subjects      Subject[]
+  @@unique([name, institutionId]) 
 }
 
 model User {
@@ -117,12 +126,12 @@ model Subject {
   createdBy String
   creator   User              @relation(fields: [createdBy], references: [id])
 
-  // Multi-Tenant Link
-  institutionId String
-  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  //Department
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
 
-  // Ensure a name is unique per category (so you can have "Math" in both)
-  @@unique([name, category, institutionId])
+  // Ensure a name is unique per category per department
+  @@unique([name, category, departmentId])
 }
 
 model LibraryResource {

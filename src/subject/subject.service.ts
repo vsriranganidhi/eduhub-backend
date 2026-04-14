@@ -21,38 +21,53 @@ export class SubjectService {
       throw new ForbiddenException('Students can only create Student Resource subjects');
     }
 
-    // Check if subject already exists in the same category (case-insensitive)
+    // Validate department exists and belongs to the same institution
+    const department = await this.prisma.department.findFirst({
+      where: {
+        id: dto.departmentId,
+        institutionId: user.institutionId,
+      },
+    });
+
+    if (!department) {
+      throw new NotFoundException('Department not found in your institution');
+    }
+
+    // Check if subject already exists in the same category and department (case-insensitive)
     const existing = await this.prisma.subject.findFirst({
       where: { 
         name: { equals: dto.name, mode: 'insensitive' },
-        category: dto.category 
+        category: dto.category,
+        departmentId: dto.departmentId,
       },
     });
 
     if (existing) {
-      throw new ConflictException(`Subject with this name already exists in ${dto.category}`);
+      throw new ConflictException(`Subject with this name already exists in this department`);
     }
 
     return this.prisma.subject.create({
       data: { 
-        ...dto,
-        institutionId: user.institutionId,
+        name: dto.name,
+        category: dto.category,
+        departmentId: dto.departmentId,
         createdBy: user.sub,
       },
     });
   }
 
-  async findAll(category?: SubjectCategory, institutionId?: string) {
+  async findAll(category?: SubjectCategory, departmentId?: string, name?: string) {
     return this.prisma.subject.findMany({
       where: {
-        // If a category is provided, filter by it. Otherwise, return all.
         ...(category ? { category } : {}),
-        ...(institutionId ? { institutionId } : {}),
+        ...(departmentId ? { departmentId } : {}),
+        ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
       },
       include: {
         _count: {
           select: { resources: true },
         },
+        department: true,
       },
       orderBy: { name: 'asc' },
     });

@@ -16,6 +16,7 @@ import { AssignmentModule } from './assignment/assignment.module';
 import { InstitutionModule } from './institution/institution.module';
 import { EmailModule } from './email/email.module';
 import { throttleConfig } from './config/throttle.config';
+import { DepartmentModule } from './department/department.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { throttleConfig } from './config/throttle.config';
     AuthModule, 
     NoticeModule, 
     ScheduleModule.forRoot(), 
-    LibraryModule, SubjectModule, AssignmentModule, InstitutionModule, EmailModule
+    LibraryModule, SubjectModule, AssignmentModule, InstitutionModule, EmailModule, DepartmentModule
   ],
   controllers: [AppController],
   providers: [

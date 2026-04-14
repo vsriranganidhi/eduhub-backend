@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Institution: 'Institution',
+  Department: 'Department',
   User: 'User',
   PasswordHistory: 'PasswordHistory',
   Invitation: 'Invitation',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "institution" | "user" | "passwordHistory" | "invitation" | "notice" | "subject" | "libraryResource" | "comment" | "upvote" | "assignment" | "submission"
+    modelProps: "institution" | "department" | "user" | "passwordHistory" | "invitation" | "notice" | "subject" | "libraryResource" | "comment" | "upvote" | "assignment" | "submission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -485,6 +486,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.InstitutionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.InstitutionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Department: {
+      payload: Prisma.$DepartmentPayload<ExtArgs>
+      fields: Prisma.DepartmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DepartmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DepartmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DepartmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DepartmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        findMany: {
+          args: Prisma.DepartmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        create: {
+          args: Prisma.DepartmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        createMany: {
+          args: Prisma.DepartmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DepartmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DepartmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        update: {
+          args: Prisma.DepartmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DepartmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DepartmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DepartmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DepartmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DepartmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDepartment>
+        }
+        groupBy: {
+          args: Prisma.DepartmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DepartmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentCountAggregateOutputType> | number
         }
       }
     }
@@ -1278,6 +1353,15 @@ export const InstitutionScalarFieldEnum = {
 export type InstitutionScalarFieldEnum = (typeof InstitutionScalarFieldEnum)[keyof typeof InstitutionScalarFieldEnum]
 
 
+export const DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  institutionId: 'institutionId'
+} as const
+
+export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -1341,7 +1425,7 @@ export const SubjectScalarFieldEnum = {
   category: 'category',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
-  institutionId: 'institutionId'
+  departmentId: 'departmentId'
 } as const
 
 export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
@@ -1659,6 +1743,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   institution?: Prisma.InstitutionOmit
+  department?: Prisma.DepartmentOmit
   user?: Prisma.UserOmit
   passwordHistory?: Prisma.PasswordHistoryOmit
   invitation?: Prisma.InvitationOmit

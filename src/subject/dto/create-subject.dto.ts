@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength, IsEnum, IsUUID } from 'class-validator';
 
 export class CreateSubjectDto {
   @IsString()
@@ -9,4 +9,8 @@ export class CreateSubjectDto {
   @IsEnum(['TEACHER_RESOURCE', 'STUDENT_RESOURCE', 'ASSIGNMENT'])
   @IsNotEmpty()
   category: 'TEACHER_RESOURCE' | 'STUDENT_RESOURCE' | 'ASSIGNMENT'; // e.g., "TEACHER_RESOURCE"
+
+  @IsUUID()
+  @IsNotEmpty()
+  departmentId: string; // Department this subject belongs to
 }
