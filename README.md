@@ -1,98 +1,156 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# 🎓 Eduhub Backend API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-## Description
+**A powerful, multi-tenant backend API designed to streamline academic resource management, institutional administration, and role-based collaboration for colleges and universities.**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+</div>
 
-## Project setup
+## 🏗️ Core Architecture
 
+* **🏢 Multi-Tenancy (Data Isolation):** True tenant isolation. Core models (`User`, `Notice`, `Department`, etc.) are securely scoped using `institutionId` constraints, allowing multiple colleges to operate independently on the same platform.
+* **🔐 Role-Based Access Control (RBAC):** Gated by JWTs, access is divided into four strict tiers: `SUPER_ADMIN` (Platform Owner), `COLLEGE_ADMIN` (Institution Manager), `TEACHER`, and `STUDENT`.
+* **⚡ Atomic Transactions:** Leverages Prisma `$transaction` for complex operations (e.g., creating a user while logging password history) to guarantee data integrity and prevent orphaned records.
+
+## 🛠️ Tech Stack Breakdown
+
+* **Core Backend:** NestJS, TypeScript, Node.js
+* **Database & ORM:** PostgreSQL, Prisma ORM
+* **Cloud & Storage:** Supabase Storage *(Used for storing library resources and assignment submissions)*
+* **Deployment:** Render 
+* **Security & Auth:** Passport-JWT, Bcrypt, NestJS Throttler
+* **Email & Communications:** Resend *(System invitations and password recovery)*
+
+---
+
+## 🚀 Module Features
+
+## 🔐 Authentication & Onboarding
+
+Eduhub implements a tiered onboarding strategy to maintain institutional data isolation and security across all user levels.
+
+### 🏛️ Role-Based Onboarding
+
+* **Student (Self-Registration):** Students sign up directly by providing a unique institutional **Join-Code**, which automatically links their profile to the correct college entity.
+* **Teacher (Invite-Only):** Access is restricted to email invitations sent by a `COLLEGE_ADMIN`. These invitations utilize secure, unique tokens that expire after 7 days.
+* **College Admin (Managed):** Accounts are created by a `SUPER_ADMIN` to oversee institutional tenants. Upon their first login, admins must complete a mandatory password reset flow to secure the account.
+
+### 🔑 Security Standards
+
+* **Identity & Access:** Leverages **Passport-JWT** for stateless authentication, extracting and verifying user identity and roles for every API request.
+* **Multi-Tenant Scoping:** Enforces strict email uniqueness within a specific institution, allowing for distinct user identities across different college tenants.
+* **Brute-Force Protection:** Sensitive endpoints—including Login, Registration, and Password Resets—are protected by **NestJS Throttler** to prevent automated attacks.
+
+### 📚 Library & Discussions
+* **Cloud Storage:** Integrated with Supabase Storage for secure handling of academic resources and assignment files.
+* **Threaded Discussions:** Features a strict 2-level nested commenting system supporting root comments and direct replies.
+* **Engagement:** Students can upvote high-quality library resources to improve content visibility.
+
+### 📝 Assignment Lifecycle
+* **End-to-End Workflow:** Full lifecycle support from teacher creation to student submission and final grading.
+* **Dynamic Deadlines:** Automatic `isLate` calculation based on the assignment's `dueDate` at the moment of submission.
+* **Integrated Grading:** Dedicated workflows for teachers to provide feedback and official grades on student work.
+
+### 📢 Notice Board
+* **Categorized Updates:** Supports both General institutional notices and Subject-specific academic alerts.
+* **Automated Cleanup:** An integrated Cron job runs nightly at midnight to purge archived notices that have been expired for over 7 days.
+
+## 🛡️ Security & Performance Measures
+
+Eduhub is engineered with enterprise-grade security protocols to safeguard institutional data and ensure high system availability.
+
+### 🚦 Strategic Throttling (Rate Limiting)
+To mitigate brute-force and DDoS attacks, the API implements strict request limits using **NestJS Throttler**:
+* **Authentication:** Login attempts are restricted to **5 requests per 15 minutes** to prevent account takeover.
+* **Onboarding:** Registration is capped at **3 requests per hour** to deter automated bot sign-ups.
+* **General Traffic:** Standard API endpoints allow up to **100 requests per minute** to ensure fair resource distribution.
+
+### 🔒 Password Integrity & History
+The system enforces a strict "no-reuse" policy to enhance user account security:
+* **Historical Tracking:** Every password change is logged in a dedicated `PasswordHistory` table.
+* **Reuse Prevention:** Custom logic validates new passwords against the user’s **last 5 used passwords**, preventing the recycling of compromised or older credentials.
+
+### 📑 Data Integrity & Retention
+Rather than immediate permanent removal, the platform utilizes a **Soft Delete** pattern for sensitive data like notices:
+* **`deletedAt` Implementation:** Deleted records are timestamped rather than removed from the database, allowing for accidental-deletion recovery and audit trails.
+* **Cascading Cleanups:** Soft-deleted data is excluded from standard API responses but remains available for background archival processes or automated midnight cleanup jobs.
+
+## 📖 API Documentation
+
+## 9. API Documentation & Testing
+
+**Swagger UI (Recommended)**
+This project uses Swagger for auto-generated, interactive API documentation. Once the server is running, you can view all endpoints, expected payloads, and test them directly at:
+* 👉 `http://localhost:3000/api`
+
+**Postman Collection**
+For convenience, a complete Postman collection with pre-configured requests and environments is included in this repository.
+1. Locate the `Eduhub_API_Collection.json` file in the root directory.
+2. Open Postman and click **Import**.
+3. Drag and drop the file to instantly load all API routes.
+
+## 8. Local Setup & Installation
+
+Follow these steps to get the Eduhub backend up and running on your local machine.
+
+### Prerequisites
+Before you begin, ensure you have the following installed and configured:
+* **Node.js** (v18 or higher recommended)
+* **Docker** & **Docker Compose** (to run the local PostgreSQL database)
+* **Supabase Account** (for media and file storage buckets)
+
+### Environment Variables
+
+For security reasons, actual environment variables are not committed to the repository. Instead, a template file is provided. 
+
+To set up your local environment, you need to create a `.env` file based on the provided `.env.example` file:
+
+**1. Copy the example file:**
 ```bash
-$ npm install
+cp .env.example .env
 ```
 
-## Compile and run the project
+**2. Configure your variables:**
+Open the newly created `.env` file in your code editor and replace the placeholder values with your actual local or production credentials.
 
+The file includes configuration blocks for:
+
+* Server & App Configuration (Ports, CORS origins)
+* Database Configuration (PostgreSQL connection string)
+* JWT Authentication (Secret keys)
+* Supabase S3 Storage (Bucket credentials for file uploads)
+* Email Configuration (SMTP/Gmail or Resend keys)
+
+### Installation Steps
+
+**1. Install Dependencies**
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+**2. Start Database**
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker-compose up -d
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+**3. Setup the Database Schema**
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npx prisma db push
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**4. Seed the Database**
+```bash
+npm run prisma:seed
+```
 
-## Resources
+**5. Start the Application**
+```bash
+npm run start:dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+The server will be available at `http://localhost:3000`.

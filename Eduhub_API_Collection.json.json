@@ -1,0 +1,2121 @@
+{
+	"info": {
+		"_postman_id": "7e21b5f1-886b-4700-9e32-ccaf639c8118",
+		"name": "eduhub-backend",
+		"description": "# 📄 Get started here\n\nThis template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n## 🔖 How to use this template\n\n- Replace the content given brackets (()) with your API's details.\n    \n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe ((product name)) provides many API products, tools, and resources that enable you to ((add product value here)).\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the ((add APIs here)), you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use a valid API Key to send requests to the API endpoints. You can get your API key from Postman's [integrations dashboard](https://go.postman.co/settings/me/api-keys).\n    \n- The API has [rate and usage limits](https://learning.postman.com/docs/developer/postman-api/postman-api-rate-limits/).\n    \n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n    \n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe ((product name)) API uses ((add your API's authorization type)) for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nPostman uses API keys for authentication. You can generate a Postman API key in the [API keys](https://postman.postman.co/settings/me/api-keys) section of your Postman account settings.\n\nYou must include an API key in each request to the Postman API with the X-Api-Key request header.\n\n### Authentication error response\n\nIf an API key is missing, malformed, or invalid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 300 requests per minute. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `X-RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there’s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47609274",
+		"_collection_link": "https://vsriranganidhi7283-6594816.postman.co/workspace/V-Sri-Ranga-Nidhi's-Workspace~dba60496-d7e6-4ab8-8ad7-832103f14ca4/collection/47609274-7e21b5f1-886b-4700-9e32-ccaf639c8118?action=share&source=collection_link&creator=47609274"
+	},
+	"item": [
+		{
+			"name": "Assignments",
+			"item": [
+				{
+					"name": "Creating a new Assignment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dueDate",
+									"value": "2026-05-16T23:59:59Z",
+									"type": "text"
+								},
+								{
+									"key": "subjectId",
+									"value": "f420119e-2974-4141-9ff0-2d79095ddb0b",
+									"type": "text"
+								},
+								{
+									"key": "isLateAllowed",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								},
+								{
+									"key": "title",
+									"value": "Math Assignment 6",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Complete chapters 5-7",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/createAssignment",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"createAssignment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating an Assignment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "description",
+								"value": "Updated Description",
+								"type": "text"
+							},
+							{
+								"key": "isLateAllowed",
+								"value": "false",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Updated Math Assignment",
+									"type": "text"
+								},
+								{
+									"key": "dueDate",
+									"value": "2026-04-10T23:59:59Z",
+									"type": "text"
+								},
+								{
+									"key": "isLateAllowed",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/assignment/44a0d99a-d17e-4b7a-a22b-f4612e89560e",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"assignment",
+								"44a0d99a-d17e-4b7a-a22b-f4612e89560e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjgyZGVjYy0zZjU1LTQ2NTEtODc1Ny1iYzFiNTU5MGUzNjMiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1M0BnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxODM2NjUsImV4cCI6MTc3NjI3MDA2NX0.A08prssHakbIlD1Wx5DOuyuEn6wxynG5qvZ9smlAz6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "assignmentId",
+									"value": "44a0d99a-d17e-4b7a-a22b-f4612e89560e",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/createSubmission",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"createSubmission"
+							],
+							"query": [
+								{
+									"key": "assignmentId",
+									"value": "UUID (required)",
+									"disabled": true
+								},
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating Submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/submission/3b21a7a6-7d7f-43ae-b37f-0b490951775d",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"submission",
+								"3b21a7a6-7d7f-43ae-b37f-0b490951775d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting Submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjgyZGVjYy0zZjU1LTQ2NTEtODc1Ny1iYzFiNTU5MGUzNjMiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1M0BnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxODM2NjUsImV4cCI6MTc3NjI3MDA2NX0.A08prssHakbIlD1Wx5DOuyuEn6wxynG5qvZ9smlAz6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "assignmentId",
+									"value": "48d01ade-e145-462e-a41f-22154dfc80ce",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/submission/587ae890-9841-46ac-8c2d-a2cb70b8aab2",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"submission",
+								"587ae890-9841-46ac-8c2d-a2cb70b8aab2"
+							],
+							"query": [
+								{
+									"key": "assignmentId",
+									"value": "UUID (required)",
+									"disabled": true
+								},
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Grading Submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"grade\": \"O\",\n  \"feedback\": \"Well Done!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/submission/f3dca5e1-662b-48aa-a449-f3703d8bf6f8/grade",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"submission",
+								"f3dca5e1-662b-48aa-a449-f3703d8bf6f8",
+								"grade"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching Assignments of a Subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/subject/f420119e-2974-4141-9ff0-2d79095ddb0b",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"subject",
+								"f420119e-2974-4141-9ff0-2d79095ddb0b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching Submissions of an Assignment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}assignments/assignment/d227364b-ff7e-4cd4-b1cc-4c6bc3c1f5bc",
+							"host": [
+								"{{eduhub-backend}}assignments"
+							],
+							"path": [
+								"assignment",
+								"d227364b-ff7e-4cd4-b1cc-4c6bc3c1f5bc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Logging in as Super Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"superAdmin@eduhub.com\",\n  \"password\":\"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logging in as College Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MGM5YmM4NS1lZWFhLTRmYzctOWM5Yi1mYWM4OWU1NTZkYjAiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3OTVlNGNkYy1lYzQwLTQxMDAtOGYzOS1mOWViMjIxNDJlODgiLCJpYXQiOjE3NzU5OTU2NzksImV4cCI6MTc3NjA4MjA3OX0.gCl2Chk3fmD8uaHHJMPOjPo2PkkvvJx1i_BDt99e27E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi2165@gmail.com\",\n  \"password\": \"VWlaRg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forced Password Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyNjIsImV4cCI6MTc3NjI2MTY2Mn0.tsDx2zEB4tz77OvHr5F2HeAA8WGAvu3_VmRkhoUuc5U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oldPassword\": \"VWlaRg\",\n  \"newPassword\": \"SrIrAm@\",\n  \"confirmPassword\": \"SrIrAm@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/reset-password",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logging in as College Admin after Password Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzFhNDI0Ni03ZGVlLTQwZDMtYjRmZi1hZDU4ZDIyMjhlMTAiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiJiMzQ2MTMzMy01MzRiLTQxY2YtYWU2MC1mMDk4NjBlMDU2NDciLCJpYXQiOjE3NzU5MzkxOTksImV4cCI6MTc3NjAyNTU5OX0.U-6yI-AnomIWr-MXeJ9aL02TFPzAfp2u62xkAzU2nj4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi2165@gmail.com\",\n  \"password\": \"SrIrAm@7283\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inviting Teachers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi5556@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/invite-teacher",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"invite-teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resending Invitation to Teachers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi123@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/resend-invitation",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"resend-invitation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registering Teachers via Invitation Link",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzFhNDI0Ni03ZGVlLTQwZDMtYjRmZi1hZDU4ZDIyMjhlMTAiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiJiMzQ2MTMzMy01MzRiLTQxY2YtYWU2MC1mMDk4NjBlMDU2NDciLCJpYXQiOjE3NzU5Mzk2MDcsImV4cCI6MTc3NjAyNjAwN30.arEvdnjS8QazfPr5crDtl8Uprho1C6lvuZLZ_Ga_i8Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi123@gmail.com\",\n  \"password\": \"SrIrAm@\",\n  \"firstName\": \"TestTeacher2FN\",\n  \"lastName\": \"TestTeacher2LN\",\n  \"joinCode\": \"BLFNPDW0\",\n  \"invitationToken\": \"a87bfe2e9023b019faee4266e5c6708ca419e22544c2af0465c0b7e6e919f29a\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/register/teacher",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"register",
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registering Students",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzFhNDI0Ni03ZGVlLTQwZDMtYjRmZi1hZDU4ZDIyMjhlMTAiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiJiMzQ2MTMzMy01MzRiLTQxY2YtYWU2MC1mMDk4NjBlMDU2NDciLCJpYXQiOjE3NzU5Mzk2MDcsImV4cCI6MTc3NjAyNjAwN30.arEvdnjS8QazfPr5crDtl8Uprho1C6lvuZLZ_Ga_i8Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi5553@gmail.com\",\n  \"password\": \"SrIrAm@\",\n  \"firstName\": \"TestStudent2FN\",\n  \"lastName\": \"TestStudent2LN\",\n  \"joinCode\": \"BLFNPDW0\",\n  \"registrationNumber\": \"22115023\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/register/student",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"register",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logging in as Student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzFhNDI0Ni03ZGVlLTQwZDMtYjRmZi1hZDU4ZDIyMjhlMTAiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiJiMzQ2MTMzMy01MzRiLTQxY2YtYWU2MC1mMDk4NjBlMDU2NDciLCJpYXQiOjE3NzU5Mzk2MDcsImV4cCI6MTc3NjAyNjAwN30.arEvdnjS8QazfPr5crDtl8Uprho1C6lvuZLZ_Ga_i8Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi5553@gmail.com\",\n  \"password\": \"SrIrAm@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logging in as Teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi5555@gmail.com\",\n  \"password\": \"SrIrAm@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"vsriranganidhi2165@gmail.com\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/forgot-password",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"vsriranganidhi2165@gmail.com\",\n    \"token\": \"c2843b291f927645375361a2c380e09e6830c5f202a1f5c8e1e83a1266524a2d\",\n    \"newPassword\": \"SrIrAm@7283\",\n    \"confirmPassword\": \"SrIrAm@7283\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/reset-password-token",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"reset-password-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logging in as Teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vsriranganidhi7283@gmail.com\",\n  \"password\": \"SrIrAm@\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}auth/login",
+							"host": [
+								"{{eduhub-backend}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The `/collections` endpoints let you manage your [collections](https://learning.postman.com/docs/sending-requests/intro-to-collections/)."
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "Creating Departments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Metallurgy and Material Sciences\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}departments",
+							"host": [
+								"{{eduhub-backend}}departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching all departments in an Institution",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Metallurgy and Material Sciences\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}departments",
+							"host": [
+								"{{eduhub-backend}}departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Department with id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Metallurgy and Material Sciences\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}departments/b30ec399-1d86-4128-bdd0-572954d4b2e5",
+							"host": [
+								"{{eduhub-backend}}departments"
+							],
+							"path": [
+								"b30ec399-1d86-4128-bdd0-572954d4b2e5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating Department Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Computer Science and Engineering\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}departments/b30ec399-1d86-4128-bdd0-572954d4b2e5",
+							"host": [
+								"{{eduhub-backend}}departments"
+							],
+							"path": [
+								"b30ec399-1d86-4128-bdd0-572954d4b2e5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Institution",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Computer Science and Engineering\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}departments/31f33d71-aa34-4580-8199-0d7e650b22db",
+							"host": [
+								"{{eduhub-backend}}departments"
+							],
+							"path": [
+								"31f33d71-aa34-4580-8199-0d7e650b22db"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Institutions",
+			"item": [
+				{
+					"name": "Registering Institution",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODg2ZTc5Mi1kMzg2LTQ4YTktYWRjNS00Y2RmOTU5YTBlOTIiLCJlbWFpbCI6InN1cGVyQWRtaW5AZWR1aHViLmNvbSIsInJvbGUiOiJTVVBFUl9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiIxM2NhYWU5ZC04MjYxLTRhMjMtODljNi1lY2M5MDYyYjI3YWYiLCJpYXQiOjE3NzYxNzUwOTAsImV4cCI6MTc3NjI2MTQ5MH0.xPQyiIxC7o90BtgfwNPBJwUSldbtU8JQYrkDRVRKMvA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Institution 1\",\n  \"branch\": \"Test Branch 1\",\n  \"email\": \"vsriranganidhi2165@gmail.com\",\n  \"firstName\": \"First Name 1\",\n  \"lastName\": \"Last Name 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}institutions",
+							"host": [
+								"{{eduhub-backend}}institutions"
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.getpostman.com/me",
+									"protocol": "https",
+									"host": [
+										"api",
+										"getpostman",
+										"com"
+									],
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 12345678,\n        \"username\": \"taylor-lee\",\n        \"email\": \"taylor.lee@example.com\",\n        \"fullName\": \"Taylor Lee\",\n        \"avatar\": \"https://example.com/user/r5u9qpvmujfjf6lbqmga.jpg\",\n        \"isPublic\": true\n    },\n    \"operations\": [\n        {\n            \"name\": \"mock_usage\",\n            \"limit\": 1000000,\n            \"usage\": 110276,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"monitor_request_runs\",\n            \"limit\": 10000000,\n            \"usage\": 1141750,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"api_usage\",\n            \"limit\": 1000000,\n            \"usage\": 16240,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"custom_domains\",\n            \"limit\": 25,\n            \"usage\": 25,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"serverless_requests\",\n            \"limit\": 10000,\n            \"usage\": 0,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"integrations\",\n            \"limit\": 5000,\n            \"usage\": 1018,\n            \"overage\": 0\n        },\n        {\n            \"name\": \"cloud_agent_requests\",\n            \"limit\": 1000000,\n            \"usage\": 1615,\n            \"overage\": 0\n        }\n    ]\n}"
+						},
+						{
+							"name": "Rate Limit Exceeded",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.getpostman.com/me",
+									"protocol": "https",
+									"host": [
+										"api",
+										"getpostman",
+										"com"
+									],
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"rateLimited\",\n    \"message\": \"Rate limit exceeded. Please retry after 1669048687\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Library",
+			"item": [
+				{
+					"name": "Teacher Uploading to Teacher Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Advanced Calculus Lecture Notes 11",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Comprehensive notes covering derivatives and integrals",
+									"type": "text"
+								},
+								{
+									"key": "subjectId",
+									"value": "328120ad-896f-42ce-af6c-e6b71d2b4ed4",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/upload",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Uploading to Student Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Physics Study Guide 10",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Student-created study materials for mechanics",
+									"type": "text"
+								},
+								{
+									"key": "subjectId",
+									"value": "e3bd7a23-1cec-4c1f-b6a7-b25e54bf9c02",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/upload",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching Resources from Library",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Physics Study Guide",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Student-created study materials for mechanics",
+									"type": "text"
+								},
+								{
+									"key": "subjectId",
+									"value": "6e22ca6d-15b5-4bdb-8ad9-82428f5ea86c",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ranga.nidhi/Documents/screenshots/Screenshot 2026-04-13 at 12.27.26 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/5f4b90fd-0cf3-4b05-9f29-6f499df8a770",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"5f4b90fd-0cf3-4b05-9f29-6f499df8a770"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upvoting a Student Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}library/5f4b90fd-0cf3-4b05-9f29-6f499df8a770/upvote",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"5f4b90fd-0cf3-4b05-9f29-6f499df8a770",
+								"upvote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Commenting on a Library Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This is a great resource! Very helpful for understanding the concepts.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/5f4b90fd-0cf3-4b05-9f29-6f499df8a770/comments",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"5f4b90fd-0cf3-4b05-9f29-6f499df8a770",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adding Level 2 Comments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"I agree! The examples were particularly useful.\",\n  \"parentId\": \"924a4d20-da38-4555-99ff-d76c4d44d335\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/5f4b90fd-0cf3-4b05-9f29-6f499df8a770/comments",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"5f4b90fd-0cf3-4b05-9f29-6f499df8a770",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching all Comments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}library/5f4b90fd-0cf3-4b05-9f29-6f499df8a770/comments",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"5f4b90fd-0cf3-4b05-9f29-6f499df8a770",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editing a Comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"Updated comment text here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/comments/924a4d20-da38-4555-99ff-d76c4d44d335",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"comments",
+								"924a4d20-da38-4555-99ff-d76c4d44d335"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a Comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"Updated comment text here\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}library/comments/924a4d20-da38-4555-99ff-d76c4d44d335",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"comments",
+								"924a4d20-da38-4555-99ff-d76c4d44d335"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a Library Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}library/132765a0-051a-4247-9dd2-77e8eafb0ee6",
+							"host": [
+								"{{eduhub-backend}}library"
+							],
+							"path": [
+								"132765a0-051a-4247-9dd2-77e8eafb0ee6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notice",
+			"item": [
+				{
+					"name": "Creating Notice as College Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Semester Exam Schedule 6\",\n  \"content\": \"The semester exams will be held from April 25 to May 10, 2026. Please check the notice board for detailed timetables.\",\n  \"subject\": \"General\",\n  \"expiresAt\": \"2026-05-15T23:59:59Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice",
+							"host": [
+								"{{eduhub-backend}}notice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Notice as a Teacher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Assignment Submission Deadline 5\",\n  \"content\": \"Please submit your assignments on the online portal by April 18, 2026. Late submissions will not be accepted.\",\n  \"subject\": \"Mathematics\",\n  \"expiresAt\": \"2026-04-18T23:59:59Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice",
+							"host": [
+								"{{eduhub-backend}}notice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Notice as a Student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Assignment Submission Deadline\",\n  \"content\": \"Please submit your assignments on the online portal by April 18, 2026. Late submissions will not be accepted.\",\n  \"subject\": \"Mathematics\",\n  \"expiresAt\": \"2026-04-18T23:59:59Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice",
+							"host": [
+								"{{eduhub-backend}}notice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching Notices",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Assignment Submission Deadline\",\n  \"content\": \"Please submit your assignments on the online portal by April 18, 2026. Late submissions will not be accepted.\",\n  \"subject\": \"Mathematics\",\n  \"expiresAt\": \"2026-04-18T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice",
+							"host": [
+								"{{eduhub-backend}}notice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating Notice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Notice Title\",\n  \"content\": \"Updated content with new information.\",\n  \"subject\": \"Mathematics\",\n  \"expiresAt\": \"2026-05-01T23:59:59Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice/9a7ea239-d7db-4ce3-a455-aef3e909431c",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"9a7ea239-d7db-4ce3-a455-aef3e909431c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Archived Notices",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0YzA4MTJhOC04M2Q2LTQxZjAtYjNlMi1kMWVhYzE2ZGJkYzUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3OTVlNGNkYy1lYzQwLTQxMDAtOGYzOS1mOWViMjIxNDJlODgiLCJpYXQiOjE3NzYxMDQ3NDgsImV4cCI6MTc3NjE5MTE0OH0.KVKlMNSbo2GfdIHFIevOjYCg2EGt6jqMRTZ2oryV0QE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}notice/archived",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"archived"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting Notice as a College Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjU1ZDY5Zi1kYWNlLTRjMTgtYjZhYy1mMjhmYmEwMjUzNjgiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpMjE2NUBnbWFpbC5jb20iLCJyb2xlIjoiQ09MTEVHRV9BRE1JTiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzUyOTMsImV4cCI6MTc3NjI2MTY5M30.cdCVNaiKcLdtz8Je20bawUmm0BCjXIbhO338FqkHkRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice/1a5f0cc1-aac7-4d3c-84d9-b5efb9b3e3f3",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"1a5f0cc1-aac7-4d3c-84d9-b5efb9b3e3f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting Notice as a Teacher-author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}notice/54900ded-fbf9-4cb1-89a0-5fb946c0edb6",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"54900ded-fbf9-4cb1-89a0-5fb946c0edb6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting Notice as a Teacher but non-author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0YzA4MTJhOC04M2Q2LTQxZjAtYjNlMi1kMWVhYzE2ZGJkYzUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3OTVlNGNkYy1lYzQwLTQxMDAtOGYzOS1mOWViMjIxNDJlODgiLCJpYXQiOjE3NzU5OTU1NjMsImV4cCI6MTc3NjA4MTk2M30.bT3RA0fJfoJVy-5zaToxvmlStx_UsL-7ERATbiAX7gw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}notice/c23edaed-74aa-4d1d-b48f-37ac9630122c",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"c23edaed-74aa-4d1d-b48f-37ac9630122c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting as Student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{eduhub-backend}}notice/7254b7ce-2a47-43bc-b147-678a5ddccf32",
+							"host": [
+								"{{eduhub-backend}}notice"
+							],
+							"path": [
+								"7254b7ce-2a47-43bc-b147-678a5ddccf32"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subjects",
+			"item": [
+				{
+					"name": "Creating Teacher Resource Subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Human Values\",\n  \"category\": \"TEACHER_RESOURCE\",\n  \"departmentId\":\"b30ec399-1d86-4128-bdd0-572954d4b2e5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Teacher Resource Subject as a student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Computer Networks\",\n  \"category\": \"TEACHER_RESOURCE\",\n  \"departmentId\":\"b30ec399-1d86-4128-bdd0-572954d4b2e5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Student Resource Subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"DSA Study Materials\",\n  \"category\": \"STUDENT_RESOURCE\",\n  \"departmentId\":\"b30ec399-1d86-4128-bdd0-572954d4b2e5\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Student Resource Subject as a Teacher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"DSA Study Materials\",\n  \"category\": \"STUDENT_RESOURCE\",\n  \"departmentId\":\"b30ec399-1d86-4128-bdd0-572954d4b2e5\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating Assignment Category Subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Advanced Algorithms\",\n  \"category\": \"ASSIGNMENT\",\n  \"departmentId\":\"b30ec399-1d86-4128-bdd0-572954d4b2e5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching Subjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Data Structures\",\n  \"category\": \"ASSIGNMENT\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Getting Subjects with filters",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMjUyOWNlNi00ZDNiLTRjNWEtYmUwNi1hMTBlMmE0ZDBlNjUiLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NEBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjEsImV4cCI6MTc3NjI2MzA2MX0.3AiY13DgQmqGr7ibbs7tF4pw0P0_Ga-nrZUzh9dg8DU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Data Structures\",\n  \"category\": \"ASSIGNMENT\"\n}"
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects?category=TEACHER_RESOURCE",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "TEACHER_RESOURCE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a Subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNTNlMzIzYi04Mjg3LTRmNTUtYjFlZS0yMTdjOTdmNmZhZjciLCJlbWFpbCI6InZzcmlyYW5nYW5pZGhpNTU1NUBnbWFpbC5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImluc3RpdHV0aW9uSWQiOiI3NGZiNDNiNy0xYTc2LTQ5OWMtYTRiMi1iMWY3NGU5NjQwNDciLCJpYXQiOjE3NzYxNzY2NjksImV4cCI6MTc3NjI2MzA2OX0.KdTmLKpzo10ddR1TXbStWeh9udWsh7OdpY8qBz_Ot0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Data Structures\",\n  \"category\": \"ASSIGNMENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{eduhub-backend}}subjects/632baada-a50a-4a5f-8ea7-b72ba31568fe",
+							"host": [
+								"{{eduhub-backend}}subjects"
+							],
+							"path": [
+								"632baada-a50a-4a5f-8ea7-b72ba31568fe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "eduhub-backend",
+			"value": "https://farming-simulator.pstmn.io"
+		}
+	]
+}
