@@ -38,6 +38,6 @@ export class SubjectController {
   @UseGuards(AuthGuard, RolesGuard)
   // We allow all roles here; the Service will check if the user is the creator or admin
   remove(@Param('id') id: string, @Req() req: any) {
-    return this.subjectService.remove(id, req.user.id, req.user.role);
+    return this.subjectService.remove(id, req.user.sub, req.user.role);
   }
 }
